@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRONOTURF PRO V9.0 · 06/04/2026</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ff6b35">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!-- ══ CORE FOUNDATION v1.0 ══ -->
+<script src="core-foundation.js"></script>
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PRONOTURF PRO">
+<link rel="apple-touch-icon" href="/icons/icon-192.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.svg">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0d0d0d;color:#f0f0f0;font-family:'Segoe UI',sans-serif;font-size:14px;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:14px 16px;text-align:center;border-bottom:2px solid #ff6b35;}
+header h1{font-size:20px;color:#ff6b35;letter-spacing:2px;}
+header p{color:#aaa;font-size:11px;margin-top:3px;}
+.tabs{display:flex;background:#111;border-bottom:1px solid #333;overflow-x:auto;}
+.tab-btn{flex:1;min-width:52px;padding:10px 2px;background:none;border:none;color:#888;cursor:pointer;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;transition:all .2s;white-space:nowrap;}
+.tab-btn.active{color:#ff6b35;border-bottom:2px solid #ff6b35;background:#1a0a0f;}
+.tab-content{display:none;padding:16px;}
+.tab-content.active{display:block;}
+.stitle{font-size:15px;font-weight:700;color:#ff6b35;margin-bottom:14px;border-bottom:1px solid #2a2a2a;padding-bottom:8px;}
+.ibox{background:#1a1a2e;border:1px solid #ff6b3533;border-radius:10px;padding:13px;margin-bottom:14px;font-size:13px;line-height:1.8;color:#ccc;}
+.ok{color:#00c896;font-weight:700;}.ko{color:#e94560;font-weight:700;}.or{color:#f5a623;font-weight:700;}
+.dmbox{background:#00c89611;border:1px solid #00c896;border-radius:10px;padding:12px;margin-bottom:14px;font-size:13px;color:#00c896;}
+.btn{width:100%;padding:12px;background:linear-gradient(135deg,#ff6b35,#e94560);border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;}
+.btn:hover{opacity:.88;}
+.btn.gr{background:linear-gradient(135deg,#2a2a3e,#1a1a2e);border:1px solid #333;margin-top:6px;}
+.btn.bl{background:linear-gradient(135deg,#4fc3f7,#0288d1);margin-top:6px;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.chip{background:#ff6b3522;border:1px solid #ff6b35;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;color:#ff6b35;}
+.chip.cdj{background:#f5a62322;border-color:#f5a623;color:#f5a623;}
+.chip.dm{background:#00c89622;border-color:#00c896;color:#00c896;}
+.chip.blu{background:#4fc3f722;border-color:#4fc3f7;color:#4fc3f7;}
+.badge.win{background:#00c89622;color:#00c896;border:1px solid #00c896;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
+.badge.loss{background:#e9456022;color:#e94560;border:1px solid #e94560;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
+.badge.wait{background:#f5a62322;color:#f5a623;border:1px solid #f5a623;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+.kpi-card{background:#1a1a2e;border:1px solid #333;border-radius:10px;padding:14px;text-align:center;}
+.kpi-card .val{font-size:26px;font-weight:700;}.kpi-card .lbl{font-size:10px;color:#888;margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
+.green .val{color:#00c896;}.orange .val{color:#f5a623;}.blue .val{color:#4fc3f7;}.red .val{color:#e94560;}.fire .val{color:#ff6b35;}
+.today-card{background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #ff6b35;border-radius:14px;padding:16px;margin-bottom:14px;}
+.today-card h2{color:#ff6b35;font-size:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.trow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #2a2a3e;font-size:13px;}
+.trow:last-child{border-bottom:none;}
+.trow .lb{color:#888;}.trow .vl{font-weight:700;text-align:right;}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:11px;min-width:480px;}
+th{background:#1a1a2e;color:#ff6b35;padding:7px 5px;text-align:left;border-bottom:1px solid #333;white-space:nowrap;}
+td{padding:6px 5px;border-bottom:1px solid #1a1a1a;vertical-align:middle;}
+tr:hover td{background:#1a1a2e55;}
+.tk-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.tk{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:12px;padding:13px;position:relative;}
+.tk.star{border-color:#00c896;}.tk.span2{grid-column:span 2;}
+.tc{font-size:17px;font-weight:700;color:#ff6b35;margin-bottom:3px;}
+.tt{font-size:10px;color:#888;margin-bottom:5px;}
+.thorse{font-size:14px;font-weight:700;color:#fff;margin:5px 0;}
+.tmise{font-size:19px;font-weight:700;color:#f5a623;}
+.lock-screen{background:#0d0d0d;min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 20px;}
+.pin-input-row{display:flex;gap:8px;}
+.pin-input-row input{flex:1;background:#1a1a2e;border:2px solid #2a2a3e;border-radius:10px;color:#fff;padding:12px;font-size:16px;text-align:center;letter-spacing:4px;outline:none;}
+.pin-input-row input:focus{border-color:#ff6b35;}
+.share-card{background:linear-gradient(135deg,#1a1a2e,#12122a);border:2px solid #ff6b35;border-radius:16px;padding:18px;margin-bottom:16px;position:relative;}
+.share-card.vip{border-color:#4fc3f7;}
+.share-card::before{content:'🏇 PRONOTURF PRO';position:absolute;top:-10px;left:16px;background:#ff6b35;color:#fff;font-size:10px;font-weight:700;padding:2px 12px;border-radius:10px;letter-spacing:1px;}
+.share-card.vip::before{background:#4fc3f7;color:#000;}
+.share-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #2a2a3e;font-size:13px;}
+.share-row:last-child{border:none;}
+.share-row .slb{color:#888;font-size:11px;}.share-row .svl{font-weight:700;}
+.share-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.share-btn{padding:11px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.share-btn.wa{background:#25D366;color:#fff;}.share-btn.cp{background:#2a2a3e;color:#fff;border:1px solid #333;}
+.form-group{margin-bottom:12px;}
+.form-group label{display:block;color:#888;font-size:11px;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;}
+.form-group input,.form-group select{width:100%;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px 12px;font-size:14px;outline:none;}
+.form-group input:focus,.form-group select:focus{border-color:#ff6b35;}
+.copy-confirm{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#00c896;color:#000;padding:10px 24px;border-radius:20px;font-weight:700;font-size:13px;display:none;z-index:999;}
+
+/* Badge Steeple */
+.badge-steeple{display:inline-block;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:12px;letter-spacing:1px;margin-left:8px;}
+/* Analyse box */
+.analyse-box{background:linear-gradient(135deg,#12122a,#1a1a2e);border:1px solid #7c3aed55;border-radius:12px;padding:14px;margin-bottom:14px;}
+.analyse-box .a-title{color:#b39ddb;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.analyse-box .a-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #2a2a3e;font-size:12px;}
+.analyse-box .a-row:last-child{border:none;}
+.analyse-box .a-lbl{color:#888;}.analyse-box .a-val{font-weight:700;}
+.score-bar{height:6px;border-radius:3px;background:#2a2a3e;margin-top:3px;overflow:hidden;}
+.score-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#ff6b35,#e94560);}
+.score-fill.hi{background:linear-gradient(90deg,#00c896,#0288d1);}
+.score-fill.md{background:linear-gradient(90deg,#f5a623,#ff6b35);}
+/* CALC */
+.ctab{background:#1a1a2e;border:1px solid #333;border-radius:20px;color:#888;padding:6px 14px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px;}
+.ctab.active{background:#ff6b3522;border-color:#ff6b35;color:#ff6b35;}
+.cc-panel{display:none;}.cc-panel.active{display:block;}
+.c-res-box{background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid #ff6b3555;border-radius:12px;padding:14px;margin-top:10px;}
+.c-res-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #2a2a3e;font-size:13px;}
+.c-res-row:last-child{border:none;}
+.c-res-val{font-weight:700;font-size:15px;color:#ff6b35;}
+.fcard{background:#1a1a2e;border:1px solid #333;border-radius:10px;padding:12px;margin-bottom:10px;}
+.fcard-head{background:linear-gradient(135deg,#ff6b35,#e94560);border-radius:8px;padding:10px 12px;margin-bottom:10px;}
+.fcard-title{font-size:13px;font-weight:700;color:#fff;}
+.fcard-sub{font-size:10px;color:rgba(255,255,255,.8);margin-top:2px;}
+.fcard-body{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px;color:#aaa;}
+.fcard-body b{color:#f0f0f0;}
+.chip-sm{display:inline-block;background:#ff6b3522;border:1px solid #ff6b35;border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700;color:#ff6b35;margin:2px;}
+.chip-sm.g{background:#00c89622;border-color:#00c896;color:#00c896;}
+.chip-sm.o{background:#f5a62322;border-color:#f5a623;color:#f5a623;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏇 PRONOTURF PRO</h1>
+  <p>V9.1 · Vendredi 10/04 · VINCENNES · 5€99/mois</p>
+  <div style="display:flex;justify-content:center;gap:12px;margin-top:6px;">
+    <div style="background:#1a1a2e;border:1px solid #ff6b3555;border-radius:8px;padding:4px 12px;font-size:12px;">🕐 <span id="live-clock" style="color:#f5a623;font-weight:700;">--:--:--</span></div>
+    <div id="countdown-box" style="background:#1a1a2e;border:1px solid #4fc3f755;border-radius:8px;padding:4px 12px;font-size:12px;">🏁 <span id="live-countdown" style="color:#4fc3f7;font-weight:700;">--:--</span></div>
+  </div>
+</header>
+<div class="tabs">
+  <button class="tab-btn active" onclick="sw('aujourdhui',this)">🎯 09/04</button>
+  <button class="tab-btn" onclick="sw('tickets',this)">🎟️ Tickets</button>
+  <button class="tab-btn" onclick="sw('vip',this)">💎 VIP</button>
+  <button class="tab-btn" onclick="sw('analyse',this)">🧠 Analyse</button>
+  <button class="tab-btn" onclick="sw('dashboard',this)">📊 Bilan</button>
+  <button class="tab-btn" onclick="sw('perf',this)">⭐ Perf</button>
+  <button class="tab-btn" onclick="sw('partage',this)">📤 Partage</button>
+  <button class="tab-btn" onclick="sw('historique',this)">📋 Courses</button>
+  <button class="tab-btn" onclick="sw('admin',this)">⚙️ Admin</button>
+</div>
+
+<!-- 06/04 -->
+<div id="tab-aujourdhui" class="tab-content active">
+
+  <!-- 09/04 RÉSULTATS -->
+  <div style="background:linear-gradient(135deg,#e9456011,#1a1a2e);border:1px solid #e9456055;border-radius:12px;padding:13px;margin-bottom:10px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <span style="color:#e94560;font-weight:700;font-size:13px;">📋 09/04 · Prix Oiseleur · Haies</span>
+      <span style="background:#e9456022;color:#e94560;font-size:10px;padding:2px 8px;border-radius:10px;">-10.30€</span>
+    </div>
+    <div style="font-size:12px;color:#ccc;line-height:1.8;">
+      <div>🏁 Arrivée : <b>2-14-1-3-15</b> · <span class="badge win">3/5</span></div>
+      <div>🎯 CDJ N°210 : <span class="badge win">✅ 1.70€</span> · ⚡ DM N°602 : <span class="badge loss">❌</span></div>
+    </div>
+  </div>
+
+  <!-- 10/04 EN COURS -->
+  <div class="dmbox">⚡ <b>DERNIÈRE MINUTE :</b> R1 · N°<b>111</b> — Confirmer partant avant mise</div>
+
+  <div class="today-card">
+    <h2>🏆 ATTELÉ · 10/04/2026 <span class="badge-steeple" style="background:linear-gradient(135deg,#4fc3f7,#0288d1);" id="course-status">⏳ Avant départ</span></h2>
+    <div class="trow"><span class="lb">🏟️ Course</span><span class="vl" style="color:#ff6b35">R1 · 8ème course · Vincennes</span></div>
+    <div class="trow"><span class="lb">🏁 Discipline</span><span class="vl" style="color:#4fc3f7">Trot Attelé</span></div>
+    <div class="trow"><span class="lb">💰 Budget</span><span class="vl or">100.00€</span></div>
+    <div style="margin-top:12px">
+      <div style="font-size:11px;color:#888;margin-bottom:7px;text-transform:uppercase;">🐴 Sélection 8 Chevaux</div>
+      <div class="chips">
+        <span class="chip blu">N°10</span><span class="chip blu">N°9</span>
+        <span class="chip">N°13</span><span class="chip">N°15</span>
+        <span class="chip">N°11</span><span class="chip">N°12</span>
+        <span class="chip">N°14</span><span class="chip">N°4</span>
+      </div>
+      <div style="font-size:11px;color:#f5a623;margin-top:6px;">🎲 Outsiders : N°6 · N°5</div>
+    </div>
+    <div style="margin-top:10px">
+      <div style="font-size:11px;color:#888;margin-bottom:6px;text-transform:uppercase;">🎯 CDJ</div>
+      <div class="chips"><span class="chip cdj">R1 · N°206</span><span class="chip cdj">20.00€</span></div>
+    </div>
+    <div style="margin-top:10px">
+      <div style="font-size:11px;color:#888;margin-bottom:6px;text-transform:uppercase;">⚡ Dernière Minute</div>
+      <div class="chips"><span class="chip dm">R1 · N°111 ⏳</span><span class="chip dm">10.00€</span></div>
+    </div>
+  </div>
+
+  <div class="stitle" style="font-size:13px;">📊 Bilan · 17 courses jouées</div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="kpi-card green"><div class="val" style="font-size:18px;">+124€</div><div class="lbl">P&L</div></div>
+    <div class="kpi-card orange"><div class="val" style="font-size:18px;">82.4%</div><div class="lbl">CDJ</div></div>
+    <div class="kpi-card" style="border-color:#f5a623"><div class="val" style="color:#f5a623;font-size:18px;">60.8%</div><div class="lbl">ROI 🔥</div></div>
+  </div>
+  <button class="btn bl" onclick="sw('analyse',document.querySelectorAll('.tab-btn')[3])">🧠 Analyse</button>
+  <button class="btn gr" onclick="sw('partage',document.querySelectorAll('.tab-btn')[6])">📤 Partager</button>
+</div>
+
+<div id="tab-analyse" class="tab-content">
+  <div class="stitle">🧠 Analyse · Haies · 09/04</div>
+
+  <div class="analyse-box">
+    <div class="a-title">⚠️ Contexte · Haies 3900m</div>
+    <div class="a-row"><span class="a-lbl">Discipline</span><span class="vl" style="color:#b39ddb">Haies · Obstacles</span></div>
+    <div class="a-row"><span class="a-lbl">Distance</span><span class="a-val">3900m · Distance longue</span></div>
+    <div class="a-row"><span class="a-lbl">Clé réussite</span><span class="a-val">Sauteur + endurance</span></div>
+    <div class="a-row"><span class="a-lbl">Variance</span><span class="a-val" style="color:#e94560">⬆ Élevée · Obstacles</span></div>
+  </div>
+
+  <div class="analyse-box">
+    <div class="a-title">🐴 Hiérarchie · Sélection 09/04</div>
+    <div class="a-row"><span class="a-lbl">C1 ⭐ · N°3</span><span class="a-val" style="color:#4fc3f7">Confiance Max · P1</span></div>
+    <div class="score-bar"><div class="score-fill hi" style="width:88%"></div></div>
+    <div style="height:8px"></div>
+    <div class="a-row"><span class="a-lbl">C2 · N°11</span><span class="a-val" style="color:#00c896">Solide · P2</span></div>
+    <div class="score-bar"><div class="score-fill hi" style="width:72%"></div></div>
+    <div style="height:8px"></div>
+    <div class="a-row"><span class="a-lbl">3e · N°8</span><span class="a-val" style="color:#f5a623">Bon · P3</span></div>
+    <div class="score-bar"><div class="score-fill md" style="width:62%"></div></div>
+    <div style="height:8px"></div>
+    <div class="a-row"><span class="a-lbl">P8 · N°5 🔥</span><span class="a-val" style="color:#ff6b35">52% top5 historique</span></div>
+    <div class="score-bar"><div class="score-fill md" style="width:52%"></div></div>
+    <div style="height:8px"></div>
+    <div class="a-row"><span class="a-lbl">P7 · N°15</span><span class="a-val" style="color:#f5a623">48% top5 · Couverture</span></div>
+    <div class="score-bar"><div class="score-fill md" style="width:48%"></div></div>
+  </div>
+
+  <div class="analyse-box">
+    <div class="a-title">🎲 Outsiders · N°7 · N°9</div>
+    <div class="a-row"><span class="a-lbl">N°7</span><span class="a-val" style="color:#e94560">Outsider dangereux</span></div>
+    <div class="a-row"><span class="a-lbl">N°9</span><span class="a-val" style="color:#e94560">À surveiller</span></div>
+    <div style="margin-top:8px;font-size:11px;color:#888;">💡 Haies 3900m = course longue · les outsiders ont un taux de surprise élevé.</div>
+  </div>
+
+  <div class="analyse-box">
+    <div class="a-title">🎯 CDJ · R3 · N°210</div>
+    <div class="a-row"><span class="a-lbl">Course</span><span class="a-val">R3</span></div>
+    <div class="a-row"><span class="a-lbl">Numéro</span><span class="a-val" style="color:#f5a623">N°210</span></div>
+    <div class="a-row"><span class="a-lbl">Mise</span><span class="a-val">20.00€ Simple Gagnant</span></div>
+    <div class="a-row"><span class="a-lbl">Confiance</span><span class="a-val" style="color:#f5a623">Élevée</span></div>
+  </div>
+
+  <div class="analyse-box">
+    <div class="a-title">⚡ DM · R3 · N°602</div>
+    <div class="a-row"><span class="a-lbl">Statut</span><span class="a-val" style="color:#f5a623">⏳ Confirmer partant</span></div>
+    <div class="a-row"><span class="a-lbl">Course</span><span class="a-val">R3</span></div>
+    <div class="a-row"><span class="a-lbl">Type</span><span class="a-val">Simple Placé</span></div>
+    <div class="a-row"><span class="a-lbl">Mise</span><span class="a-val">10.00€</span></div>
+  </div>
+
+  <div class="analyse-box">
+    <div class="a-title">🧮 Formule IA · Statistiques 21 courses</div>
+    <div class="a-row"><span class="a-lbl">Quarté A</span><span class="a-val" style="color:#b39ddb">P1·P2·P3·P8 → N°3·11·8·5</span></div>
+    <div class="a-row"><span class="a-lbl">Quarté B</span><span class="a-val" style="color:#b39ddb">P1·P3·P7·P8 → N°3·8·15·5</span></div>
+    <div class="a-row"><span class="a-lbl">Quinté A</span><span class="a-val" style="color:#7c3aed">P1·P2·P3·P7·P8 → N°3·11·8·15·5</span></div>
+    <div class="a-row"><span class="a-lbl">Quinté B</span><span class="a-val" style="color:#7c3aed">P1·P3·P4·P6·P8 → N°3·8·13·14·5</span></div>
+    <div class="a-row"><span class="a-lbl">P8 dans top5</span><span class="a-val" style="color:#ff6b35">55% · 11/21 🔥</span></div>
+    <div style="margin-top:8px;font-size:11px;color:#f5a623;">⚠️ Haies = variance haute · Kelly × 0.25 recommandé</div>
+  </div>
+</div>
+
+<!-- TICKETS -->
+<div id="tab-tickets" class="tab-content">
+  <div class="stitle">🎟️ Pronostics · 10/04 · Vincennes</div>
+  <div class="today-card" style="border-color:#ff6b35;margin-bottom:14px;">
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+      <span style="color:#ff6b35;font-weight:700;">📋 Sélection Publique</span>
+      <span style="color:#888;font-size:11px;">10/04 · Attelé</span>
+    </div>
+    <div class="trow"><span class="lb">🐴 Sélection</span><span class="vl" style="color:#4fc3f7">10·9·13·15·11·12·14·4</span></div>
+    <div class="trow"><span class="lb">🎲 Outsiders</span><span class="vl" style="color:#f5a623">N°6 · N°5</span></div>
+    <div class="trow"><span class="lb">🎯 CDJ</span><span class="vl" style="color:#f5a623">R1 · N°206</span></div>
+    <div class="trow"><span class="lb">⚡ DM ⏳</span><span class="vl" style="color:#00c896">R1 · N°111</span></div>
+    <div class="trow"><span class="lb">🎟️ Tickets complets</span><span class="vl" style="color:#4fc3f7">🔒 VIP</span></div>
+  </div>
+  <div style="background:linear-gradient(135deg,#4fc3f711,#1a1a2e);border:2px solid #4fc3f7;border-radius:14px;padding:16px;text-align:center;">
+    <div style="font-size:13px;font-weight:700;color:#4fc3f7;margin-bottom:6px;">💎 Tickets C1·C2·D1·Quarté A+B·Quinté A+B</div>
+    <div style="font-size:11px;color:#555;margin-bottom:12px;">5€99/mois · 3 jours offerts</div>
+    <button class="btn bl" style="max-width:200px;margin:0 auto" onclick="sw('vip',document.querySelectorAll('.tab-btn')[2])">🔓 Accéder au VIP</button>
+  </div>
+</div>
+
+<div id="tab-dashboard" class="tab-content">
+  <div class="kpi-grid">
+    <div class="kpi-card green"><div class="val" id="k-total">-</div><div class="lbl">Courses</div></div>
+    <div class="kpi-card orange"><div class="val" id="k-roi">-</div><div class="lbl">ROI</div></div>
+    <div class="kpi-card blue"><div class="val" id="k-cdj">-</div><div class="lbl">CDJ %</div></div>
+    <div class="kpi-card" style="border-color:#b39ddb"><div class="val" id="k-pl" style="color:#b39ddb">-</div><div class="lbl">P&L (€)</div></div>
+    <div class="kpi-card green"><div class="val" id="k-c1">-</div><div class="lbl">C1 % placé</div></div>
+    <div class="kpi-card fire"><div class="val" id="k-serie">-</div><div class="lbl">Série CDJ 🔥</div></div>
+  </div>
+
+  <!-- BANKROLL -->
+  <div class="stitle">💰 Bankroll</div>
+  <div style="background:#1a1a2e;border:1px solid #ff6b3555;border-radius:12px;padding:14px;margin-bottom:14px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span style="color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Capital de départ</span>
+      <span style="color:#f5a623;font-weight:700;font-size:16px;">1 000.00€</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <span style="color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Bankroll actuelle</span>
+      <span id="bk-current" style="font-weight:700;font-size:18px;color:#00c896;">—</span>
+    </div>
+    <div style="background:#0d0d0d;border-radius:8px;height:10px;overflow:hidden;margin:10px 0;">
+      <div id="bk-bar" style="height:100%;border-radius:8px;background:linear-gradient(90deg,#ff6b35,#00c896);transition:width .6s ease;width:100%;"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:#555;margin-bottom:10px;">
+      <span>0€</span><span>500€</span><span>1 000€</span>
+    </div>
+    <div id="bk-box" style="font-size:12px;color:#aaa;border-top:1px solid #2a2a3e;padding-top:10px;">—</div>
+  </div>
+
+  <!-- TRANCHES PAR 10 -->
+  <div class="stitle">🎟️ Tickets par tranche de 10€</div>
+  <div id="tranche-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;"></div>
+</div>
+
+<!-- HISTORIQUE -->
+<div id="tab-historique" class="tab-content">
+  <div class="stitle">📋 Historique des Courses</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Date</th><th>Hippo</th><th>Disc.</th><th>CDJ</th><th>Pos.</th><th>Top5</th><th>Top3</th><th>Bilan</th></tr></thead>
+    <tbody id="hist-body"></tbody>
+  </table></div>
+</div>
+
+<!-- VIP -->
+<div id="tab-vip" class="tab-content">
+  <div id="vip-locked">
+    <div class="lock-screen">
+      <div style="font-size:50px;margin-bottom:12px">💎</div>
+      <h2 style="color:#4fc3f7;font-size:22px;margin-bottom:8px">Espace VIP</h2>
+      <p style="color:#888;font-size:13px;margin-bottom:6px">Accès réservé aux abonnés</p>
+      <p style="color:#ff6b35;font-size:22px;font-weight:900;margin-bottom:20px">5€99/mois</p>
+      <div class="pin-input-row" style="max-width:220px;margin:0 auto 16px">
+        <input type="password" id="pin-in" maxlength="4" placeholder="••••" inputmode="numeric" onkeyup="if(event.key==='Enter')checkPin()">
+      </div>
+      <button class="btn bl" style="max-width:220px;margin:0 auto" onclick="checkPin()">🔓 Accéder</button>
+      <div id="pin-err" style="color:#e94560;font-size:12px;margin-top:10px;min-height:16px"></div>
+      <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+      <div style="margin-top:20px;">
+        <stripe-buy-button
+          buy-button-id="buy_btn_1TJA2oLxF5p3oweGBIKsi0bd"
+          publishable-key="pk_live_51TFzkQLxF5p3oweGivzBB7Pun3jAtPjDstXlEK0HiuxQf7L0cDjWw3nYPqMls5MatQqeM8uILOlShbe6hhBkt37H00rQJHVv9o"
+        ></stripe-buy-button>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:#555;text-align:center;">✅ 3 jours offerts · 5€99/mois · Annulable à tout moment</div>
+    </div>
+  </div>
+  <div id="vip-content" style="display:none">
+    <div style="background:#4fc3f711;border:1px solid #4fc3f7;border-radius:10px;padding:12px;margin-bottom:14px;font-size:13px;color:#4fc3f7">
+      ✅ <b>Connecté VIP</b> <button onclick="logout()" style="background:none;border:none;color:#4fc3f7;cursor:pointer;font-size:12px;float:right">Déco.</button>
+    </div>
+
+    <!-- RÉCAP VIP -->
+    <div class="stitle">💎 Pronostic VIP · 09/04</div>
+    <div class="today-card" style="border-color:#4fc3f7">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span style="color:#4fc3f7;font-weight:700;font-size:15px">💎 VIP EXCLUSIF</span>
+        <span style="color:#f5a623;font-size:12px">09/04/2026</span>
+      </div>
+      <div class="trow"><span class="lb">🐴 C1 ⭐</span><span class="vl" style="color:#4fc3f7">N°3 · 20.00€</span></div>
+      <div class="trow"><span class="lb">🐴 C2</span><span class="vl" style="color:#4fc3f7">N°11 · 10.00€</span></div>
+      <div class="trow"><span class="lb">🔗 D1 Couplé</span><span class="vl" style="color:#4fc3f7">N°3+N°11 · 10.00€</span></div>
+      <div class="trow"><span class="lb">🎲 Quarté A</span><span class="vl" style="color:#b39ddb">N°3·11·8·5 · P1·P2·P3·P8</span></div>
+      <div class="trow"><span class="lb">🎲 Quarté B</span><span class="vl" style="color:#b39ddb">N°3·8·15·5 · P1·P3·P7·P8</span></div>
+      <div class="trow"><span class="lb">🏆 Quinté A</span><span class="vl" style="color:#7c3aed">N°3·11·8·15·5 · P1·P2·P3·P7·P8</span></div>
+      <div class="trow"><span class="lb">🏆 Quinté B</span><span class="vl" style="color:#7c3aed">N°3·8·13·14·5 · P1·P3·P4·P6·P8</span></div>
+      <div class="trow"><span class="lb">🎯 CDJ</span><span class="vl" style="color:#f5a623">R3 · N°210 · 20.00€</span></div>
+      <div class="trow"><span class="lb">⚡ DM ⏳</span><span class="vl" style="color:#00c896">R3 · N°602 · 10.00€</span></div>
+      <div class="trow"><span class="lb">🏟️ Course</span><span class="vl">R1C1 · Haies 3900m · Prix Oiseleur</span></div>
+      <div class="trow"><span class="lb">💰 Budget VIP</span><span class="vl or">70.00€</span></div>
+    </div>
+
+    <!-- TICKETS GRILLE -->
+    <div class="stitle" style="font-size:13px;">🎟️ Tickets VIP · 09/04</div>
+    <div class="tk-grid">
+      <div class="tk star" style="border-color:#4fc3f7"><div class="tc" style="color:#4fc3f7">C1 ⭐</div><div class="tt">Simple Placé</div><div class="thorse">🐴 N°<b>3</b></div><div class="tmise">20.00€</div></div>
+      <div class="tk" style="border-color:#4fc3f7"><div class="tc" style="color:#4fc3f7">C2</div><div class="tt">Simple Placé</div><div class="thorse">🐴 N°<b>11</b></div><div class="tmise">10.00€</div></div>
+      <div class="tk span2"><div class="tc">D1</div><div class="tt">Couplé Placé désordre</div><div class="thorse">🐴 N°<b>3</b>+N°<b>11</b></div><div class="tmise">10.00€</div></div>
+      <div class="tk span2" style="border-color:#b39ddb"><div class="tc" style="color:#b39ddb">Quarté A</div><div class="tt">P1·P2·P3·P8 · 4ch désordre</div><div class="thorse">🐴 N°<b>3 · 11 · 8 · 5</b></div><div class="tmise" style="color:#b39ddb">15.00€</div></div>
+      <div class="tk span2" style="border-color:#b39ddb"><div class="tc" style="color:#b39ddb">Quarté B</div><div class="tt">P1·P3·P7·P8 · couverture P7</div><div class="thorse">🐴 N°<b>3 · 8 · 15 · 5</b></div><div class="tmise" style="color:#b39ddb">15.00€</div></div>
+      <div class="tk span2" style="border-color:#7c3aed"><div class="tc" style="color:#7c3aed">Quinté A</div><div class="tt">P1·P2·P3·P7·P8 · 5ch désordre</div><div class="thorse">🐴 N°<b>3 · 11 · 8 · 15 · 5</b></div><div class="tmise" style="color:#7c3aed">Inclus A</div></div>
+      <div class="tk span2" style="border-color:#7c3aed"><div class="tc" style="color:#7c3aed">Quinté B</div><div class="tt">P1·P3·P4·P6·P8 · couverture étendue</div><div class="thorse">🐴 N°<b>3 · 8 · 13 · 14 · 5</b></div><div class="tmise" style="color:#7c3aed">Inclus B</div></div>
+    </div>
+    <div class="ibox" style="text-align:center;margin-top:4px;font-size:11px;">
+      💰 Budget : <b class="or">70€</b> · <span style="color:#b39ddb">2 Quartés · </span><span style="color:#7c3aed">2 Quintés · </span><span style="color:#4fc3f7">C1·C2·D1</span>
+    </div>
+
+    <!-- TICKET AI -->
+    <div class="stitle" style="font-size:13px;margin-top:16px;">🤖 Ticket IA · 09/04 · Haies</div>
+    <div style="background:linear-gradient(135deg,#0d0d1a,#1a1a2e);border:2px solid #ff6b3555;border-radius:14px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;right:0;background:linear-gradient(135deg,#ff6b35,#e94560);color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:0 14px 0 10px;letter-spacing:1px;">IA · ALGO</div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;">
+        <div style="background:#ff6b3522;border:1px solid #ff6b3555;border-radius:8px;padding:6px;text-align:center;">
+          <div style="font-size:14px;font-weight:700;color:#ff6b35">81%</div><div style="font-size:9px;color:#888">P1=N°3</div>
+        </div>
+        <div style="background:#b39ddb22;border:1px solid #b39ddb55;border-radius:8px;padding:6px;text-align:center;">
+          <div style="font-size:14px;font-weight:700;color:#b39ddb">52%</div><div style="font-size:9px;color:#888">P8=N°5</div>
+        </div>
+        <div style="background:#4fc3f722;border:1px solid #4fc3f755;border-radius:8px;padding:6px;text-align:center;">
+          <div style="font-size:14px;font-weight:700;color:#4fc3f7">48%</div><div style="font-size:9px;color:#888">P7=N°15</div>
+        </div>
+        <div style="background:#00c89622;border:1px solid #00c89655;border-radius:8px;padding:6px;text-align:center;">
+          <div style="font-size:14px;font-weight:700;color:#00c896">52%</div><div style="font-size:9px;color:#888">P3=N°8</div>
+        </div>
+      </div>
+
+      <div style="font-size:11px;color:#888;margin-bottom:6px;text-transform:uppercase;">🎯 Recommandations IA · 21 courses</div>
+      <div style="background:#ff6b3511;border-left:3px solid #ff6b35;border-radius:0 8px 8px 0;padding:10px;margin-bottom:5px;font-size:12px;">
+        <b style="color:#ff6b35">Quarté A</b> · P1·P2·P3·P8 → <span style="color:#fff">N°3 · 11 · 8 · 5</span> <span style="color:#888;font-size:10px;">Score 70pts</span>
+      </div>
+      <div style="background:#e9456011;border-left:3px solid #e94560;border-radius:0 8px 8px 0;padding:10px;margin-bottom:5px;font-size:12px;">
+        <b style="color:#e94560">Quarté B</b> · P1·P3·P7·P8 → <span style="color:#fff">N°3 · 8 · 15 · 5</span> <span style="color:#888;font-size:10px;">Score 67pts</span>
+      </div>
+      <div style="background:#7c3aed11;border-left:3px solid #7c3aed;border-radius:0 8px 8px 0;padding:10px;margin-bottom:5px;font-size:12px;">
+        <b style="color:#7c3aed">Quinté A</b> · P1·P2·P3·P7·P8 → <span style="color:#fff">N°3 · 11 · 8 · 15 · 5</span> <span style="color:#888;font-size:10px;">Score 42pts</span>
+      </div>
+      <div style="background:#b39ddb11;border-left:3px solid #b39ddb;border-radius:0 8px 8px 0;padding:10px;margin-bottom:10px;font-size:12px;">
+        <b style="color:#b39ddb">Quinté B</b> · P1·P3·P4·P6·P8 → <span style="color:#fff">N°3 · 8 · 13 · 14 · 5</span> <span style="color:#888;font-size:10px;">Score 41pts</span>
+      </div>
+
+      <div style="background:#f5a62311;border:1px solid #f5a62333;border-radius:8px;padding:8px;margin-bottom:10px;font-size:11px;color:#f5a623;">
+        ⚠️ Haies 3900m · Variance élevée · N°5 (P8) incontournable · Outsiders N°7·N°9
+      </div>
+
+      <div style="font-size:11px;color:#888;margin-bottom:4px;">Confiance globale :</div>
+      <div style="background:#2a2a3e;border-radius:6px;height:8px;overflow:hidden;margin-bottom:4px;">
+        <div style="height:100%;width:75%;background:linear-gradient(90deg,#ff6b35,#f5a623);border-radius:6px;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:#555;">
+        <span>0%</span><span style="color:#f5a623;font-weight:700;">75% · Expert ⭐</span><span>100%</span>
+      </div>
+    </div>
+  </div><!-- fin vip-content -->
+</div><!-- fin tab-vip -->
+
+<!-- PARTAGE -->
+<div id="tab-partage" class="tab-content">
+  <div class="stitle">📤 Partage · 09/04</div>
+  <div style="font-size:12px;color:#888;margin-bottom:8px;font-weight:700;text-transform:uppercase">📣 Carte Publique</div>
+  <div class="share-card">
+    <div style="text-align:center;margin-bottom:12px">
+      <div style="font-size:11px;color:#aaa">🏇 PRONOTURF PRO · 09/04/2026</div>
+      <div style="font-size:16px;font-weight:700;color:#ff6b35">🏆 Haies · Prix Oiseleur 3900m</div>
+    </div>
+    <div class="share-row"><span class="slb">🏟️ Course</span><span class="svl">R1C1 · Haies · Prix Oiseleur</span></div>
+    <div class="share-row"><span class="slb">🐴 Sélection</span><span class="svl" style="font-size:12px">3-11-8-13-10-14-15-5</span></div>
+    <div class="share-row"><span class="slb">🎲 Outsiders</span><span class="svl" style="color:#f5a623">N°7 · N°9</span></div>
+    <div class="share-row"><span class="slb">🎯 CDJ</span><span class="svl" style="color:#f5a623">R3 · N°210</span></div>
+    <div class="share-row"><span class="slb">⚡ DM ⏳</span><span class="svl" style="color:#00c896">R3 · N°602</span></div>
+    <div style="margin-top:10px;padding:10px;background:#4fc3f711;border-radius:8px;text-align:center;font-size:12px;color:#4fc3f7">
+      💎 Tickets C1·C2·D1·Quarté A+B·Quinté A+B dans le VIP · <b>5€99/mois</b>
+    </div>
+  </div>
+  <div class="share-btns" style="margin-bottom:24px">
+    <button class="share-btn wa" onclick="shareWA('free')">📱 WhatsApp</button>
+    <button class="share-btn cp" onclick="copyText('free')">📋 Copier</button>
+  </div>
+
+  <!-- RÉSEAUX SOCIAUX -->
+  <div class="stitle" style="font-size:13px;">🌐 Nos Réseaux</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+    <a href="https://www.facebook.com/profile.php?id=61582853518286" target="_blank" style="background:#1877F2;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">📘</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Facebook</div><div style="color:rgba(255,255,255,.7);font-size:10px;">Page publique</div></div>
+    </a>
+    <a href="https://chat.whatsapp.com/GOx17Gz6ybO26x70bdnX4t?mode=gi_t" target="_blank" style="background:#25D366;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">💬</span><div><div style="color:#fff;font-weight:700;font-size:12px;">WhatsApp</div><div style="color:rgba(255,255,255,.7);font-size:10px;">Groupe public</div></div>
+    </a>
+    <a href="https://t.me/+Y1GWodzG4zJmNTM0" target="_blank" style="background:#0088cc;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">✈️</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Telegram</div><div style="color:rgba(255,255,255,.7);font-size:10px;">Canal public</div></div>
+    </a>
+    <a href="https://www.instagram.com/zoneparionsport" target="_blank" style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">📸</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Instagram</div><div style="color:rgba(255,255,255,.7);font-size:10px;">@zoneparionsport</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="tab-admin" class="tab-content">
+  <div id="admin-locked-screen">
+    <div class="lock-screen">
+      <div style="font-size:40px;margin-bottom:10px">⚙️</div>
+      <h2 style="color:#ff6b35">Zone Admin</h2>
+      <p style="color:#888;font-size:12px;margin-bottom:16px">Connexion par Magic Link</p>
+      <div id="admin-step1">
+        <div class="form-group" style="max-width:280px;margin:0 auto 12px;">
+          <label>Email admin</label>
+          <input type="email" id="admin-email-in" placeholder="Votre email admin" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:14px;width:100%;" onkeyup="if(event.key==='Enter')sendMagicLink()">
+        </div>
+        <button class="btn" style="max-width:280px;margin:0 auto" onclick="sendMagicLink()">📧 Envoyer Magic Link</button>
+        <div id="admin-email-err" style="color:#e94560;font-size:12px;margin-top:8px;text-align:center;min-height:16px;"></div>
+      </div>
+      <div id="admin-step2" style="display:none;">
+        <div style="background:#00c89611;border:1px solid #00c896;border-radius:10px;padding:10px;margin-bottom:12px;font-size:12px;color:#00c896;text-align:center;">
+          ✅ Code envoyé sur <b id="admin-email-sent"></b>
+        </div>
+        <div class="form-group" style="max-width:240px;margin:0 auto 10px;">
+          <label>Code reçu</label>
+          <input type="text" id="admin-code-in" maxlength="8" placeholder="CODE8CHR" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:18px;width:100%;text-align:center;letter-spacing:4px;text-transform:uppercase;" onkeyup="if(event.key==='Enter')verifyMagicCode()">
+        </div>
+        <button class="btn bl" style="max-width:240px;margin:0 auto" onclick="verifyMagicCode()">🔓 Accéder</button>
+        <div id="admin-code-err" style="color:#e94560;font-size:12px;margin-top:8px;text-align:center;"></div>
+      </div>
+      <div style="margin-top:16px;border-top:1px solid #1a1a1a;padding-top:12px;">
+        <button onclick="document.getElementById('pin-fallback').style.display=document.getElementById('pin-fallback').style.display==='none'?'block':'none'" style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;">PIN urgence</button>
+        <div id="pin-fallback" style="display:none;margin-top:8px;">
+          <div class="pin-input-row" style="max-width:160px;margin:0 auto 8px">
+            <input type="password" id="admin-pin-in" maxlength="4" placeholder="••••" onkeyup="if(event.key==='Enter')checkAdminPin()">
+          </div>
+          <button class="btn gr" style="max-width:160px;margin:0 auto;font-size:12px;" onclick="checkAdminPin()">🔓 PIN</button>
+        </div>
+      </div>
+      <div id="admin-pin-err" style="color:#e94560;font-size:12px;margin-top:6px;text-align:center;"></div>
+    </div>
+  </div>
+  <div id="admin-content" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div class="stitle" style="margin:0">⚙️ Administration</div>
+      <button onclick="logoutAdmin()" style="background:none;border:1px solid #ff6b35;color:#ff6b35;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:11px">Déco.</button>
+    </div>
+    <div class="stitle">🔑 Code PIN VIP</div>
+    <div class="ibox">
+      <div class="form-group" style="margin-bottom:0"><label>Code PIN (5€99/mois)</label>
+        <div class="pin-input-row"><input type="text" id="set-vip" maxlength="4" placeholder="1234"></div>
+      </div>
+      <button class="btn bl" style="margin-top:12px" onclick="savePins()">💾 Sauvegarder</button>
+    </div>
+    <button class="btn gr" onclick="exportJ()">📤 Exporter JSON</button>
+    
+    <!-- GESTION ABONNÉS -->
+    <div class="stitle" style="margin-top:14px;">👥 Gestion Abonnés</div>
+    <div class="ibox" style="padding:12px;">
+      <div class="form-group"><label>Email abonné</label>
+        <input type="email" id="ab-email" placeholder="email@exemple.fr" style="background:#0d0d0d;border:1px solid #333;border-radius:6px;color:#f0f0f0;padding:8px;font-size:13px;width:100%;">
+      </div>
+      <button class="btn bl" onclick="genererPinAbonne()">🎲 Générer PIN + Email</button>
+      <div id="ab-result" style="margin-top:8px;font-size:12px;min-height:16px;"></div>
+      <div style="border-top:1px solid #2a2a3e;margin-top:12px;padding-top:10px;">
+        <div style="font-size:11px;color:#888;margin-bottom:6px;">PINs actifs :</div>
+        <div id="ab-list"></div>
+        <button class="btn gr" style="margin-top:6px;font-size:11px;" onclick="afficherPins()">🔄 Actualiser</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD ABONNÉS -->
+    <div class="stitle" style="margin-top:16px;">👥 Abonnés en temps réel</div>
+    <div class="form-group">
+      <label>Mot de passe admin API</label>
+      <input type="password" id="admin-api-pwd" placeholder="pronoturf2026" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:14px;width:100%;">
+    </div>
+    <button class="btn bl" style="margin-top:0" onclick="loadAbonnes()">🔄 Charger les abonnés</button>
+    <div id="abonnes-stats" style="display:none;margin-top:12px;">
+      <div class="kpi-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:12px;">
+        <div class="kpi-card green"><div class="val" id="ab-actifs" style="font-size:22px;">-</div><div class="lbl">Actifs</div></div>
+        <div class="kpi-card fire"><div class="val" id="ab-mrr" style="font-size:22px;">-</div><div class="lbl">MRR €</div></div>
+        <div class="kpi-card" style="border-color:#e94560"><div class="val" id="ab-annules" style="font-size:22px;color:#e94560;">-</div><div class="lbl">Annulés</div></div>
+        <div class="kpi-card orange"><div class="val" id="ab-total" style="font-size:22px;">-</div><div class="lbl">Total</div></div>
+      </div>
+      <div class="table-wrap">
+        <table style="min-width:400px;">
+          <thead><tr><th>Email</th><th>PIN</th><th>Statut</th><th>Fin</th></tr></thead>
+          <tbody id="ab-table"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="abonnes-err" style="color:#e94560;font-size:12px;margin-top:8px;"></div>
+  </div>
+</div>
+
+<!-- SAISIE -->
+<div id="tab-saisie" class="tab-content">
+  <div class="stitle">➕ Saisir résultats</div>
+  <div class="form-group"><label>Date</label><input type="date" id="f-date"></div>
+  <div class="form-group"><label>Hippodrome</label><input type="text" id="f-hippo"></div>
+  <div class="form-group"><label>Discipline</label><select id="f-disc"><option>Attelé</option><option>Haies</option><option>Trot</option><option>Plat</option><option>Steeple</option></select></div>
+  <div class="form-group"><label>CDJ</label><input type="text" id="f-cdj"></div>
+  <div class="form-group"><label>DM</label><input type="text" id="f-dm"></div>
+  <div class="form-group"><label>Mise Globale (€)</label><input type="number" id="f-mise" value="100.0"></div>
+  <div class="form-group"><label>Arrivée Quinté</label><input type="text" id="f-arr"></div>
+  <div class="form-group"><label>Top5 couverts</label><input type="text" id="f-top5"></div>
+  <div class="form-group"><label>CDJ Résultat</label><select id="f-cdj-res"><option value="WIN">✅ WIN</option><option value="LOSS">❌ LOSS</option></select></div>
+  <div class="form-group"><label>DM Résultat</label><select id="f-dm-res"><option value="—">—</option><option value="WIN">✅ WIN</option><option value="LOSS">❌ LOSS</option></select></div>
+  <div class="form-group"><label>Tickets gagnés</label><input type="text" id="f-tck"></div>
+  <div class="form-group"><label>Retour total (€)</label><input type="number" id="f-retour" step="0.1"></div>
+  <button class="btn" onclick="addCourse()">💾 Enregistrer</button>
+</div>
+
+<!-- PERF -->
+<div id="tab-perf" class="tab-content">
+  <div class="stitle">⭐ Bilan Réel · 19/03 → 09/04 · 17 courses jouées</div>
+
+  <!-- KPI PERF -->
+  <div class="kpi-grid">
+    <div class="kpi-card green"><div class="val">14/17</div><div class="lbl">CDJ Wins</div></div>
+    <div class="kpi-card fire"><div class="val">82.4%</div><div class="lbl">Taux CDJ</div></div>
+    <div class="kpi-card blue"><div class="val">15/17</div><div class="lbl">Top5 Sél.</div></div>
+    <div class="kpi-card orange"><div class="val">3 🎉</div><div class="lbl">Quartés Pleins</div></div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card" style="border-color:#b39ddb"><div class="val" style="color:#b39ddb">+124€</div><div class="lbl">P&L Total</div></div>
+    <div class="kpi-card green"><div class="val">325€</div><div class="lbl">Retours</div></div>
+    <div class="kpi-card blue"><div class="val">204€</div><div class="lbl">Mises</div></div>
+    <div class="kpi-card fire"><div class="val">60.8%</div><div class="lbl">ROI 🔥</div></div>
+  </div>
+
+  <!-- NIVEAU -->
+  <div style="background:linear-gradient(135deg,#ff6b35,#e94560);border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;">
+    <div style="font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Niveau CDJ Atteint</div>
+    <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:2px;">EXPERT ⭐⭐⭐⭐⭐</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.8);margin-top:4px;">82.4% CDJ · 15/17 Top5 · P&L +124€ · ROI 60.8%</div>
+    <div style="margin-top:10px;background:rgba(0,0,0,.2);border-radius:8px;height:8px;overflow:hidden;">
+      <div style="width:80%;height:100%;background:#fff;border-radius:8px;"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.5);margin-top:4px;"><span>0%</span><span>Expert 80%+</span><span>100%</span></div>
+  </div>
+
+  <!-- TABLEAU PAR JOUR -->
+  <div class="stitle" style="font-size:13px;">📋 Détail 17 Courses jouées</div>
+  <div class="table-wrap"><table style="min-width:400px;">
+    <thead><tr><th>Date</th><th>Hippo</th><th>Top5</th><th>CDJ</th><th>Retour</th><th>P&L</th></tr></thead>
+    <tbody>
+      <tr><td><b>19/03</b></td><td>Vincennes</td><td><span class="badge win">4/5</span></td><td><span class="badge win">1er ✅</span></td><td>18.5€</td><td style="color:#00c896">+6.5€</td></tr>
+      <tr style="background:#f5a62308"><td><b>20/03</b></td><td>Vincennes</td><td><span class="badge win">5/5</span></td><td><span class="badge win">1er ✅</span></td><td>42€</td><td style="color:#00c896;font-weight:700">+30€ 🎉</td></tr>
+      <tr style="background:#f5a62308"><td><b>21/03</b></td><td>Cagnes</td><td><span class="badge win">4/5</span></td><td><span class="badge win">2e ✅</span></td><td>28€</td><td style="color:#00c896;font-weight:700">+16€ 🎉</td></tr>
+      <tr><td><b>22/03</b></td><td>Compiègne</td><td><span class="badge win">4/5</span></td><td><span class="badge win">2e ✅</span></td><td>14€</td><td style="color:#00c896">+2€</td></tr>
+      <tr><td><b>23/03</b></td><td>Vincennes</td><td><span class="badge win">4/5</span></td><td><span class="badge win">2e ✅</span></td><td>12€</td><td style="color:#888">0€</td></tr>
+      <tr style="background:#e9456008"><td><b>24/03</b></td><td>Chantilly</td><td><span class="badge loss">3/5</span></td><td><span class="badge loss">❌</span></td><td>0€</td><td style="color:#e94560;font-weight:700">-12€ ❌</td></tr>
+      <tr style="background:#f5a62308"><td><b>25/03</b></td><td>Vincennes</td><td><span class="badge win">5/5</span></td><td><span class="badge win">1er ✅</span></td><td>56€</td><td style="color:#00c896;font-weight:700">+44€ 🎉</td></tr>
+      <tr><td><b>26/03</b></td><td>Lyon</td><td><span class="badge win">4/5</span></td><td><span class="badge win">1er ✅</span></td><td>16€</td><td style="color:#00c896">+4€</td></tr>
+      <tr><td><b>27/03</b></td><td>Vincennes</td><td><span class="badge win">5/5</span></td><td><span class="badge win">1er ✅</span></td><td>22€</td><td style="color:#00c896">+10€</td></tr>
+      <tr><td><b>28/03</b></td><td>Deauville</td><td><span class="badge win">5/5</span></td><td><span class="badge win">1er ✅</span></td><td>19€</td><td style="color:#00c896">+7€</td></tr>
+      <tr><td><b>29/03</b></td><td>Saint-Cloud</td><td><span class="badge win">4/5</span></td><td><span class="badge win">2e ✅</span></td><td>13€</td><td style="color:#00c896">+1€</td></tr>
+      <tr><td><b>30/03</b></td><td>Chantilly</td><td><span class="badge win">4/5</span></td><td><span class="badge win">1er ✅</span></td><td>15.5€</td><td style="color:#00c896">+3.5€</td></tr>
+      <tr style="background:#e9456008"><td><b>31/03</b></td><td>Fontaineb.</td><td><span class="badge win">4/5</span></td><td><span class="badge loss">❌</span></td><td>16€</td><td style="color:#00c896">+4€</td></tr>
+      <tr><td><b>01/04</b></td><td>Angers</td><td><span class="badge win">5/5</span></td><td><span class="badge win">1er ✅</span></td><td>28€</td><td style="color:#00c896">+19€</td></tr>
+      <tr style="background:#f5a62308"><td><b>04/04</b></td><td>Vincennes</td><td><span class="badge win">5/5</span></td><td><span class="badge loss">❌</span></td><td>45€</td><td style="color:#00c896;font-weight:700">+33€ 🏆</td></tr>
+      <tr style="background:#e9456008"><td><b>05/04</b></td><td>Longchamp</td><td><span class="badge loss">3/5</span></td><td><span class="badge loss">❌</span></td><td>9€</td><td style="color:#e94560">-3€</td></tr>
+      <tr><td><b>06/04</b></td><td>Compiègne</td><td><span class="badge win">4/5</span></td><td><span class="badge win">✅</span></td><td>7.3€</td><td style="color:#e94560">-4.7€</td></tr>
+      <tr style="background:#e9456008"><td><b>07/04</b></td><td>Plat R1C1</td><td><span class="badge win">4/5</span></td><td><span class="badge win">✅</span></td><td>2.5€</td><td style="color:#e94560">-9.5€</td></tr>
+      <tr style="background:#e9456008"><td><b>08/04</b></td><td>Lyon-Parilly</td><td><span class="badge win">4/5</span></td><td><span class="badge win">✅</span></td><td>3.1€</td><td style="color:#e94560">-8.9€</td></tr>
+      <tr style="background:#e9456008"><td><b>09/04</b></td><td>Prix Oiseleur</td><td><span class="badge win">3/5</span></td><td><span class="badge win">✅</span></td><td>1.7€</td><td style="color:#e94560">-10.3€</td></tr>
+    </tbody>
+  </table></div>
+    </tbody>
+  </table></div>
+
+  <!-- GRAPHIQUE CDJ CUMULÉ -->
+  <div class="stitle" style="font-size:13px;margin-top:16px;">📈 Taux CDJ Cumulé</div>
+  <div style="background:#1a1a2e;border:1px solid #333;border-radius:12px;padding:14px;margin-bottom:14px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-around;height:90px;gap:3px;">
+      <!-- J1→J12 hauteurs proportionnelles au taux CDJ cumulé -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#00c896;">100%</div>
+        <div style="width:100%;height:90px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">20/3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#00c896;">100%</div>
+        <div style="width:100%;height:90px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">21/3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#00c896;">100%</div>
+        <div style="width:100%;height:90px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">22/3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#00c896;">100%</div>
+        <div style="width:100%;height:90px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">23/3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#f5a623;">80%</div>
+        <div style="width:100%;height:72px;background:linear-gradient(180deg,#f5a623,#ff6b35);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">24/3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#00c896;">83%</div>
+        <div style="width:100%;height:75px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">25/3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#00c896;">86%</div>
+        <div style="width:100%;height:77px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">26/3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#00c896;">88%</div>
+        <div style="width:100%;height:79px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">27/3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#00c896;">89%</div>
+        <div style="width:100%;height:80px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">28/3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#00c896;">90%</div>
+        <div style="width:100%;height:81px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">29/3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#00c896;">91%</div>
+        <div style="width:100%;height:82px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">30/3</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:8px;color:#f5a623;">83%</div>
+        <div style="width:100%;height:75px;background:linear-gradient(180deg,#f5a623,#ff6b35);border-radius:3px 3px 0 0;"></div>
+        <div style="font-size:8px;color:#aaa;">31/3</div>
+      </div>
+    </div>
+    <div style="border-top:1px solid #2a2a3e;margin-top:8px;padding-top:5px;display:flex;justify-content:center;gap:16px;font-size:10px;">
+      <span style="color:#00c896;">■ WIN CDJ</span>
+      <span style="color:#f5a623;">■ LOSS CDJ</span>
+    </div>
+  </div>
+
+  <!-- STATS CLÉS -->
+  <div class="stitle" style="font-size:13px;">🏆 Points Forts Confirmés</div>
+  <div class="ibox" style="padding:10px 12px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:#f5a62311;border-left:3px solid #f5a623;padding:8px;border-radius:6px;font-size:11px;"><b>🎉 3 Quartés Pleins</b><br><span style="color:#aaa">20/03 · 21/03 · 25/03</span></div>
+      <div style="background:#00c89611;border-left:3px solid #00c896;padding:8px;border-radius:6px;font-size:11px;"><b>✅ 14/16 Gagnant sél.</b><br><span style="color:#aaa">87.5% — seules 24/03 et 05/04 hors sél.</span></div>
+      <div style="background:#00c89611;border-left:3px solid #00c896;padding:8px;border-radius:6px;font-size:11px;"><b>🥇 8 CDJ à la 1ère place</b><br><span style="color:#aaa">19 · 20 · 25 · 26 · 27 · 28 · 30/03 · 01/04</span></div>
+      <div style="background:#f5a62311;border-left:3px solid #f5a623;padding:8px;border-radius:6px;font-size:11px;"><b>🏆 04/04 QUARTÉ ORDRE</b><br><span style="color:#aaa">5/5 en ordre · Retour +33€</span></div>
+      <div style="background:#00c89611;border-left:3px solid #00c896;padding:8px;border-radius:6px;font-size:11px;"><b>💰 ROI +82.1%</b><br><span style="color:#aaa">201€ misés → 354€ retours</span></div>
+      <div style="background:#e9456011;border-left:3px solid #e94560;padding:8px;border-radius:6px;font-size:11px;"><b>⚠️ 3 LOSS CDJ</b><br><span style="color:#aaa">24/03 · 31/03 · 04/04 · 05/04</span></div>
+    </div>
+  </div>
+
+  <!-- OBJECTIFS SUITE -->
+  <div class="stitle" style="font-size:13px;">🎯 Objectifs Avril</div>
+  <div class="dmbox" style="font-size:12px;line-height:2;">
+    🏆 Maintenir CDJ 80%+ (80% — seuil Expert ✅)<br>
+    🎉 Viser un 4ème Quarté Plein<br>
+    💎 Bonus3 : continuer à couvrir le Top3<br>
+    📈 ROI +82.1% → objectif +100%<br>
+    🏇 Compiègne 06/04 : Steeple résultats ⏳
+  </div>
+
+  <!-- ECHELLE NIVEAUX -->
+  <div class="stitle" style="font-size:13px;">📊 Niveau CDJ</div>
+  <div class="ibox" style="padding:10px;">
+    <div style="padding:7px 10px;border-left:3px solid #ffd700;font-size:12px;color:#ffd700;margin-bottom:4px;">Expert · 80–100% · ← TU ES ICI (80%) ✅</div>
+    <div style="padding:7px 10px;border-left:3px solid #ff6b35;font-size:12px;color:#ff6b35;font-weight:700;background:#ff6b3511;border-radius:0 6px 6px 0;margin-bottom:4px;">Très Avancé · 70–80%</div>
+    <div style="padding:7px 10px;border-left:3px solid #00c896;font-size:12px;color:#00c896;margin-bottom:4px;">Avancé · 60–70%</div>
+    <div style="padding:7px 10px;border-left:3px solid #555;font-size:12px;color:#555;">Intermédiaire · &lt;60%</div>
+  </div>
+</div>
+
+<!-- CALC -->
+<div id="tab-calc" class="tab-content">
+  <div class="stitle">🧮 Calculateur Paris Pro</div>
+
+  <!-- SOUS-ONGLETS CALC -->
+  <div style="display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;">
+    <button id="ctab-analyse" class="ctab active" onclick="swCalc('analyse',this)">🎯 Analyse</button>
+    <button id="ctab-comb" class="ctab" onclick="swCalc('comb',this)">🎲 Combinaisons</button>
+    <button id="ctab-roi" class="ctab" onclick="swCalc('roi',this)">📈 ROI</button>
+    <button id="ctab-kelly" class="ctab" onclick="swCalc('kelly',this)">💎 Kelly</button>
+  </div>
+
+  <!-- ANALYSE PRONOSTIC -->
+  <div id="cc-analyse" class="cc-panel active">
+    <div class="ibox" style="border-color:#667eea55;font-size:12px;color:#aaa;">
+      💡 Entrez votre pronostic — le calculateur génère les formules optimales selon votre budget et stratégie.
+    </div>
+    <div class="form-group"><label>🏇 Nom de la course</label><input type="text" id="c-course" value="Quinté+ du 06/04/2026 · Compiègne"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label>Type de course</label>
+        <select id="c-type" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
+          <option value="quinte">Quinté+</option><option value="quarte">Quarté+</option><option value="tierce">Tiercé</option>
+        </select>
+      </div>
+      <div class="form-group"><label>💰 Budget (€)</label><input type="number" id="c-budget" value="50" min="5"></div>
+    </div>
+    <div class="form-group"><label>🏆 Pronostic (ex: 1-6-4-14-7-11-2-3)</label><input type="text" id="c-prono" value="1-6-4-14-7-11-2-3" placeholder="séparés par tirets"></div>
+    <div class="form-group"><label>⚡ Outsiders (optionnel, ex: 13-12)</label><input type="text" id="c-out" value="13-12" placeholder="séparés par tirets"></div>
+    <div class="form-group"><label>⭐ Cheval du Jour (numéro)</label><input type="number" id="c-cdj" value="" min="1" placeholder="optionnel"></div>
+    <div class="form-group"><label>📊 Stratégie</label>
+      <select id="c-strat" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
+        <option value="securite">🛡️ Sécurité — Favoriser les bases</option>
+        <option value="equilibre" selected>⚖️ Équilibré — Mix bases/outsiders</option>
+        <option value="value">💎 Value — Exploiter les cotes</option>
+        <option value="audace">⚔️ Audacieux — Gros rapports</option>
+      </select>
+    </div>
+    <button class="btn" onclick="analyzeProno()">🔍 Générer les Formules</button>
+    <div id="c-result-analyse" style="margin-top:14px;"></div>
+  </div>
+
+  <!-- COMBINAISONS -->
+  <div id="cc-comb" class="cc-panel">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label>Type de pari</label>
+        <select id="cb-type" onchange="calcComb()" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
+          <option value="tierce">Tiercé (3)</option><option value="quarte">Quarté (4)</option>
+          <option value="quinte">Quinté (5)</option><option value="multi4">Multi 4</option>
+          <option value="multi5">Multi 5</option><option value="multi6">Multi 6</option>
+          <option value="multi7">Multi 7</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Nb chevaux sélectionnés</label><input type="number" id="cb-nb" min="3" max="20" value="8" oninput="calcComb()"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label>Mise unitaire (€)</label><input type="number" id="cb-mise" min="0.1" step="0.1" value="1" oninput="calcComb()"></div>
+      <div class="form-group"><label>Ordre</label>
+        <select id="cb-ordre" onchange="calcComb()" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
+          <option value="desordre">Désordre</option><option value="ordre">Ordre</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" onclick="calcComb()">🔢 Calculer</button>
+    <div id="c-result-comb" style="margin-top:14px;"></div>
+
+    <div class="stitle" style="font-size:13px;margin-top:16px;">📋 Table de Référence</div>
+    <div class="table-wrap"><table style="min-width:320px;">
+      <thead><tr><th>Type</th><th>Chevaux</th><th>Combin.</th><th>Coût 1€</th></tr></thead>
+      <tbody id="cb-table"></tbody>
+    </table></div>
+  </div>
+
+  <!-- ROI -->
+  <div id="cc-roi" class="cc-panel">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label>Total misé (€)</label><input type="number" id="roi-mise" min="0" value="201" oninput="calcROI()"></div>
+      <div class="form-group"><label>Total gains (€)</label><input type="number" id="roi-gains" min="0" value="354" oninput="calcROI()"></div>
+    </div>
+    <div class="form-group"><label>Nombre de courses</label><input type="number" id="roi-nb" min="1" value="16" oninput="calcROI()"></div>
+    <button class="btn" onclick="calcROI()">📊 Calculer ROI</button>
+    <div id="c-result-roi" style="margin-top:14px;"></div>
+    <div class="ibox" style="margin-top:12px;font-size:12px;">
+      <b style="color:#ff6b35;">Références Pro :</b><br>
+      🔴 &lt;0% · Débutant<br>
+      🟡 0–10% · Intermédiaire<br>
+      🟢 10–20% · Avancé<br>
+      ⭐ &gt;20% · Expert
+    </div>
+  </div>
+
+  <!-- KELLY -->
+  <div id="cc-kelly" class="cc-panel">
+    <div class="ibox" style="border-color:#00c89655;font-size:12px;color:#aaa;">
+      💡 Le critère de Kelly calcule la mise optimale selon votre edge et vos cotes. Kelly fractionné recommandé (×0.25).
+    </div>
+    <div class="form-group"><label>🎯 Cote proposée (ex: 3.5)</label><input type="number" id="k-cote" step="0.1" value="3.5" min="1.01" oninput="calcKelly()"></div>
+    <div class="form-group"><label>📊 Probabilité estimée % (ex: 35)</label><input type="number" id="k-prob" step="0.1" value="35" min="1" max="99" oninput="calcKelly()"></div>
+    <div class="form-group"><label>💰 Bankroll totale (€)</label><input type="number" id="k-bk" value="1000" min="1" oninput="calcKelly()"></div>
+    <div class="form-group"><label>⚙️ Fraction Kelly</label>
+      <select id="k-frac" onchange="calcKelly()" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
+        <option value="1">Kelly Plein (risqué)</option>
+        <option value="0.5">Kelly ½</option>
+        <option value="0.25" selected>Kelly ¼ (recommandé)</option>
+        <option value="0.1">Kelly 1/10 (très conservateur)</option>
+      </select>
+    </div>
+    <button class="btn" onclick="calcKelly()">💎 Calculer Mise Kelly</button>
+    <div id="c-result-kelly" style="margin-top:14px;"></div>
+  </div>
+</div>
+
+<!-- PMU -->
+<div id="tab-pmu" class="tab-content">
+  <div class="stitle">📋 Règles PMU · Nos Mises</div>
+
+  <!-- RÉCAP MISES -->
+  <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #ff6b35;border-radius:14px;padding:16px;margin-bottom:16px;">
+    <div style="font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">💰 Récapitulatif Tickets VIP · Budget 100€</div>
+    <div class="trow"><span class="lb">⭐ C1 · Simple Placé</span><span class="vl" style="color:#f5a623">20.00€</span></div>
+    <div class="trow"><span class="lb">C2 · Simple Placé</span><span class="vl" style="color:#f5a623">10.00€</span></div>
+    <div class="trow"><span class="lb">D1 · Couplé Placé désordre</span><span class="vl" style="color:#f5a623">10.00€</span></div>
+    <div class="trow"><span class="lb">E · Quarté 4ch désordre</span><span class="vl" style="color:#f5a623">30.00€</span></div>
+    <div class="trow"><span class="lb">🎯 CDJ · Simple Gagnant</span><span class="vl" style="color:#ff6b35">20.00€</span></div>
+    <div class="trow"><span class="lb">⚡ DM · Simple Placé Top3</span><span class="vl" style="color:#00c896">10.00€</span></div>
+    <div style="border-top:2px solid #ff6b3555;margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-weight:700;font-size:14px;">💰 TOTAL</span>
+      <span style="font-size:22px;font-weight:900;color:#f5a623;">100.00€</span>
+    </div>
+    <div style="font-size:11px;color:#555;margin-top:6px;text-align:center;">Mise minimum PMU : 1.50€ par pari</div>
+  </div>
+
+  <!-- RÈGLES PMU par type de pari -->
+  <div class="stitle" style="font-size:13px;">🏇 Simple Gagnant</div>
+  <div class="analyse-box" style="margin-bottom:12px;">
+    <div class="a-row"><span class="a-lbl">Objectif</span><span class="a-val">Trouver le cheval 1er</span></div>
+    <div class="a-row"><span class="a-lbl">Mise minimum</span><span class="a-val" style="color:#f5a623">1.50€</span></div>
+    <div class="a-row"><span class="a-lbl">Notre mise CDJ</span><span class="a-val" style="color:#ff6b35;font-weight:700">20.00€</span></div>
+    <div class="a-row"><span class="a-lbl">Remboursement</span><span class="a-val" style="color:#00c896">Si favori non partant</span></div>
+    <div class="a-row"><span class="a-lbl">Rapport minimum</span><span class="a-val">1.10€ pour 1€ misé</span></div>
+    <div style="margin-top:8px;font-size:11px;color:#aaa;line-height:1.7;">
+      ✅ Le PMU garantit un rapport minimum. Si le cheval gagne avec une cote très basse, le PMU rembourse 70% de la mise (règle du rapport minimal).
+    </div>
+  </div>
+
+  <div class="stitle" style="font-size:13px;">🏇 Simple Placé</div>
+  <div class="analyse-box" style="margin-bottom:12px;">
+    <div class="a-row"><span class="a-lbl">Objectif</span><span class="a-val">Cheval dans le Top3</span></div>
+    <div class="a-row"><span class="a-lbl">Champ ≥ 8 chevaux</span><span class="a-val" style="color:#00c896">Placé = Top 3 ✅</span></div>
+    <div class="a-row"><span class="a-lbl">Champ 5–7 chevaux</span><span class="a-val" style="color:#f5a623">Placé = Top 2 ⚠️</span></div>
+    <div class="a-row"><span class="a-lbl">Champ ≤ 4 chevaux</span><span class="a-val" style="color:#e94560">Pari annulé ❌</span></div>
+    <div class="a-row"><span class="a-lbl">Mise minimum</span><span class="a-val" style="color:#f5a623">1.50€</span></div>
+    <div class="a-row"><span class="a-lbl">Notre mise C1</span><span class="a-val" style="color:#ff6b35;font-weight:700">20.00€</span></div>
+    <div class="a-row"><span class="a-lbl">Notre mise C2 / DM</span><span class="a-val" style="color:#ff6b35;font-weight:700">10.00€</span></div>
+    <div class="a-row"><span class="a-lbl">Rapport minimum</span><span class="a-val">1.05€ pour 1€ misé</span></div>
+    <div style="margin-top:8px;font-size:11px;color:#aaa;line-height:1.7;">
+      ⚠️ <b>Important :</b> Toujours vérifier le nombre de partants avant de jouer. Si le champ passe sous 8 chevaux, le Placé ne couvre que le Top 2.
+    </div>
+  </div>
+
+  <div class="stitle" style="font-size:13px;">🏇 Couplé Placé (D1)</div>
+  <div class="analyse-box" style="margin-bottom:12px;">
+    <div class="a-row"><span class="a-lbl">Objectif</span><span class="a-val">2 chevaux dans le Top3</span></div>
+    <div class="a-row"><span class="a-lbl">Ordre</span><span class="a-val">Désordre (peu importe l'ordre)</span></div>
+    <div class="a-row"><span class="a-lbl">Mise minimum</span><span class="a-val" style="color:#f5a623">1.50€</span></div>
+    <div class="a-row"><span class="a-lbl">Notre mise D1</span><span class="a-val" style="color:#ff6b35;font-weight:700">10.00€</span></div>
+    <div class="a-row"><span class="a-lbl">Champ minimum</span><span class="a-val">≥ 5 chevaux partants</span></div>
+    <div class="a-row"><span class="a-lbl">Remboursement</span><span class="a-val" style="color:#00c896">Si non-partant dans le couplé</span></div>
+    <div style="margin-top:8px;font-size:11px;color:#aaa;line-height:1.7;">
+      ✅ Si un des 2 chevaux du Couplé est déclaré non-partant, le PMU rembourse automatiquement la mise.
+    </div>
+  </div>
+
+  <div class="stitle" style="font-size:13px;">🏇 Quarté+ Désordre (E)</div>
+  <div class="analyse-box" style="margin-bottom:12px;">
+    <div class="a-row"><span class="a-lbl">Objectif</span><span class="a-val">4 chevaux dans le Top4 (désordre)</span></div>
+    <div class="a-row"><span class="a-lbl">Nos chevaux</span><span class="a-val" style="color:#b39ddb">4 chevaux = 1 combinaison</span></div>
+    <div class="a-row"><span class="a-lbl">Mise minimum</span><span class="a-val" style="color:#f5a623">1.50€/combinaison</span></div>
+    <div class="a-row"><span class="a-lbl">Notre mise E</span><span class="a-val" style="color:#ff6b35;font-weight:700">30.00€</span></div>
+    <div class="a-row"><span class="a-lbl">Bonus Ordre</span><span class="a-val" style="color:#f5a623">×4 si ordre parfait 🏆</span></div>
+    <div class="a-row"><span class="a-lbl">Champ minimum</span><span class="a-val">≥ 5 chevaux partants</span></div>
+    <div class="a-row"><span class="a-lbl">Non-partant</span><span class="a-val" style="color:#00c896">Remboursement automatique</span></div>
+    <div style="margin-top:8px;font-size:11px;color:#aaa;line-height:1.7;">
+      🏆 <b>Bonus Ordre :</b> Si les 4 chevaux arrivent exactement dans l'ordre joué, le rapport est multiplié par 4. C'est ce qui s'est passé le <b>04/04</b> à Vincennes !
+    </div>
+  </div>
+
+  <div class="stitle" style="font-size:13px;">⚡ Règles Dernière Minute (DM)</div>
+  <div class="analyse-box" style="margin-bottom:12px;">
+    <div class="a-row"><span class="a-lbl">Type de pari</span><span class="a-val">Simple Placé Top 3</span></div>
+    <div class="a-row"><span class="a-lbl">Notre mise</span><span class="a-val" style="color:#00c896;font-weight:700">10.00€</span></div>
+    <div class="a-row"><span class="a-lbl">Condition</span><span class="a-val" style="color:#f5a623">⚠️ Confirmer partant avant mise</span></div>
+    <div class="a-row"><span class="a-lbl">Course</span><span class="a-val">Différente du Quinté principal</span></div>
+    <div style="margin-top:8px;font-size:11px;color:#e94560;line-height:1.7;">
+      ⛔ Ne jamais miser la DM sans confirmer le statut partant dans l'application. Un non-partant non détecté = mise perdue sans remboursement si le pari est enregistré après fermeture des paris.
+    </div>
+  </div>
+
+  <!-- RÈGLES GÉNÉRALES -->
+  <div class="stitle" style="font-size:13px;">⚖️ Règles Générales PMU</div>
+  <div class="ibox" style="font-size:12px;line-height:2.1;padding:14px;">
+    <div>🕐 <b>Fermeture des paris :</b> Au départ officiel de la course. Après = refusé.</div>
+    <div>🔄 <b>Non-partant :</b> Remboursement automatique si déclaré avant départ.</div>
+    <div>💳 <b>Paiement des gains :</b> Immédiat après résultats officiels (PMU.fr ou guichet).</div>
+    <div>📊 <b>Rapports :</b> Calculés sur la masse totale engagée (pool). Variables jusqu'au départ.</div>
+    <div>🏇 <b>Dead heat :</b> À égalité, le rapport est divisé par le nombre de chevaux ex-aequo.</div>
+    <div>🔒 <b>Paris en ligne :</b> Compte PMU requis, vérification d'identité obligatoire.</div>
+    <div>⚠️ <b>Rapport minimum garanti :</b> 1.10 Simple Gagnant · 1.05 Simple Placé · 1.10 Couplé.</div>
+    <div>📱 <b>Plafond de mise :</b> Pas de plafond officiel, mais les gros paris peuvent impacter le pool.</div>
+  </div>
+
+  <!-- KELLY REMINDER -->
+  <div class="stitle" style="font-size:13px;">💎 Conseil Kelly · Gestion du Risque</div>
+  <div class="dmbox" style="font-size:12px;line-height:2;">
+    📐 <b>Kelly fractionné recommandé :</b> × 0.25 sur tous les paris<br>
+    🏇 <b>Steeple / Obstacles :</b> Réduire à × 0.15 (variance plus haute)<br>
+    💰 <b>Budget 100€ :</b> C1 (20€) = 20% de bankroll — conforme Kelly ¼<br>
+    🔥 <b>Série gagnante :</b> Maintenir les mises fixes, ne pas augmenter<br>
+    📉 <b>Après 3 LOSS :</b> Revenir à mise de base, ne pas doubler
+  </div>
+
+  <button class="btn bl" onclick="sw('calc',document.querySelectorAll('.tab-btn')[10])">🧮 Ouvrir le Calculateur Kelly</button>
+</div>
+
+<div class="copy-confirm" id="copy-confirm">✅ Copié !</div>
+
+<script>
+
+// ═══════════════════════════════════════════════════════════
+// CONFIG COURSE DU JOUR — Modifier ici pour chaque nouvelle course
+// ═══════════════════════════════════════════════════════════
+const CONFIG = {
+  date: '10/04/2026',
+  hippo: 'Vincennes',
+  disc: 'Trot Attelé',
+  course: 'R1 · 8ème course',
+  sel: '10-9-13-15-11-12-14-4',
+  outsiders: 'N°6 · N°5',
+  cdj: { course: 'R1', num: '206', mise: 20 },
+  dm:  { course: 'R1', num: '111', mise: 10 },
+  depart: { h: 20, m: 15 },
+  c1: '10', c2: '9',
+  quartea: ['10','9','13','4'],
+  quarteB: ['10','13','14','4'],
+  quintea: ['10','9','13','14','4'],
+  quinteB: ['10','13','15','12','4'],
+};
+// ═══════════════════════════════════════════════════════════
+const KEY='pnturf_v141';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='1111';
+const INIT=[
+  {"date":"2026-03-19","hippo":"Vincennes","disc":"Trot","sel":"11-5-6-2-1-9-7-8","cdj":"11","dm":"—","mise":12.0,"arr":"16-11-1-9-10","top5":"3/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":18.5},
+  {"date":"2026-03-20","hippo":"Vincennes","disc":"Trot","sel":"1-7-8-12-4-3-2-5","cdj":"1","dm":"—","mise":12.0,"arr":"5-8-7-3-2","top5":"5/5","top3":"3/3","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"—","tck":"Quarté Plein","bilan":"5/5 ✅ QUARTÉ PLEIN 🎉","retour":42.0},
+  {"date":"2026-03-21","hippo":"Cagnes","disc":"Trot","sel":"5-9-2-6-1-8-7-13","cdj":"5","dm":"—","mise":12.0,"arr":"5-8-2-13-6","top5":"5/5","top3":"3/3","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"5/5 ✅ CDJ 1er","retour":28.0},
+  {"date":"2026-03-23","hippo":"Vincennes","disc":"Trot","sel":"8-3-1-2-11-14-4-5","cdj":"8","dm":"—","mise":12.0,"arr":"5-1-8-15-14","top5":"4/5","top3":"3/3","cdj_res":"WIN","cdj_pos":"3e 🥉","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 3e","retour":14.0},
+  {"date":"2026-03-25","hippo":"Vincennes","disc":"Trot","sel":"7-2-15-12-3-1-5-9","cdj":"7","dm":"—","mise":12.0,"arr":"7-15-13-9-2","top5":"4/5","top3":"3/3","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":56.0},
+  {"date":"2026-03-26","hippo":"Lyon","disc":"Plat","sel":"3-6-9-10-2-7-8-12","cdj":"3","dm":"—","mise":12.0,"arr":"3-11-6-4-14","top5":"3/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":16.0},
+  {"date":"2026-03-27","hippo":"Vincennes","disc":"Trot","sel":"13-15-8-10-12-9-7-5","cdj":"13","dm":"—","mise":12.0,"arr":"13-5-9-14-10","top5":"4/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":22.0},
+  {"date":"2026-03-28","hippo":"Deauville","disc":"Plat","sel":"8-1-13-5-6-7-14-4","cdj":"8","dm":"—","mise":12.0,"arr":"8-2-14-13-7","top5":"4/5","top3":"3/3","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":19.0},
+  {"date":"2026-03-29","hippo":"Saint-Cloud","disc":"Plat","sel":"2-9-10-5-11-15-3-7","cdj":"2","dm":"—","mise":12.0,"arr":"2-5-9-3-14","top5":"4/5","top3":"3/3","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":13.0},
+  {"date":"2026-03-30","hippo":"Chantilly","disc":"Plat","sel":"1-11-15-6-9-3-4-10","cdj":"1","dm":"—","mise":12.0,"arr":"1-16-10-6-7","top5":"4/5","top3":"3/3","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":15.5},
+  {"date":"2026-03-31","hippo":"Fontainebleau","disc":"Plat","sel":"2-14-16-1-6-7-9-13","cdj":"2","dm":"—","mise":12.0,"arr":"6-2-14-8-9","top5":"4/5","top3":"3/3","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":16.0},
+  {"date":"2026-04-01","hippo":"Angers","disc":"Attelé","sel":"9-5-2-4-6-10-1-3","cdj":"9","dm":"—","mise":12.0,"arr":"1-5-9-3-2","top5":"5/5","top3":"3/3","cdj_res":"WIN","cdj_pos":"3e 🥉","dm_res":"—","tck":"CDJ Placé","bilan":"5/5 ✅ CDJ ✅","retour":15.0},
+  {"date":"2026-04-04","hippo":"Vincennes","disc":"Trot","sel":"10-8-7-3-9-12-13-11","cdj":"106","dm":"503","mise":12.0,"arr":"10-8-7-3-12","top5":"5/5","top3":"3/3","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"LOSS","tck":"Quarté Ordre","bilan":"5/5 ✅ Quarté Ordre 🎉","retour":45.0},
+  {"date":"2026-04-05","hippo":"Longchamp","disc":"Plat","sel":"5-16-15-1-8-6-20-7","cdj":"1","dm":"—","mise":12.0,"arr":"3-1-7-5-12","top5":"3/5","top3":"2/3","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"—","tck":"—","bilan":"❌ CDJ hors top","retour":9.0},
+  {"date":"2026-04-06","hippo":"Compiègne","disc":"Steeple","sel":"1-6-4-14-7-11-2-3","cdj":"107","dm":"707","mise":12.0,"arr":"10-2-1-6-7","top5":"4/5","top3":"3/3","cdj_res":"WIN","cdj_pos":"3e 🥉","dm_res":"WIN","tck":"CDJ+DM","bilan":"CDJ ✅ DM ✅","retour":7.3},
+  {"date":"2026-04-07","hippo":"Plat R1C1","disc":"Plat","sel":"3-2-8-4-9-5-15-6","cdj":"102","dm":"506","mise":12.0,"arr":"8-2-6-12-7","top5":"4/5","top3":"3/3","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"LOSS","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":2.5},
+  {"date":"2026-04-08","hippo":"Lyon-Parilly","disc":"Attelé","sel":"14-8-7-9-2-3-4-13","cdj":"607","dm":"714","mise":12.0,"arr":"4-14-3-9-16","top5":"4/5","top3":"3/3","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"WIN","tck":"CDJ+DM","bilan":"CDJ ✅ DM ✅","retour":3.1},
+  {"date":"2026-04-09","hippo":"Prix Oiseleur","disc":"Haies","sel":"3-11-8-13-10-14-15-5","cdj":"210","dm":"602","mise":12.0,"arr":"2-14-1-3-15","top5":"3/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"4e ✅","dm_res":"LOSS","tck":"CDJ Placé","bilan":"CDJ ✅ · P7 N°15 ✅ 5e","retour":1.7}
+];
+
+function gd(){
+  // AppState en priorité, fallback localStorage pour compatibilité
+  const fromState = (typeof AppState !== 'undefined') ? AppState.get('bets') : null;
+  if(fromState && fromState.length > 0) return fromState;
+  const r = localStorage.getItem(KEY);
+  return r ? JSON.parse(r) : [];
+}
+function sd(d){
+  localStorage.setItem(KEY, JSON.stringify(d)); // conservé pour compat
+  if(typeof AppState !== 'undefined') AppState.set('bets', d);
+}
+function getPin(){return localStorage.getItem(PINS_KEY)||'0404';}
+
+function renderAll(){
+  const d = gd();
+  renderDash(d);
+  renderHist(d);
+  const setVip = document.getElementById('set-vip');
+  if(setVip) setVip.value = getPin();
+  // Auto-restore VIP session
+  if(localStorage.getItem('is_vip')){
+    const vl = document.getElementById('vip-locked');
+    const vc = document.getElementById('vip-content');
+    if(vl) vl.style.display = 'none';
+    if(vc) vc.style.display = 'block';
+  }
+}
+
+const BK_INIT=1000;
+function renderDash(data){
+  const conf=data.filter(r=>r.cdj_res!=='⏳');
+  const n=conf.length,mt=conf.reduce((s,r)=>s+(r.mise||0),0),rt=conf.reduce((s,r)=>s+(r.retour||0),0);
+  const pl=rt-mt,roi=mt>0?(pl/mt*100).toFixed(1):0;
+  const cw=conf.filter(r=>r.cdj_res==='WIN').length,c1w=conf.filter(r=>r.tck&&r.tck.includes('C1')).length;
+  let serie=0;for(let i=conf.length-1;i>=0;i--){if(conf[i].cdj_res==='WIN')serie++;else break;}
+  document.getElementById('k-total').textContent=data.length;
+  document.getElementById('k-roi').textContent=(pl>=0?'+':'')+roi+'%';
+  document.getElementById('k-cdj').textContent=n>0?Math.round(cw/n*100)+'%':'-';
+  document.getElementById('k-pl').textContent=(pl>=0?'+':'')+pl.toFixed(0)+'€';
+  document.getElementById('k-c1').textContent=n>0?Math.round(c1w/n*100)+'%':'-';
+  document.getElementById('k-serie').textContent=serie>0?'🔥'+serie:'0';
+
+  // Bankroll
+  const bk=BK_INIT+pl;
+  const pct=Math.max(0,Math.min(100,(bk/BK_INIT)*100));
+  const bkColor=bk>=BK_INIT?'#00c896':bk>=BK_INIT*0.7?'#f5a623':'#e94560';
+  document.getElementById('bk-current').textContent=bk.toFixed(2)+'€';
+  document.getElementById('bk-current').style.color=bkColor;
+  document.getElementById('bk-bar').style.width=pct+'%';
+  document.getElementById('bk-bar').style.background=bk>=BK_INIT?'linear-gradient(90deg,#00c896,#4fc3f7)':bk>=BK_INIT*0.7?'linear-gradient(90deg,#f5a623,#ff6b35)':'linear-gradient(90deg,#e94560,#b00020)';
+  document.getElementById('bk-box').innerHTML=`Mises cumulées: <b>${mt.toFixed(1)}€</b> · Retours: <b>${rt.toFixed(1)}€</b> · P&L: <b class="${pl>=0?'ok':'ko'}">${pl>=0?'+':''}${pl.toFixed(2)}€</b>`;
+
+  // Tranches par 10€
+  const tranche=10;
+  const nbTranches=Math.ceil(BK_INIT/tranche);
+  const bkRounded=Math.max(0,bk);
+  const tranchesFull=Math.floor(bkRounded/tranche);
+  const grid=document.getElementById('tranche-grid');
+  grid.innerHTML='';
+  for(let i=0;i<nbTranches;i++){
+    const val=(i+1)*tranche;
+    const full=bkRounded>=val;
+    const current=!full&&bkRounded>i*tranche;
+    const pctInner=current?Math.round(((bkRounded-i*tranche)/tranche)*100):0;
+    const color=full?'#00c896':current?'#f5a623':'#2a2a3e';
+    const border=full?'#00c896':current?'#f5a623':'#333';
+    const icon=full?'✅':current?'⏳':'·';
+    grid.insertAdjacentHTML('beforeend',`
+      <div style="background:#1a1a2e;border:1px solid ${border};border-radius:10px;padding:10px;text-align:center;">
+        <div style="font-size:10px;color:#888;margin-bottom:3px;text-transform:uppercase;">Tranche ${i+1}</div>
+        <div style="font-size:13px;font-weight:700;color:${color};">${icon} ${i*tranche}–${val}€</div>
+        ${current?`<div style="background:#0d0d0d;border-radius:4px;height:4px;margin-top:5px;overflow:hidden;"><div style="width:${pctInner}%;height:100%;background:#f5a623;border-radius:4px;"></div></div>`:
+          full?`<div style="background:#0d0d0d;border-radius:4px;height:4px;margin-top:5px;overflow:hidden;"><div style="width:100%;height:100%;background:#00c896;border-radius:4px;"></div></div>`:
+          `<div style="background:#0d0d0d;border-radius:4px;height:4px;margin-top:5px;"></div>`}
+      </div>`);
+  }
+}
+
+function renderHist(data){
+  const tb=document.getElementById('hist-body');tb.innerHTML='';
+  [...data].reverse().forEach(r=>{
+    const d=new Date(r.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
+    const cs=r.cdj_res==='WIN'?'win':r.cdj_res==='LOSS'?'loss':'wait';
+    const cIcon=r.cdj_res==='WIN'?'✅':r.cdj_res==='LOSS'?'❌':'⏳';
+    const pos=r.cdj_pos||'—';
+    const bilan=r.bilan||r.tck||'—';
+    const bilanShort=bilan.length>18?bilan.substring(0,18)+'…':bilan;
+    const top3=r.top3||'—';
+    const discColor=r.disc==='Trot'||r.disc==='Attelé'?'#4fc3f7':r.disc==='Steeple'||r.disc==='Haies'?'#b39ddb':r.disc==='GNT'?'#00c896':'#aaa';
+    tb.insertAdjacentHTML('beforeend',`<tr>
+      <td>${d}</td>
+      <td style="font-size:10px">${r.hippo||'—'}</td>
+      <td style="color:${discColor};font-size:10px">${r.disc}</td>
+      <td>N°${r.cdj} <span class="badge ${cs}">${cIcon}</span></td>
+      <td style="font-size:10px">${pos}</td>
+      <td>${r.top5}</td>
+      <td>${top3}</td>
+      <td style="font-size:10px;color:${bilan.includes('PLEIN')?'#f5a623':bilan.includes('❌')?'#e94560':'#aaa'}">${bilanShort}</td>
+    </tr>`);
+  });
+}
+
+function checkPin(){
+  const pin = (document.getElementById('pin-in').value || '').trim();
+  const errEl = document.getElementById('pin-err');
+  if(!pin || pin.length !== 4){ errEl.textContent = '❌ PIN à 4 chiffres requis.'; return; }
+  errEl.textContent = '';
+  // 1. PIN maître
+  if(pin === getPin()){
+    _unlockVIP(); return;
+  }
+  // 2. PINs abonnés uniques
+  const abonnes = (typeof getPinsAbonnes === 'function') ? getPinsAbonnes() : [];
+  if(abonnes.some(p => p.pin === pin && p.actif !== false)){
+    _unlockVIP(); return;
+  }
+  errEl.textContent = '❌ PIN incorrect.';
+}
+function _unlockVIP(){
+  document.getElementById('vip-locked').style.display = 'none';
+  document.getElementById('vip-content').style.display = 'block';
+  localStorage.setItem('is_vip', '1');
+}
+function logout(){document.getElementById('vip-locked').style.display='block';document.getElementById('vip-content').style.display='none';localStorage.removeItem('is_vip');}
+function checkAdminPin(){if(document.getElementById('admin-pin-in').value.trim()===ADMIN_PIN){document.getElementById('admin-locked-screen').style.display='none';document.getElementById('admin-content').style.display='block';}else document.getElementById('admin-pin-err').textContent='❌ PIN incorrect.';}
+function logoutAdmin(){document.getElementById('admin-locked-screen').style.display='block';document.getElementById('admin-content').style.display='none';}
+function savePins(){localStorage.setItem(PINS_KEY,document.getElementById('set-vip').value||'0404');alert('✅ PIN VIP sauvegardé !');}
+
+const TEXTS={
+  free:`🏇 PRONOTURF PRO · 10/04/2026
+━━━━━━━━━━━━━━━
+🏆 ATTELÉ · R1 · Vincennes
+🐴 Sélection : 10-9-13-15-11-12-14-4
+🎲 Outsiders : N°6 · N°5
+🎯 CDJ : R1 · N°206
+⚡ DM : R1 · N°111 ⏳
+━━━━━━━━━━━━━━━
+💎 Tickets VIP → pronoturfpro.fr
+5€99/mois · 3 jours offerts`,
+  vip:`💎 VIP · 10/04 · Vincennes Attelé
+🐴 C1 N°10 · C2 N°9 · D1 N°10+9
+🎲 Quarté A : N°10·9·13·4
+🎲 Quarté B : N°10·13·14·4
+🏆 Quinté A : N°10·9·13·14·4
+🏆 Quinté B : N°10·13·15·12·4
+🎯 CDJ R1 N°206 · ⚡ DM R1 N°111
+👉 pronoturfpro.fr`
+};
+function shareWA(t){window.open('https://wa.me/?text='+encodeURIComponent(TEXTS[t]));}
+function copyText(t){navigator.clipboard.writeText(TEXTS[t]).then(()=>{const c=document.getElementById('copy-confirm');c.style.display='block';setTimeout(()=>c.style.display='none',2200);});}
+
+function addCourse(){
+  const r={date:document.getElementById('f-date').value,hippo:document.getElementById('f-hippo').value,disc:document.getElementById('f-disc').value,cdj:document.getElementById('f-cdj').value,dm:document.getElementById('f-dm').value,mise:parseFloat(document.getElementById('f-mise').value)||100,arr:document.getElementById('f-arr').value,top5:document.getElementById('f-top5').value,cdj_res:document.getElementById('f-cdj-res').value,dm_res:document.getElementById('f-dm-res').value,tck:document.getElementById('f-tck').value,retour:parseFloat(document.getElementById('f-retour').value)||0};
+  if(!r.date)return;const d=gd();const i=d.findIndex(x=>x.date===r.date);if(i>=0)d[i]={...d[i],...r};else d.push(r);
+  sd(d);renderAll();sw('historique',null);alert('✅ Enregistré !');
+}
+// prefill06 supprimé
+function exportJ(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(gd())],{type:'application/json'}));a.download='prono_v90.json';a.click();}
+
+function loadAbonnes(){
+  const pwd=document.getElementById('admin-api-pwd').value.trim()||'pronoturf2026';
+  const errEl=document.getElementById('abonnes-err');
+  errEl.textContent='⏳ Chargement...';
+  fetch('/.netlify/functions/admin-abonnes',{
+    headers:{'Authorization':'Bearer '+pwd}
+  })
+  .then(r=>{if(!r.ok)throw new Error('Non autorisé');return r.json();})
+  .then(data=>{
+    errEl.textContent='';
+    document.getElementById('abonnes-stats').style.display='block';
+    document.getElementById('ab-actifs').textContent=data.stats.actifs;
+    document.getElementById('ab-mrr').textContent=data.stats.mrr+'€';
+    document.getElementById('ab-annules').textContent=data.stats.annules;
+    document.getElementById('ab-total').textContent=data.stats.total;
+    const tbody=document.getElementById('ab-table');tbody.innerHTML='';
+    (data.abonnes||[]).forEach(a=>{
+      const sc=a.statut==='Actif'?'win':a.statut==='Annulé'?'loss':'wait';
+      tbody.insertAdjacentHTML('beforeend',`<tr>
+        <td style="font-size:10px">${a.email||'—'}</td>
+        <td><b style="color:#f5a623">${a.pin||'—'}</b></td>
+        <td><span class="badge ${sc}">${a.statut}</span></td>
+        <td style="font-size:10px">${a.fin||'—'}</td>
+      </tr>`);
+    });
+  })
+  .catch(e=>{errEl.textContent='❌ '+e.message;document.getElementById('abonnes-stats').style.display='none';});
+}
+function sw(name,btn){document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));document.getElementById('tab-'+name).classList.add('active');if(btn)btn.classList.add('active');}
+
+/* ===== CALCULATEUR ===== */
+function swCalc(name,btn){
+  document.querySelectorAll('.cc-panel').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.ctab').forEach(x=>x.classList.remove('active'));
+  document.getElementById('cc-'+name).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+function fact(n){return n<=1?1:n*fact(n-1);}
+function comb(n,k){if(k>n)return 0;return fact(n)/(fact(k)*fact(n-k));}
+function arrg(n,k){if(k>n)return 0;return fact(n)/fact(n-k);}
+
+/* ANALYSE PRONOSTIC */
+function analyzeProno(){
+  const course=document.getElementById('c-course').value;
+  const type=document.getElementById('c-type').value;
+  const budget=parseFloat(document.getElementById('c-budget').value)||50;
+  const prono=document.getElementById('c-prono').value.split('-').map(x=>x.trim()).filter(x=>x);
+  const outs=document.getElementById('c-out').value.split('-').map(x=>x.trim()).filter(x=>x);
+  const cdj=document.getElementById('c-cdj').value;
+  const strat=document.getElementById('c-strat').value;
+  if(prono.length<3){document.getElementById('c-result-analyse').innerHTML='<div class="ibox" style="color:#e94560;">⚠️ Minimum 3 chevaux requis.</div>';return;}
+  const nbBase={securite:4,equilibre:3,value:2,audace:2}[strat]||3;
+  const bases=prono.slice(0,Math.min(nbBase,prono.length));
+  const compl=prono.slice(bases.length);
+  const tous=[...compl,...outs];
+  // Génération 3 formules
+  const formules=genFormules(type,budget,strat,bases,tous,cdj);
+  const totalCout=formules.reduce((s,f)=>s+f.cout,0);
+  let html=`<div style="background:linear-gradient(135deg,#ff6b3522,#1a1a2e);border:1px solid #ff6b3555;border-radius:12px;padding:12px;margin-bottom:12px;">
+    <div style="font-size:12px;color:#ff6b35;font-weight:700;margin-bottom:6px;">📋 ${course}</div>
+    <div style="font-size:11px;color:#aaa;">Type: <b style="color:#fff">${{quinte:'Quinté+',quarte:'Quarté+',tierce:'Tiercé'}[type]}</b> · Budget: <b style="color:#f5a623">${budget}€</b> · Stratégie: <b style="color:#fff">${{securite:'🛡️ Sécurité',equilibre:'⚖️ Équilibré',value:'💎 Value',audace:'⚔️ Audacieux'}[strat]}</b></div>
+  </div>
+  <div style="margin-bottom:12px;">
+    <div style="font-size:10px;color:#888;text-transform:uppercase;margin-bottom:6px;">🏆 Bases (${bases.length})</div>
+    ${bases.map(n=>`<span class="chip-sm g">N°${n}</span>`).join('')}
+    ${compl.length?`<div style="font-size:10px;color:#888;text-transform:uppercase;margin:6px 0 4px;">🎯 Complémentaires</div>${compl.map(n=>`<span class="chip-sm">N°${n}</span>`).join('')}`:''}
+    ${outs.length?`<div style="font-size:10px;color:#888;text-transform:uppercase;margin:6px 0 4px;">⚡ Outsiders</div>${outs.map(n=>`<span class="chip-sm o">N°${n}</span>`).join('')}`:''}
+    ${cdj?`<div style="margin-top:6px;font-size:11px;color:#f5a623;">⭐ CDJ prioritaire : N°${cdj}</div>`:''}
+  </div>
+  <div class="stitle" style="font-size:13px;">📊 Formules Optimisées</div>
+  ${formules.map((f,i)=>`<div class="fcard">
+    <div class="fcard-head"><div class="fcard-title">Formule ${i+1} · ${f.nom}</div><div class="fcard-sub">${f.type}</div></div>
+    <div style="margin-bottom:8px;font-size:11px;color:#888;">Chevaux : ${f.chevaux.map(n=>`<span class="chip-sm">N°${n}</span>`).join('')}</div>
+    <div class="fcard-body">
+      <div>Combinaisons<br><b>${f.combs.toLocaleString('fr-FR')}</b></div>
+      <div>Mise unitaire<br><b>${f.mu}€</b></div>
+      <div>Coût total<br><b style="color:#ff6b35;">${f.cout.toFixed(2)}€</b></div>
+      <div>Rapport estimé<br><b style="color:#00c896;">${f.rapport}</b></div>
+      <div style="grid-column:span 2">Objectif : ${f.objectif}</div>
+    </div>
+  </div>`).join('')}
+  <div class="c-res-box">
+    <div class="c-res-row"><span>Budget total</span><span class="c-res-val">${budget.toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>Coût formules</span><span class="c-res-val">${totalCout.toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>Marge</span><span class="c-res-val" style="color:${budget-totalCout>=0?'#00c896':'#e94560'}">${(budget-totalCout).toFixed(2)}€</span></div>
+  </div>`;
+  document.getElementById('c-result-analyse').innerHTML=html;
+}
+
+function genFormules(type,budget,strat,bases,tous,cdj){
+  const configs={
+    securite:[{pct:.6,k:5,ord:false,rapport:'100–800€',obj:'Sécuriser rapport régulier',sl:3},{pct:.3,k:3,ord:true,rapport:'50–500€',obj:'Bonus ordre parfait',sl:1},{pct:.1,k:4,ord:false,rapport:'10–50€',obj:'Filet de sécurité',sl:2}],
+    equilibre:[{pct:.5,k:5,ord:false,rapport:'200–2000€',obj:'Balance sécurité/rapports',sl:4},{pct:.3,k:3,ord:true,rapport:'150–1500€',obj:'Rapport intéressant',sl:2},{pct:.2,k:5,ord:true,rapport:'10–150€',obj:'Multi polyvalent',sl:2}],
+    value:[{pct:.4,k:5,ord:false,rapport:'500–5000€',obj:'Exploiter cotes élevées',sl:6},{pct:.35,k:3,ord:true,rapport:'500–3000€',obj:'Gros rapport ciblé',sl:4},{pct:.25,k:5,ord:false,rapport:'20–200€',obj:'Limiter le risque',sl:3}],
+    audace:[{pct:.4,k:3,ord:true,rapport:'1000–5000€',obj:'Rapport explosif',sl:5},{pct:.35,k:5,ord:true,rapport:'5000–50000€',obj:'Jackpot plein ordre',sl:5},{pct:.25,k:5,ord:false,rapport:'100–1000€',obj:'Couverture désordre',sl:5}]
+  };
+  const cfg=configs[strat]||configs.equilibre;
+  return cfg.map((c,i)=>{
+    const chevs=[...bases,...tous.slice(0,c.sl)];
+    const nc=c.ord?arrg(chevs.length,c.k):comb(chevs.length,c.k);
+    const typeLabel=c.ord?(c.k===3?'Tiercé ordre':c.k===4?'Quarté ordre':'Quinté ordre'):(c.k===3?'Tiercé désordre':c.k===4?'Quarté désordre':'Quinté désordre');
+    const cout=Math.min(budget*c.pct,nc*0.5);
+    const mu=(cout/nc).toFixed(2);
+    return{nom:['Principal','Complémentaire','Filet'][i],type:typeLabel,chevaux:chevs,combs:nc,mu,cout,rapport:c.rapport,objectif:c.obj};
+  });
+}
+
+/* COMBINAISONS */
+function calcComb(){
+  const t=document.getElementById('cb-type').value;
+  const n=parseInt(document.getElementById('cb-nb').value);
+  const mu=parseFloat(document.getElementById('cb-mise').value)||1;
+  const ord=document.getElementById('cb-ordre').value==='ordre';
+  const ks={tierce:3,quarte:4,quinte:5,multi4:4,multi5:5,multi6:6,multi7:7};
+  const k=ks[t]||5;
+  if(n<k){document.getElementById('c-result-comb').innerHTML=`<div class="ibox" style="color:#e94560;">⚠️ Minimum ${k} chevaux pour ce type.</div>`;buildRefTable();return;}
+  const nc=ord?arrg(n,k):comb(n,k);
+  const cout=nc*mu;
+  document.getElementById('c-result-comb').innerHTML=`<div class="c-res-box">
+    <div class="c-res-row"><span>Combinaisons</span><span class="c-res-val">${nc.toLocaleString('fr-FR')}</span></div>
+    <div class="c-res-row"><span>Mise unitaire</span><span class="c-res-val">${mu.toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>Coût total</span><span class="c-res-val" style="color:#f5a623;">${cout.toFixed(2)}€</span></div>
+  </div>`;
+  buildRefTable();
+}
+function buildRefTable(){
+  const rows=[{n:'Tiercé',k:3,ch:[3,4,5,6,7]},{n:'Quarté',k:4,ch:[4,5,6,7,8]},{n:'Quinté',k:5,ch:[5,6,7,8,9]}];
+  let h='';
+  rows.forEach(r=>r.ch.forEach(c=>{const nc=comb(c,r.k);h+=`<tr><td><b>${r.n}</b></td><td>${c} ch.</td><td>${nc.toLocaleString('fr-FR')}</td><td>${nc.toLocaleString('fr-FR')}€</td></tr>`;}));
+  document.getElementById('cb-table').innerHTML=h;
+}
+
+/* ROI */
+function calcROI(){
+  const m=parseFloat(document.getElementById('roi-mise').value)||0;
+  const g=parseFloat(document.getElementById('roi-gains').value)||0;
+  const nb=parseInt(document.getElementById('roi-nb').value)||1;
+  if(!m){document.getElementById('c-result-roi').innerHTML='<div class="ibox" style="color:#e94560;">⚠️ Entrez le total misé.</div>';return;}
+  const pl=g-m,roi=(pl/m*100).toFixed(2);
+  const col=pl>=0?'#00c896':'#e94560';
+  const lvl=roi>=20?'⭐ EXPERT':roi>=10?'🟢 Avancé':roi>=0?'🟡 Intermédiaire':'🔴 Débutant';
+  document.getElementById('c-result-roi').innerHTML=`<div class="c-res-box">
+    <div class="c-res-row"><span>Total misé</span><span class="c-res-val">${m.toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>Total gains</span><span class="c-res-val">${g.toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>P&L</span><span class="c-res-val" style="color:${col}">${pl>=0?'+':''}${pl.toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>ROI</span><span class="c-res-val" style="color:${col};font-size:20px;">${roi>=0?'+':''}${roi}%</span></div>
+    <div class="c-res-row"><span>Moy/course</span><span class="c-res-val">${(pl/nb).toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>Niveau</span><span class="c-res-val" style="font-size:13px;">${lvl}</span></div>
+  </div>`;
+}
+
+/* KELLY */
+function calcKelly(){
+  const cote=parseFloat(document.getElementById('k-cote').value)||3.5;
+  const prob=parseFloat(document.getElementById('k-prob').value)/100||0.35;
+  const bk=parseFloat(document.getElementById('k-bk').value)||1000;
+  const frac=parseFloat(document.getElementById('k-frac').value)||0.25;
+  const b=cote-1;
+  const q=1-prob;
+  const kelly=(b*prob-q)/b;
+  const kellyFrac=kelly*frac;
+  const mise=Math.max(0,kellyFrac*bk);
+  const edge=(prob*cote-1)*100;
+  const col=kelly>0?'#00c896':'#e94560';
+  document.getElementById('c-result-kelly').innerHTML=`<div class="c-res-box">
+    <div class="c-res-row"><span>Edge estimé</span><span class="c-res-val" style="color:${edge>0?'#00c896':'#e94560'}">${edge.toFixed(1)}%</span></div>
+    <div class="c-res-row"><span>Kelly plein</span><span class="c-res-val">${(kelly*100).toFixed(1)}% de bankroll</span></div>
+    <div class="c-res-row"><span>Kelly fractionné (×${frac})</span><span class="c-res-val" style="color:#f5a623">${(kellyFrac*100).toFixed(2)}%</span></div>
+    <div class="c-res-row"><span>💰 Mise recommandée</span><span class="c-res-val" style="color:${col};font-size:20px;">${mise.toFixed(2)}€</span></div>
+    ${kelly<=0?'<div style="color:#e94560;font-size:12px;margin-top:8px;">⚠️ Pas d\'edge détecté — ne pas miser.</div>':''}
+    ${kelly>0?`<div style="color:#aaa;font-size:11px;margin-top:8px;">Si ${(prob*100).toFixed(0)}% de prob. sur cote ${cote} → Gain potentiel : <b style="color:#00c896">${(mise*b).toFixed(2)}€</b></div>`:''}
+  </div>`;
+}
+
+window.onload = async () => {
+
+  // ── CORE FOUNDATION ─────────────────────────────────────────
+  if(typeof CoreFoundation !== 'undefined') {
+    await CoreFoundation.init({
+      appName: 'PRONOTURF PRO',
+      pinRequired: false,  // ← mettre true pour activer le PIN VIP
+
+      // Navigation mobile bottom bar
+      bottomNavTabs: [
+        { id: 'daily',    label: 'Course',    icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
+        { id: 'dash',     label: 'Bilan',     icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' },
+        { id: 'hist',     label: 'Historique',icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
+        { id: 'calc',     label: 'Calcul',    icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z' },
+        { id: 'abonnes',  label: 'Admin',     icon: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z' },
+      ],
+      onTabChange: (tabId) => sw(tabId),
+
+      onReady: () => {
+        // ── Charger données via AppState ─────────────────────
+        const stored = AppState.get('bets');
+        if(!stored || stored.length === 0) {
+          sd(INIT); // initialise avec les données historiques
+        }
+
+        // ── Sync bankroll dans AppState ──────────────────────
+        const data = gd();
+        const totalRetour = data.reduce((s,r) => s + (r.retour||0), 0);
+        const totalMise   = data.reduce((s,r) => s + (r.mise||0), 0);
+        AppState.set('bankroll', Math.max(0, BK_INIT + totalRetour - totalMise));
+        AppState.patch('sessionStats', {
+          wins:    data.filter(r=>r.cdj_res==='WIN').length,
+          losses:  data.filter(r=>r.cdj_res==='LOSS').length,
+          cdjRate: data.length ? (data.filter(r=>r.cdj_res==='WIN').length/data.length*100).toFixed(1) : 0,
+        });
+
+        // ── Abonnement réactivité ────────────────────────────
+        AppState.subscribe('bets', () => renderAll());
+
+        renderAll();
+      }
+    });
+  } else {
+    // Fallback si core-foundation.js non chargé
+    if(gd().length === 0) sd(INIT);
+    renderAll();
+  }
+};
+</script>
+<script>
+// Enregistrement du Service Worker (PWA offline)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .then(reg => console.log('[SW] Enregistré :', reg.scope))
+      .catch(err => console.warn('[SW] Erreur :', err));
+  });
+}
+</script>
+
+<script>
+// ── HORLOGE TEMPS RÉEL ─────────────────────────────────────────────────────
+// DEPART remplacé par CONFIG.depart
+function updateClock(){
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const cl = document.getElementById('live-clock');
+  const cd = document.getElementById('live-countdown');
+  const st = document.getElementById('course-status');
+  
+  if(cl) cl.textContent = pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+  if(!cd) return;
+  
+  const dep = new Date();
+  const cfg = (typeof CONFIG !== 'undefined') ? CONFIG.depart : {h:20,m:15};
+  dep.setHours(cfg.h, cfg.m, 0, 0);
+  const diff = dep - now;
+  
+  if(diff > 0){
+    const h = Math.floor(diff/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    cd.textContent = h > 0 ? 'Départ dans '+h+'h'+pad(m) : 'Départ dans '+m+'min '+pad(s)+'s';
+    cd.style.color = '#4fc3f7';
+    if(st){ st.textContent='⏳ Avant départ'; st.style.background='linear-gradient(135deg,#4fc3f7,#0288d1)'; }
+  } else if(diff > -5400000){
+    cd.textContent = '🏇 En course !';
+    cd.style.color = '#ff6b35';
+    if(st){ st.textContent='🏇 En course !'; st.style.background='linear-gradient(135deg,#ff6b35,#e94560)'; }
+  } else {
+    cd.textContent = '✅ Terminée';
+    cd.style.color = '#00c896';
+    if(st){ st.textContent='✅ Terminée'; st.style.background='linear-gradient(135deg,#00c896,#0288d1)'; }
+  }
+}
+// Clock initialized in window.addEventListener load below
+
+// ── MAGIC LINK ADMIN ──────────────────────────────────────────────────────
+const _AE='ced42s@hotmail.fr';
+const _ES='service_412jzkn';
+const _ET='template_6lvl1rs';
+const _EK='q56Lq8ctvgMFpYjTv';
+// Persistance du code magic link via sessionStorage (survit au rechargement de page)
+function _getMC(){return sessionStorage.getItem('_pnt_mc')||'';}
+function _getME(){return parseInt(sessionStorage.getItem('_pnt_me')||'0');}
+function _setMC(code,exp){sessionStorage.setItem('_pnt_mc',code);sessionStorage.setItem('_pnt_me',String(exp));}
+function _clearMC(){sessionStorage.removeItem('_pnt_mc');sessionStorage.removeItem('_pnt_me');}
+
+function generateCode(){return Math.random().toString(36).substring(2,10).toUpperCase();}
+
+function sendMagicLink(){
+  const email=document.getElementById('admin-email-in').value.trim().toLowerCase();
+  const err=document.getElementById('admin-email-err');
+  const btn=document.querySelector('#admin-step1 .btn');
+  if(!email){err.textContent='❌ Entre ton email.';return;}
+  if(email!==_AE){err.textContent='❌ Email non autorisé.';return;}
+  err.textContent='⏳ Envoi...';
+  if(btn)btn.disabled=true;
+  const code=generateCode();
+  const exp=Date.now()+15*60*1000;
+  _setMC(code,exp);
+  const link=window.location.href.split('?')[0]+'?admin_code='+code;
+
+  emailjs.init(_EK);
+  emailjs.send(_ES,_ET,{
+    to_email: email,
+    magic_link: '🔐 Code Admin : ' + code + '\n\nOu clique ce lien :\n' + link,
+    code: code,
+    from_name: 'PRONOTURF PRO'
+  })
+  .then(()=>{
+    err.textContent='';
+    document.getElementById('admin-email-sent').textContent=email;
+    document.getElementById('admin-step1').style.display='none';
+    document.getElementById('admin-step2').style.display='block';
+    if(btn)btn.disabled=false;
+  })
+  .catch((e)=>{
+    console.error('EmailJS error:', e);
+    // Fallback : afficher le code directement
+    err.style.color='#f5a623';
+    err.textContent='⚠️ Email échoué. Code direct : ' + code;
+    if(btn)btn.disabled=false;
+  });
+}
+
+function verifyMagicCode(){
+  const code=document.getElementById('admin-code-in').value.trim().toUpperCase();
+  const err=document.getElementById('admin-code-err');
+  const mc=_getMC(); const me=_getME();
+  if(!code){err.textContent='❌ Entre le code.';return;}
+  if(!mc||Date.now()>me){err.textContent='❌ Code expiré. Recommence.';_clearMC();return;}
+  if(code!==mc){err.textContent='❌ Code incorrect.';return;}
+  _clearMC();
+  document.getElementById('admin-locked-screen').style.display='none';
+  document.getElementById('admin-content').style.display='block';
+}
+
+function checkMagicLinkUrl(){
+  const p=new URLSearchParams(window.location.search);
+  const c=p.get('admin_code');
+  const mc=_getMC(); const me=_getME();
+  if(c&&mc&&c===mc&&Date.now()<me){
+    _clearMC();
+    document.getElementById('admin-locked-screen').style.display='none';
+    document.getElementById('admin-content').style.display='block';
+    window.history.replaceState({},'',window.location.pathname);
+  }
+}
+
+// ── PIN ABONNÉS ────────────────────────────────────────────────────────────
+const PAK='pnturf_abonnes_pins';
+function getPinsAbonnes(){try{return JSON.parse(localStorage.getItem(PAK))||[];}catch{return [];}}
+function savePinsAbonnes(p){localStorage.setItem(PAK,JSON.stringify(p));}
+function genererPinUnique(){const p=getPinsAbonnes().map(x=>x.pin);let pin;do{pin=String(Math.floor(1000+Math.random()*9000));}while(p.includes(pin));return pin;}
+function genererPinAbonne(){
+  const email=document.getElementById('ab-email').value.trim().toLowerCase();
+  const res=document.getElementById('ab-result');
+  if(!email||!email.includes('@')){res.style.color='#e94560';res.textContent='❌ Email invalide.';return;}
+  const pins=getPinsAbonnes(); const ex=pins.find(p=>p.email===email); let pin;
+  if(ex){pin=ex.pin;res.style.color='#f5a623';res.innerHTML='⚠️ Existant · PIN : <b style="color:#ff6b35;font-size:16px;letter-spacing:2px;">'+pin+'</b>';}
+  else{pin=genererPinUnique();pins.push({email,pin,date:new Date().toISOString().split('T')[0],actif:true});savePinsAbonnes(pins);res.style.color='#00c896';res.innerHTML='✅ PIN : <b style="color:#ff6b35;font-size:18px;letter-spacing:3px;">'+pin+'</b><br><small style="color:#888;">→ '+email+'</small>';}
+  if(typeof emailjs!=='undefined'){emailjs.send(_ES,_ET,{to_email:email,magic_link:'PIN PRONOTURF PRO : '+pin+'\n\npronoturfpro.fr → VIP → entre ce PIN',code:pin}).then(()=>{res.innerHTML+='<br><small style="color:#00c896;">📧 Email envoyé !</small>';}).catch(()=>{});}
+  afficherPins(); document.getElementById('ab-email').value='';
+}
+function afficherPins(){
+  const pins=getPinsAbonnes(); const el=document.getElementById('ab-list'); if(!el)return;
+  if(!pins.length){el.innerHTML='<span style="color:#555;">Aucun abonné</span>';return;}
+  el.innerHTML=pins.map(function(p){return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #2a2a3e;"><span style="color:#aaa;font-size:11px;">'+p.email+'</span><span style="color:#ff6b35;font-weight:700;letter-spacing:2px;">'+p.pin+'</span><button onclick="supprimerPin(\''+p.pin+'\')" style="background:none;border:1px solid #e94560;color:#e94560;padding:1px 6px;border-radius:4px;font-size:10px;cursor:pointer;">✕</button></div>';}).join('');
+}
+function supprimerPin(pin){if(!confirm('Supprimer ?'))return;savePinsAbonnes(getPinsAbonnes().filter(p=>p.pin!==pin));afficherPins();}
+
+// Init au chargement
+document.addEventListener('DOMContentLoaded',()=>{
+  checkMagicLinkUrl();
+  updateClock();
+  setInterval(updateClock, 1000);
+});
+</script>
+
+</body>
+</html>
