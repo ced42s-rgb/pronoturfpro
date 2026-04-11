@@ -2,196 +2,316 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Pronoturf VIP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRONOTURF PRO · Pronostics Quinté+ Premium</title>
+<meta name="description" content="PRONOTURF PRO — Les meilleurs pronostics Quinté+. 77.8% de réussite CDJ, +112€ de P&L sur 18 courses. Abonnement 5€99/mois.">
+<meta name="theme-color" content="#ff6b35">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PRONOTURF PRO">
+<link rel="apple-touch-icon" href="/icons/icon-192.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.svg">
+<!-- Open Graph -->
+<meta property="og:title" content="PRONOTURF PRO · Quinté+ Premium">
+<meta property="og:description" content="77.8% CDJ · +112€ P&L · 18 courses · 5€99/mois">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pronoturfpro.fr">
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
 <style>
-#ptv-login{display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#0a0a0a,#1a1a2e,#16213e);z-index:99999;align-items:center;justify-content:center;padding:20px}
-#ptv-app{display:none}
-.ptvbox{max-width:380px;width:100%;text-align:center}
-.ptvlogo{font-size:2.4em;font-weight:800;color:#FFD700;margin-bottom:6px}
-.ptvcard{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:32px 22px;color:#fff}
-.ptvinputs{display:flex;gap:7px;justify-content:center;margin:20px 0}
-.ptvd{width:40px;height:52px;border-radius:10px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:#fff;font-size:1.5em;font-weight:800;text-align:center;outline:none}
-.ptvd:focus{border-color:#FFD700}
-.ptvd.ptv_ok{border-color:#00ff88}
-.ptvbtn{width:100%;padding:15px;border-radius:40px;border:none;font-size:1.05em;font-weight:700;cursor:pointer;background:linear-gradient(45deg,#FFD700,#FFA500);color:#000;margin-bottom:14px}
-.ptvbtn:disabled{opacity:.3;cursor:not-allowed}
-.ptverr{background:rgba(231,76,60,.15);color:#ff6b6b;border:1px solid rgba(231,76,60,.35);border-radius:12px;padding:12px;font-size:.87em;display:none;margin-bottom:12px}
-.ptvexp{background:rgba(255,165,0,.15);color:#FFA500;border:1px solid rgba(255,165,0,.35);border-radius:12px;padding:12px;font-size:.87em;display:none;margin-bottom:12px}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#0d0d0d;color:#f0f0f0;font-family:'Segoe UI',sans-serif;font-size:14px;overflow-x:hidden;}
+
+/* ── HEADER ── */
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:16px;text-align:center;border-bottom:2px solid #ff6b35;position:sticky;top:0;z-index:100;}
+header h1{font-size:22px;color:#ff6b35;letter-spacing:2px;font-weight:900;}
+header p{color:#aaa;font-size:11px;margin-top:3px;}
+.live-badge{display:inline-block;background:#00c896;color:#000;font-size:10px;font-weight:900;padding:2px 8px;border-radius:10px;margin-left:8px;letter-spacing:1px;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.6;}}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#1a1a2e 0%,#0d0d1a 50%,#1a0a0f 100%);padding:28px 16px;text-align:center;border-bottom:1px solid #2a2a2a;}
+.hero-title{font-size:26px;font-weight:900;color:#ff6b35;line-height:1.2;margin-bottom:8px;}
+.hero-sub{font-size:13px;color:#aaa;margin-bottom:20px;line-height:1.6;}
+.hero-date{background:#ff6b3522;border:1px solid #ff6b35;border-radius:10px;padding:8px 16px;display:inline-block;font-size:13px;color:#ff6b35;font-weight:700;margin-bottom:20px;}
+
+/* ── STATS STRIP ── */
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#2a2a2a;border-bottom:2px solid #ff6b35;}
+.stat-box{background:#111;padding:14px 8px;text-align:center;}
+.stat-val{font-size:22px;font-weight:900;}
+.stat-lbl{font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.s-green{color:#00c896;}.s-orange{color:#f5a623;}.s-fire{color:#ff6b35;}
+
+/* ── SECTION ── */
+.section{padding:20px 16px;}
+.sec-title{font-size:15px;font-weight:700;color:#ff6b35;margin-bottom:14px;border-bottom:1px solid #2a2a2a;padding-bottom:8px;}
+
+/* ── COURSE DU JOUR ── */
+.course-card{background:linear-gradient(135deg,#1a1a2e,#12122a);border:2px solid #ff6b35;border-radius:14px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden;}
+.course-card::after{content:'';position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle,#ff6b3511,transparent 70%);}
+.course-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.course-card-title{font-size:15px;font-weight:700;color:#ff6b35;}
+.trow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #2a2a3e;font-size:13px;}
+.trow:last-child{border:none;}
+.trow .lb{color:#888;}.trow .vl{font-weight:700;text-align:right;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.chip{background:#ff6b3522;border:1px solid #ff6b35;border-radius:20px;padding:5px 13px;font-size:13px;font-weight:700;color:#ff6b35;}
+.chip.g{background:#00c89622;border-color:#00c896;color:#00c896;}
+.chip.o{background:#f5a62322;border-color:#f5a623;color:#f5a623;}
+.chip.b{background:#4fc3f722;border-color:#4fc3f7;color:#4fc3f7;}
+
+/* ── OFFRE ── */
+.offer-card{background:linear-gradient(135deg,#ff6b35,#e94560);border-radius:16px;padding:20px;text-align:center;margin-bottom:16px;}
+.offer-price{font-size:36px;font-weight:900;color:#fff;margin:8px 0;}
+.offer-sub{font-size:12px;color:rgba(255,255,255,.8);}
+.offer-features{list-style:none;margin:14px 0;text-align:left;}
+.offer-features li{padding:5px 0;font-size:13px;color:#fff;}
+.offer-features li::before{content:'✅ ';font-size:12px;}
+
+/* ── BTN ── */
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,#ff6b35,#e94560);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:block;text-align:center;margin-top:10px;}
+.btn:hover{opacity:.88;}
+.btn.bl{background:linear-gradient(135deg,#4fc3f7,#0288d1);}
+.btn.gr{background:linear-gradient(135deg,#1a1a2e,#2a2a3e);border:1px solid #333;}
+.btn.wa{background:#25D366;}
+
+/* ── RÉSULTATS MINI ── */
+.result-mini{background:#1a1a2e;border:1px solid #e9456033;border-radius:10px;padding:12px;margin-bottom:10px;}
+.badge-win{background:#00c89622;color:#00c896;border:1px solid #00c896;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
+.badge-loss{background:#e9456022;color:#e94560;border:1px solid #e94560;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
+.badge-wait{background:#f5a62322;color:#f5a623;border:1px solid #f5a623;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
+
+/* ── RÉSEAUX ── */
+.socials{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.social-btn{border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;}
+.social-btn span.ico{font-size:22px;}
+.social-btn .st{font-size:12px;font-weight:700;color:#fff;}
+.social-btn .sl{font-size:10px;color:rgba(255,255,255,.7);}
+
+/* ── COUNTDOWN ── */
+.countdown-box{background:#1a1a2e;border:2px solid #4fc3f7;border-radius:12px;padding:14px;text-align:center;margin-bottom:14px;}
+.countdown-val{font-size:32px;font-weight:900;color:#4fc3f7;font-variant-numeric:tabular-nums;}
+.countdown-lbl{font-size:11px;color:#888;margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
+
+/* ── PROOF BAR ── */
+.proof-bar{background:linear-gradient(135deg,#1a1a2e,#12122a);border:1px solid #ff6b3533;border-radius:12px;padding:14px;margin-bottom:14px;}
+.score-bar{height:8px;border-radius:4px;background:#2a2a3e;margin-top:4px;overflow:hidden;}
+.score-fill{height:100%;border-radius:4px;}
+.sf-green{background:linear-gradient(90deg,#00c896,#0288d1);}
+.sf-orange{background:linear-gradient(90deg,#f5a623,#ff6b35);}
+
+/* ── FOOTER ── */
+footer{background:#080808;border-top:1px solid #1a1a1a;padding:20px 16px;text-align:center;}
+footer p{font-size:10px;color:#444;line-height:1.8;}
+footer a{color:#666;text-decoration:none;}
+
+/* ── FAB ── */
+.fab{position:fixed;bottom:20px;right:16px;background:linear-gradient(135deg,#ff6b35,#e94560);border:none;border-radius:50px;padding:12px 20px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px #ff6b3555;z-index:200;text-decoration:none;}
+
+/* ── CTA STRIPE ── */
+.stripe-wrap{padding:16px;background:#1a1a2e;border-radius:14px;margin-bottom:14px;text-align:center;}
 </style>
 </head>
 <body>
 
-<!-- ═══ ÉCRAN LOGIN ═══ -->
-<div id="ptv-login">
-  <div class="ptvbox">
-    <div class="ptvlogo">🏇 PRONOTURF VIP</div>
-    <p style="color:#aaa;font-size:.9em;margin-bottom:28px">Accès membres VIP exclusif</p>
-    <div class="ptvcard">
-      <div style="font-size:2.8em;margin-bottom:12px">🔐</div>
-      <div style="font-size:1.3em;font-weight:700;margin-bottom:6px">Code accès VIP</div>
-      <p style="color:#aaa;font-size:.82em;margin-bottom:4px">Entrez votre code à 8 chiffres</p>
-      <div class="ptvinputs">
-        <input class="ptvd" id="ptv0" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
-        <input class="ptvd" id="ptv1" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
-        <input class="ptvd" id="ptv2" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
-        <input class="ptvd" id="ptv3" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
-        <input class="ptvd" id="ptv4" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
-        <input class="ptvd" id="ptv5" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
-        <input class="ptvd" id="ptv6" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
-        <input class="ptvd" id="ptv7" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
-      </div>
-      <div class="ptverr" id="ptverr">❌ Code incorrect. Vérifiez votre code VIP.</div>
-      <div class="ptvexp" id="ptvexp">⏰ Accès expiré. Renouvelez votre abonnement.</div>
-      <button class="ptvbtn" id="ptvbtn" onclick="ptvGo()" disabled>ACCÉDER AUX PRONOS →</button>
-      <a href="https://pronoturf-vip.netlify.app" style="color:#00B1FA;font-size:.85em;text-decoration:none;font-weight:600">💎 S'abonner — 5,99€/mois</a>
-    </div>
-    <div style="margin-top:20px;color:#555;font-size:.78em">📞 09 74 75 13 13</div>
+<!-- HEADER -->
+<header>
+  <h1>🏇 PRONOTURF PRO <span class="live-badge">LIVE</span></h1>
+  <p>V10.0 · 11/04/2026 · Quinté+ Premium · 5€99/mois</p>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-date">🗓️ Samedi 11 Avril 2026 · R1C4 · Vincennes · Attelé</div>
+  <div class="hero-title">🏆 Sélection du Jour<br>Quinté+ Premium</div>
+  <div class="hero-sub">Analyse IA · CDJ · Quartés · Quintés<br>Résultats en temps réel</div>
+  <a href="pronoturf_pro_v10.html" class="btn" style="max-width:280px;margin:0 auto;">🎯 Accéder à la sélection</a>
+</div>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stat-box"><div class="stat-val s-green">+112€</div><div class="stat-lbl">P&L Total</div></div>
+  <div class="stat-box"><div class="stat-val s-orange">77.8%</div><div class="stat-lbl">Taux CDJ</div></div>
+  <div class="stat-box"><div class="stat-val s-fire">18</div><div class="stat-lbl">Courses</div></div>
+</div>
+
+<!-- COUNTDOWN -->
+<div class="section" style="padding-bottom:0">
+  <div class="countdown-box">
+    <div class="countdown-lbl">⏳ Départ dans</div>
+    <div class="countdown-val" id="cdwn">--:--:--</div>
+    <div class="countdown-lbl">R1C4 · Prix Henri Levesque · 15h15</div>
   </div>
 </div>
 
-<!-- ═══ APP VIP (contenu de app.html ici) ═══ -->
-<div id="ptv-app">
-<body>
-</script>
-<div class="box">
-  <div class="logo">🏇 PRONOTURF VIP</div>
-  <p class="sub">Accès membres VIP exclusif</p>
-  <div class="card">
-    <div class="ico">🔐</div>
-    <div class="ttl">Code accès VIP</div>
-    <p class="hint">Entrez votre code à 8 chiffres</p>
-    <div class="inputs">
-      <input class="d" id="d0" maxlength="1" type="tel" inputmode="numeric">
-      <input class="d" id="d1" maxlength="1" type="tel" inputmode="numeric">
-      <input class="d" id="d2" maxlength="1" type="tel" inputmode="numeric">
-      <input class="d" id="d3" maxlength="1" type="tel" inputmode="numeric">
-      <input class="d" id="d4" maxlength="1" type="tel" inputmode="numeric">
-      <input class="d" id="d5" maxlength="1" type="tel" inputmode="numeric">
-      <input class="d" id="d6" maxlength="1" type="tel" inputmode="numeric">
-      <input class="d" id="d7" maxlength="1" type="tel" inputmode="numeric">
+<!-- COURSE DU JOUR -->
+<div class="section">
+  <div class="sec-title">🎯 Sélection · 11/04/2026</div>
+  <div class="course-card">
+    <div class="course-card-head">
+      <span class="course-card-title">🏇 Attelé · Vincennes</span>
+      <span style="background:#ff6b3522;color:#ff6b35;font-size:11px;padding:3px 10px;border-radius:8px;font-weight:700;">R1C4</span>
     </div>
-    <div class="msg err" id="er">❌ Code incorrect. Vérifiez votre code VIP.</div>
-    <div class="msg exp" id="ex">⏰ Accès expiré. Renouvelez votre abonnement.</div>
-    <button class="btn" id="btn" onclick="go()" disabled>ACCÉDER AUX PRONOS →</button>
-    <a href="https://pronoturf-vip.netlify.app" class="lnk">💎 S'abonner — 5,99€/mois</a>
+    <div class="trow"><span class="lb">📏 Distance</span><span class="vl">2 700 m</span></div>
+    <div class="trow"><span class="lb">🕒 Départ</span><span class="vl" style="color:#4fc3f7">15h15</span></div>
+    <div class="trow"><span class="lb">⭐ C1 (Base 1)</span><span class="vl" style="color:#ff6b35">N°14</span></div>
+    <div class="trow"><span class="lb">C2 (Base 2)</span><span class="vl" style="color:#ff6b35">N°15</span></div>
+    <div class="trow"><span class="lb">🎯 CDJ</span><span class="vl" style="color:#f5a623">R1 · N°309 · 20€</span></div>
+    <div class="trow"><span class="lb">⚡ DM ⚠️</span><span class="vl" style="color:#00c896">R1 · N°609 · 10€</span></div>
+    <div class="trow"><span class="lb">🔎 Outsiders</span><span class="vl" style="color:#f5a623">N°4 · N°8</span></div>
+    <div style="margin-top:10px;font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Sélection complète (8 ch.)</div>
+    <div class="chips">
+      <span class="chip">N°14</span><span class="chip">N°15</span><span class="chip">N°10</span><span class="chip">N°9</span>
+      <span class="chip">N°7</span><span class="chip">N°12</span><span class="chip">N°13</span><span class="chip">N°5</span>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Tickets VIP · 💎 Abonnés</div>
+    <div class="chips">
+      <span class="chip b">QA : 14·15·10·9</span>
+      <span class="chip b">QB : 15·10·9·7</span>
+      <span class="chip" style="background:#7c3aed22;border-color:#7c3aed;color:#b39ddb">5A : 14·15·10·9·7</span>
+      <span class="chip" style="background:#7c3aed22;border-color:#7c3aed;color:#b39ddb">5B : 15·10·9·7·12</span>
+    </div>
   </div>
-  <div class="foot">📞 Support VIP : 09 74 75 13 13</div>
-</div>
-<script>
-// ══════════════════════════════════════
-//  CODES VIP  →  ajouter ici les abonnés
-// ══════════════════════════════════════
-var C = {
-  "47291836": "2026-05-11",
-  "93847162": "2026-05-11",
-  "28374951": "2026-04-13",
-  "12345678": "2026-06-30",
-  "00000000": "2099-12-31"
-};
-// ══════════════════════════════════════
-function gd(i){return document.getElementById("d"+i);}
-function gc(){var s="";for(var i=0;i<8;i++)s+=gd(i).value;return s;}
-for(var _=0;_<8;_++){(function(i){
-  gd(i).oninput=function(){
-    this.value=this.value.replace(/[^0-9]/g,"");
-    this.className="d"+(this.value?" ok":"");
-    if(this.value&&i<7)gd(i+1).focus();
-    document.getElementById("btn").disabled=gc().length<8;
-  };
-  gd(i).onkeydown=function(e){
-    if(e.key==="Backspace"&&!this.value&&i>0)gd(i-1).focus();
-  };
-  gd(i).addEventListener("paste",function(e){
-    e.preventDefault();
-    var p=(e.clipboardData||window.clipboardData).getData("text").replace(/[^0-9]/g,"");
-    if(p.length===8){for(var j=0;j<8;j++){gd(j).value=p[j]||"";gd(j).className="d"+(p[j]?" ok":"");}document.getElementById("btn").disabled=false;gd(7).focus();}
-  });
-}(_));}
-function go(){
-  var code=gc();
-  document.getElementById("er").style.display="none";
-  document.getElementById("ex").style.display="none";
-  if(!C[code]){
-    document.getElementById("er").style.display="block";
-    for(var i=0;i<8;i++){gd(i).value="";gd(i).className="d";}
-    gd(0).focus();return;
-  }
-  var exp=new Date(C[code]),now=new Date();
-  now.setHours(0,0,0,0);
-  if(now>exp){document.getElementById("ex").style.display="block";return;}
-  sessionStorage.setItem("vip","1");
-  sessionStorage.setItem("vip_days",Math.ceil((exp-now)/86400000));
-  sessionStorage.setItem("vip_code",code);
-  window.location.href="app.html";
-}
-if(sessionStorage.getItem("vip")==="1")window.location.href="app.html";
-gd(0).focus();
-</script>
-</body>
+  <a href="pronoturf_pro_v10.html" class="btn bl">💎 Voir tous les tickets VIP</a>
 </div>
 
+<!-- PERFORMANCE PROOF -->
+<div class="section" style="padding-top:0">
+  <div class="sec-title">📊 Performance · 18 courses</div>
+  <div class="proof-bar">
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#888;">Taux CDJ</span><span style="color:#00c896;font-weight:700;">77.8%</span></div>
+    <div class="score-bar"><div class="score-fill sf-green" style="width:77.8%"></div></div>
+    <div style="height:10px"></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#888;">Top5 couverts</span><span style="color:#00c896;font-weight:700;">83.3%</span></div>
+    <div class="score-bar"><div class="score-fill sf-green" style="width:83.3%"></div></div>
+    <div style="height:10px"></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#888;">ROI</span><span style="color:#f5a623;font-weight:700;">51.9%</span></div>
+    <div class="score-bar"><div class="score-fill sf-orange" style="width:52%"></div></div>
+  </div>
+
+  <!-- Derniers résultats -->
+  <div style="font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Derniers résultats</div>
+  <div class="result-mini" style="border-color:#e9456033;">
+    <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+      <span style="font-weight:700;font-size:12px;">10/04 · Vincennes · Attelé</span>
+      <span class="badge-loss">-12€</span>
+    </div>
+    <div style="font-size:11px;color:#ccc;">Arrivée : <b>15-6-14-7-10</b> · <span class="badge-win">3/5</span> · CDJ N°206 <span class="badge-loss">❌</span></div>
+  </div>
+  <div class="result-mini" style="border-color:#00c89633;">
+    <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+      <span style="font-weight:700;font-size:12px;">08/04 · Lyon-Parilly · Attelé</span>
+      <span class="badge-win">CDJ ✅</span>
+    </div>
+    <div style="font-size:11px;color:#ccc;">Arrivée : <b>4-14-3-9-16</b> · <span class="badge-win">4/5</span> · CDJ + DM ✅</div>
+  </div>
+  <div class="result-mini" style="border-color:#00c89633;">
+    <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+      <span style="font-weight:700;font-size:12px;">06/04 · Compiègne · Steeple</span>
+      <span class="badge-win">CDJ ✅ DM ✅</span>
+    </div>
+    <div style="font-size:11px;color:#ccc;">Arrivée : <b>10-2-1-6-7</b> · <span class="badge-win">4/5</span></div>
+  </div>
+  <a href="pronoturf_pro_v10.html#historique" class="btn gr" style="font-size:12px;padding:10px;">📋 Voir tout l'historique (18 courses)</a>
+</div>
+
+<!-- OFFRE VIP -->
+<div class="section" style="padding-top:0">
+  <div class="sec-title">💎 Abonnement VIP</div>
+  <div class="offer-card">
+    <div style="font-size:12px;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:1px;">Accès complet · Sans engagement</div>
+    <div class="offer-price">5€99<span style="font-size:16px;font-weight:400;">/mois</span></div>
+    <ul class="offer-features">
+      <li>Sélection 8 chevaux quotidienne</li>
+      <li>C1 · C2 · D1 couplé</li>
+      <li>2 Quartés + 2 Quintés optimisés</li>
+      <li>CDJ (Cheval du Jour) Simple Gagnant</li>
+      <li>DM (Dernière Minute) alertes</li>
+      <li>Analyse IA pré-race complète</li>
+      <li>Historique + bilan en temps réel</li>
+      <li>3 jours offerts à l'inscription</li>
+    </ul>
+  </div>
+  <div class="stripe-wrap">
+    <div style="font-size:12px;color:#888;margin-bottom:12px;">✅ Paiement sécurisé · Annulable à tout moment</div>
+    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+    <stripe-buy-button
+      buy-button-id="buy_btn_1TJA2oLxF5p3oweGBIKsi0bd"
+      publishable-key="pk_live_51TFzkQLxF5p3oweGivzBB7Pun3jAtPjDstXlEK0HiuxQf7L0cDjWw3nYPqMls5MatQqeM8uILOlShbe6hhBkt37H00rQJHVv9o"
+    ></stripe-buy-button>
+    <div style="margin-top:10px;font-size:11px;color:#444;">5€99/mois · 3 jours offerts · Annulable à tout moment</div>
+  </div>
+  <a href="pronoturf_pro_v10.html" class="btn">🎯 Accéder à l'application</a>
+</div>
+
+<!-- RÉSEAUX SOCIAUX -->
+<div class="section" style="padding-top:0">
+  <div class="sec-title">🌐 Nos Réseaux</div>
+  <div class="socials">
+    <a href="https://www.facebook.com/profile.php?id=61582853518286" target="_blank" class="social-btn" style="background:#1877F2;">
+      <span class="ico">📘</span><div><div class="st">Facebook</div><div class="sl">PRONOTURF</div></div>
+    </a>
+    <a href="https://chat.whatsapp.com/GOx17Gz6ybO26x70bdnX4t?mode=gi_t" target="_blank" class="social-btn" style="background:#25D366;">
+      <span class="ico">💬</span><div><div class="st">WhatsApp</div><div class="sl">Groupe VIP</div></div>
+    </a>
+    <a href="https://t.me/+Y1GWodzG4zJmNTM0" target="_blank" class="social-btn" style="background:#0088cc;">
+      <span class="ico">✈️</span><div><div class="st">Telegram</div><div class="sl">Alertes live</div></div>
+    </a>
+    <a href="pronoturf_pro_v10.html" class="social-btn" style="background:linear-gradient(135deg,#ff6b35,#e94560);">
+      <span class="ico">📱</span><div><div class="st">Application</div><div class="sl">V10.0 LIVE</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>🏇 PRONOTURF PRO V10.0 · pronoturfpro.fr<br>
+  Les paris comportent des risques. Jouez de manière responsable.<br>
+  <a href="https://www.pmu.fr" target="_blank">PMU.fr</a> · 18+ · <a href="#">Mentions légales</a>
+  </p>
+</footer>
+
+<!-- FAB -->
+<a href="pronoturf_pro_v10.html" class="fab">🎯 Sélection Live</a>
+
+<!-- COPY CONFIRM -->
+<div id="copy-confirm" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#00c896;color:#000;padding:10px 24px;border-radius:20px;font-weight:700;font-size:13px;display:none;z-index:999;">✅ Copié !</div>
+
 <script>
-// ══════════════════════════════════
-// CODES VIP  "CODE":"AAAA-MM-JJ"
-var PTV_CODES = {
-  "47291836":"2026-05-11",
-  "93847162":"2026-05-11",
-  "28374951":"2026-04-20",
-  "12345678":"2026-06-30",
-  "00000000":"2099-12-31"
-};
-// ══════════════════════════════════
-
-function ptvUnlock(){
-  document.getElementById("ptv-login").style.display="none";
-  document.getElementById("ptv-app").style.display="block";
+// ── COUNTDOWN ──
+function updateCountdown(){
+  const now = new Date();
+  const target = new Date(now);
+  target.setHours(15, 15, 0, 0);
+  if(now > target) target.setDate(target.getDate() + 1);
+  const diff = target - now;
+  if(diff <= 0){ document.getElementById('cdwn').textContent = '🏁 EN COURSE'; return; }
+  const h = Math.floor(diff/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  document.getElementById('cdwn').textContent =
+    String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
 }
+setInterval(updateCountdown, 1000);
+updateCountdown();
 
-// Déjà connecté ?
-var ptvOk=localStorage.getItem("ptv_ok");
-var ptvExp=localStorage.getItem("ptv_exp");
-if(ptvOk==="1" && ptvExp && new Date()<=new Date(ptvExp)){
-  ptvUnlock();
-} else {
-  localStorage.removeItem("ptv_ok");
-  localStorage.removeItem("ptv_exp");
-}
-
-function ptvGet(i){return document.getElementById("ptv"+i);}
-function ptvCode(){var s="";for(var i=0;i<8;i++)s+=ptvGet(i).value;return s;}
-
-for(var ptvI=0;ptvI<8;ptvI++){
-  (function(i){
-    ptvGet(i).oninput=function(){
-      this.value=this.value.replace(/[^0-9]/g,"");
-      this.className="ptvd"+(this.value?" ptv_ok":"");
-      if(this.value&&i<7)ptvGet(i+1).focus();
-      document.getElementById("ptvbtn").disabled=ptvCode().length<8;
-    };
-    ptvGet(i).onkeydown=function(e){
-      if(e.key==="Backspace"&&!this.value&&i>0)ptvGet(i-1).focus();
-    };
-  }(ptvI));
-}
-
-function ptvGo(){
-  var code=ptvCode();
-  document.getElementById("ptverr").style.display="none";
-  document.getElementById("ptvexp").style.display="none";
-  if(!PTV_CODES[code]){
-    document.getElementById("ptverr").style.display="block";
-    for(var i=0;i<8;i++){ptvGet(i).value="";ptvGet(i).className="ptvd";}
-    ptvGet(0).focus();return;
-  }
-  var exp=new Date(PTV_CODES[code]),now=new Date();
-  now.setHours(0,0,0,0);
-  if(now>exp){document.getElementById("ptvexp").style.display="block";return;}
-  localStorage.setItem("ptv_ok","1");
-  localStorage.setItem("ptv_exp",PTV_CODES[code]);
-  ptvUnlock();
+// ── SHARE WA ──
+function shareWA(){
+  const txt = `🏇 PRONOTURF PRO · 11/04/2026 🟢
+━━━━━━━━━━━━━━━
+🏆 R1C4 · Attelé · Vincennes · 15h15
+🐴 Sélection : 14-15-10-9-7-12-13-5
+⭐ C1 : N°14 · C2 : N°15
+🎯 CDJ : R1-N°309 · 20€
+⚡ DM : R1-N°609 · 10€ ⚠️
+🔎 Outsiders : N°4 · N°8
+━━━━━━━━━━━━━━━
+📈 Bilan : +112€ · 77.8% CDJ · 18 courses
+💎 Tickets complets → 5€99/mois
+👉 pronoturfpro.fr`;
+  window.open('https://wa.me/?text='+encodeURIComponent(txt));
 }
 </script>
-
 </body>
 </html>
