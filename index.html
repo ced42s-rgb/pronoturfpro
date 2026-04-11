@@ -3,31 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Pronoturf VIP - Connexion</title>
+<title>Pronoturf VIP</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:sans-serif;background:linear-gradient(135deg,#0a0a0a,#1a1a2e,#16213e);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.box{max-width:380px;width:100%;text-align:center}
-.logo{font-size:2.4em;font-weight:800;color:#FFD700;margin-bottom:6px}
-.sub{color:#aaa;font-size:.9em;margin-bottom:30px}
-.card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:32px 22px}
-.ico{font-size:2.8em;margin-bottom:12px}
-.ttl{font-size:1.3em;font-weight:700;margin-bottom:6px}
-.hint{color:#aaa;font-size:.82em;margin-bottom:22px}
-.inputs{display:flex;gap:7px;justify-content:center;margin-bottom:20px}
-.d{width:40px;height:52px;border-radius:10px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:#fff;font-size:1.5em;font-weight:800;text-align:center;outline:none;transition:border-color .2s}
-.d:focus{border-color:#FFD700;background:rgba(255,215,0,.08)}
-.d.ok{border-color:#00ff88;background:rgba(0,255,136,.07)}
-.btn{width:100%;padding:15px;border-radius:40px;border:none;font-size:1.05em;font-weight:700;cursor:pointer;background:linear-gradient(45deg,#FFD700,#FFA500);color:#000;margin-bottom:14px;transition:opacity .2s}
-.btn:disabled{opacity:.3;cursor:not-allowed}
-.msg{border-radius:12px;padding:12px;font-size:.87em;font-weight:600;display:none;margin-bottom:12px}
-.err{background:rgba(231,76,60,.15);color:#ff6b6b;border:1px solid rgba(231,76,60,.35)}
-.exp{background:rgba(255,165,0,.15);color:#FFA500;border:1px solid rgba(255,165,0,.35)}
-.lnk{color:#00B1FA;font-size:.85em;text-decoration:none;font-weight:600}
-.foot{margin-top:24px;color:#555;font-size:.78em}
+#ptv-login{display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#0a0a0a,#1a1a2e,#16213e);z-index:99999;align-items:center;justify-content:center;padding:20px}
+#ptv-app{display:none}
+.ptvbox{max-width:380px;width:100%;text-align:center}
+.ptvlogo{font-size:2.4em;font-weight:800;color:#FFD700;margin-bottom:6px}
+.ptvcard{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:32px 22px;color:#fff}
+.ptvinputs{display:flex;gap:7px;justify-content:center;margin:20px 0}
+.ptvd{width:40px;height:52px;border-radius:10px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:#fff;font-size:1.5em;font-weight:800;text-align:center;outline:none}
+.ptvd:focus{border-color:#FFD700}
+.ptvd.ptv_ok{border-color:#00ff88}
+.ptvbtn{width:100%;padding:15px;border-radius:40px;border:none;font-size:1.05em;font-weight:700;cursor:pointer;background:linear-gradient(45deg,#FFD700,#FFA500);color:#000;margin-bottom:14px}
+.ptvbtn:disabled{opacity:.3;cursor:not-allowed}
+.ptverr{background:rgba(231,76,60,.15);color:#ff6b6b;border:1px solid rgba(231,76,60,.35);border-radius:12px;padding:12px;font-size:.87em;display:none;margin-bottom:12px}
+.ptvexp{background:rgba(255,165,0,.15);color:#FFA500;border:1px solid rgba(255,165,0,.35);border-radius:12px;padding:12px;font-size:.87em;display:none;margin-bottom:12px}
 </style>
 </head>
 <body>
+
+<!-- ═══ ÉCRAN LOGIN ═══ -->
+<div id="ptv-login">
+  <div class="ptvbox">
+    <div class="ptvlogo">🏇 PRONOTURF VIP</div>
+    <p style="color:#aaa;font-size:.9em;margin-bottom:28px">Accès membres VIP exclusif</p>
+    <div class="ptvcard">
+      <div style="font-size:2.8em;margin-bottom:12px">🔐</div>
+      <div style="font-size:1.3em;font-weight:700;margin-bottom:6px">Code accès VIP</div>
+      <p style="color:#aaa;font-size:.82em;margin-bottom:4px">Entrez votre code à 8 chiffres</p>
+      <div class="ptvinputs">
+        <input class="ptvd" id="ptv0" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
+        <input class="ptvd" id="ptv1" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
+        <input class="ptvd" id="ptv2" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
+        <input class="ptvd" id="ptv3" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
+        <input class="ptvd" id="ptv4" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
+        <input class="ptvd" id="ptv5" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
+        <input class="ptvd" id="ptv6" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
+        <input class="ptvd" id="ptv7" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
+      </div>
+      <div class="ptverr" id="ptverr">❌ Code incorrect. Vérifiez votre code VIP.</div>
+      <div class="ptvexp" id="ptvexp">⏰ Accès expiré. Renouvelez votre abonnement.</div>
+      <button class="ptvbtn" id="ptvbtn" onclick="ptvGo()" disabled>ACCÉDER AUX PRONOS →</button>
+      <a href="https://pronoturf-vip.netlify.app" style="color:#00B1FA;font-size:.85em;text-decoration:none;font-weight:600">💎 S'abonner — 5,99€/mois</a>
+    </div>
+    <div style="margin-top:20px;color:#555;font-size:.78em">📞 09 74 75 13 13</div>
+  </div>
+</div>
+
+<!-- ═══ APP VIP (contenu de app.html ici) ═══ -->
+<div id="ptv-app">
+<body>
+</script>
 <div class="box">
   <div class="logo">🏇 PRONOTURF VIP</div>
   <p class="sub">Accès membres VIP exclusif</p>
@@ -54,13 +80,12 @@ body{font-family:sans-serif;background:linear-gradient(135deg,#0a0a0a,#1a1a2e,#1
 </div>
 <script>
 // ══════════════════════════════════════
-//  CODES VIP → ajouter ici les abonnés
-//  "CODE8CHF": "AAAA-MM-JJ"
+//  CODES VIP  →  ajouter ici les abonnés
 // ══════════════════════════════════════
 var C = {
   "47291836": "2026-05-11",
   "93847162": "2026-05-11",
-  "28374951": "2026-04-20",
+  "28374951": "2026-04-13",
   "12345678": "2026-06-30",
   "00000000": "2099-12-31"
 };
@@ -103,5 +128,70 @@ function go(){
 if(sessionStorage.getItem("vip")==="1")window.location.href="app.html";
 gd(0).focus();
 </script>
+</body>
+</div>
+
+<script>
+// ══════════════════════════════════
+// CODES VIP  "CODE":"AAAA-MM-JJ"
+var PTV_CODES = {
+  "47291836":"2026-05-11",
+  "93847162":"2026-05-11",
+  "28374951":"2026-04-20",
+  "12345678":"2026-06-30",
+  "00000000":"2099-12-31"
+};
+// ══════════════════════════════════
+
+function ptvUnlock(){
+  document.getElementById("ptv-login").style.display="none";
+  document.getElementById("ptv-app").style.display="block";
+}
+
+// Déjà connecté ?
+var ptvOk=localStorage.getItem("ptv_ok");
+var ptvExp=localStorage.getItem("ptv_exp");
+if(ptvOk==="1" && ptvExp && new Date()<=new Date(ptvExp)){
+  ptvUnlock();
+} else {
+  localStorage.removeItem("ptv_ok");
+  localStorage.removeItem("ptv_exp");
+}
+
+function ptvGet(i){return document.getElementById("ptv"+i);}
+function ptvCode(){var s="";for(var i=0;i<8;i++)s+=ptvGet(i).value;return s;}
+
+for(var ptvI=0;ptvI<8;ptvI++){
+  (function(i){
+    ptvGet(i).oninput=function(){
+      this.value=this.value.replace(/[^0-9]/g,"");
+      this.className="ptvd"+(this.value?" ptv_ok":"");
+      if(this.value&&i<7)ptvGet(i+1).focus();
+      document.getElementById("ptvbtn").disabled=ptvCode().length<8;
+    };
+    ptvGet(i).onkeydown=function(e){
+      if(e.key==="Backspace"&&!this.value&&i>0)ptvGet(i-1).focus();
+    };
+  }(ptvI));
+}
+
+function ptvGo(){
+  var code=ptvCode();
+  document.getElementById("ptverr").style.display="none";
+  document.getElementById("ptvexp").style.display="none";
+  if(!PTV_CODES[code]){
+    document.getElementById("ptverr").style.display="block";
+    for(var i=0;i<8;i++){ptvGet(i).value="";ptvGet(i).className="ptvd";}
+    ptvGet(0).focus();return;
+  }
+  var exp=new Date(PTV_CODES[code]),now=new Date();
+  now.setHours(0,0,0,0);
+  if(now>exp){document.getElementById("ptvexp").style.display="block";return;}
+  localStorage.setItem("ptv_ok","1");
+  localStorage.setItem("ptv_exp",PTV_CODES[code]);
+  ptvUnlock();
+}
+</script>
+
 </body>
 </html>
