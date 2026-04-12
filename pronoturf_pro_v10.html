@@ -967,7 +967,7 @@ function sd(d){
   localStorage.setItem(KEY, JSON.stringify(d)); // conservé pour compat
   if(typeof AppState !== 'undefined') AppState.set('bets', d);
 }
-function getPin(){return localStorage.getItem(PINS_KEY)||'0404';}
+function getPin(){return localStorage.getItem(PINS_KEY)||'15081972';}
 
 function renderAll(){
   const d = gd();
@@ -1082,7 +1082,7 @@ function _unlockVIP(){
 function logout(){document.getElementById('vip-locked').style.display='block';document.getElementById('vip-content').style.display='none';localStorage.removeItem('is_vip');}
 function checkAdminPin(){if(document.getElementById('admin-pin-in').value.trim()===ADMIN_PIN){document.getElementById('admin-locked-screen').style.display='none';document.getElementById('admin-content').style.display='block';}else document.getElementById('admin-pin-err').textContent='❌ PIN incorrect.';}
 function logoutAdmin(){document.getElementById('admin-locked-screen').style.display='block';document.getElementById('admin-content').style.display='none';}
-function savePins(){localStorage.setItem(PINS_KEY,document.getElementById('set-vip').value||'0404');alert('✅ PIN VIP sauvegardé !');}
+function savePins(){localStorage.setItem(PINS_KEY,document.getElementById('set-vip').value||'15081972');alert('✅ PIN VIP sauvegardé !');}
 
 const TEXTS={
   free:`🏇 PRONOTURF PRO · 13/04/2026
