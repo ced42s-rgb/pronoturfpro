@@ -316,7 +316,7 @@ tr:hover td{background:#1a1a2e55;}
       <p style="color:#888;font-size:13px;margin-bottom:6px">Accès réservé aux abonnés</p>
       <p style="color:#ff6b35;font-size:22px;font-weight:900;margin-bottom:20px">5€99/mois</p>
       <div class="pin-input-row" style="max-width:220px;margin:0 auto 16px">
-        <input type="password" id="pin-in" maxlength="4" placeholder="••••" inputmode="numeric" onkeyup="if(event.key==='Enter')checkPin()">
+        <input type="password" id="pin-in" maxlength="8" placeholder="••••••••" inputmode="numeric" onkeyup="if(event.key==='Enter')checkPin()">
       </div>
       <button class="btn bl" style="max-width:220px;margin:0 auto" onclick="checkPin()">🔓 Accéder</button>
       <div id="pin-err" style="color:#e94560;font-size:12px;margin-top:10px;min-height:16px"></div>
@@ -441,7 +441,7 @@ tr:hover td{background:#1a1a2e55;}
         <button onclick="document.getElementById('pin-fallback').style.display=document.getElementById('pin-fallback').style.display==='none'?'block':'none'" style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;">PIN urgence</button>
         <div id="pin-fallback" style="display:none;margin-top:8px;">
           <div class="pin-input-row" style="max-width:160px;margin:0 auto 8px">
-            <input type="password" id="admin-pin-in" maxlength="4" placeholder="••••" onkeyup="if(event.key==='Enter')checkAdminPin()">
+            <input type="password" id="admin-pin-in" maxlength="8" placeholder="••••••••" onkeyup="if(event.key==='Enter')checkAdminPin()">
           </div>
           <button class="btn gr" style="max-width:160px;margin:0 auto;font-size:12px;" onclick="checkAdminPin()">🔓 PIN</button>
         </div>
@@ -457,7 +457,7 @@ tr:hover td{background:#1a1a2e55;}
     <div class="stitle">🔑 Code PIN VIP</div>
     <div class="ibox">
       <div class="form-group" style="margin-bottom:0"><label>Code PIN (5€99/mois)</label>
-        <div class="pin-input-row"><input type="text" id="set-vip" maxlength="4" placeholder="1234"></div>
+        <div class="pin-input-row"><input type="text" id="set-vip" maxlength="8" placeholder="12345678"></div>
       </div>
       <button class="btn bl" style="margin-top:12px" onclick="savePins()">💾 Sauvegarder</button>
     </div>
@@ -930,7 +930,7 @@ const CONFIG = {
   quintea: ['1','12','2','7','5'], quinteB: ['1','2','8','11','5'],
 };
 // ═══════════════════════════════════════════════════════════
-const KEY='pnturf_v151';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='1111';
+const KEY='pnturf_v152';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='1111';
 const INIT=[
   {"date":"2026-03-19","hippo":"Vincennes","disc":"Trot","sel":"11-5-6-2-1-9-7-8","cdj":"11","dm":"—","mise":12.0,"arr":"16-11-1-9-10","top5":"3/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":18.5},
   {"date":"2026-03-20","hippo":"Vincennes","disc":"Trot","sel":"1-7-8-12-4-3-2-5","cdj":"1","dm":"—","mise":12.0,"arr":"5-8-7-3-2","top5":"5/5","top3":"3/3","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"—","tck":"Quarté Plein","bilan":"5/5 ✅ QUARTÉ PLEIN 🎉","retour":42.0},
@@ -1061,7 +1061,7 @@ function renderHist(data){
 function checkPin(){
   const pin = (document.getElementById('pin-in').value || '').trim();
   const errEl = document.getElementById('pin-err');
-  if(!pin || pin.length !== 4){ errEl.textContent = '❌ PIN à 4 chiffres requis.'; return; }
+  if(!pin || pin.length < 4 || pin.length > 8){ errEl.textContent = '❌ PIN entre 4 et 8 chiffres requis.'; return; }
   errEl.textContent = '';
   // 1. PIN maître
   if(pin === getPin()){
@@ -1463,7 +1463,7 @@ function checkMagicLinkUrl(){
 const PAK='pnturf_abonnes_pins';
 function getPinsAbonnes(){try{return JSON.parse(localStorage.getItem(PAK))||[];}catch{return [];}}
 function savePinsAbonnes(p){localStorage.setItem(PAK,JSON.stringify(p));}
-function genererPinUnique(){const p=getPinsAbonnes().map(x=>x.pin);let pin;do{pin=String(Math.floor(1000+Math.random()*9000));}while(p.includes(pin));return pin;}
+function genererPinUnique(){const p=getPinsAbonnes().map(x=>x.pin);let pin;do{pin=String(Math.floor(10000000+Math.random()*90000000));}while(p.includes(pin));return pin;}
 function genererPinAbonne(){
   const email=document.getElementById('ab-email').value.trim().toLowerCase();
   const res=document.getElementById('ab-result');
