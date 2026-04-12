@@ -98,7 +98,7 @@ function go(){
     gd(0).focus();return;
   }
   var exp=new Date(C[code]),now=new Date();
-  now.setHours(0,0,0,0);
+  now.setHours(0,0,0,0,0,0,0,0);
   if(now>exp){
     document.getElementById("ex").style.display="block";return;
   }
