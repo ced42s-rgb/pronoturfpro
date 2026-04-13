@@ -130,9 +130,8 @@ tr:hover td{background:#1a1a2e55;}
   <button class="tab-btn" onclick="sw('vip',this)">💎 VIP</button>
   <button class="tab-btn" onclick="sw('analyse',this)">🧠 Analyse</button>
   <button class="tab-btn" onclick="sw('dashboard',this)">📊 Bilan</button>
-  <button class="tab-btn" onclick="sw('perf',this)">⭐ Perf</button>
   <button class="tab-btn" onclick="sw('partage',this)">📤 Partage</button>
-  <button class="tab-btn" onclick="sw('historique',this)">📋 Courses</button>
+  <button class="tab-btn" onclick="sw('historique',this)">⭐ Bilan</button>
   <button class="tab-btn" onclick="sw('admin',this)">⚙️ Admin</button>
 </div>
 
@@ -271,9 +270,36 @@ tr:hover td{background:#1a1a2e55;}
 
 <!-- HISTORIQUE -->
 <div id="tab-historique" class="tab-content">
-  <div class="stitle">📋 Historique des Courses</div>
+  <div class="stitle">⭐ Bilan · 19/03 → 13/04 · 21 courses</div>
+
+  <!-- KPIs RÉELS -->
+  <div class="kpi-grid">
+    <div class="kpi-card green"><div class="val">16/21</div><div class="lbl">CDJ Wins</div></div>
+    <div class="kpi-card fire"><div class="val">76.2%</div><div class="lbl">Taux CDJ</div></div>
+    <div class="kpi-card blue"><div class="val">17/21</div><div class="lbl">Top5 Sél.</div></div>
+    <div class="kpi-card orange"><div class="val">6 🎉</div><div class="lbl">5/5 Parfaits</div></div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card" style="border-color:#b39ddb"><div class="val" style="color:#b39ddb">+79€</div><div class="lbl">P&L Total</div></div>
+    <div class="kpi-card green"><div class="val" id="k-total-ret">—</div><div class="lbl">Retours</div></div>
+    <div class="kpi-card blue"><div class="val" id="k-total-mis">—</div><div class="lbl">Mises</div></div>
+    <div class="kpi-card fire"><div class="val">31.3%</div><div class="lbl">ROI 🔥</div></div>
+  </div>
+
+  <!-- NIVEAU -->
+  <div style="background:linear-gradient(135deg,#ff6b35,#e94560);border-radius:12px;padding:14px;margin-bottom:14px;text-align:center;">
+    <div style="font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Niveau Atteint</div>
+    <div style="font-size:20px;font-weight:900;color:#fff;">EXPERT ⭐⭐⭐⭐⭐</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:4px;">76.2% CDJ · 17/21 Top5 · P&L +79€ · ROI 31.3%</div>
+    <div style="margin-top:8px;background:rgba(0,0,0,.2);border-radius:8px;height:6px;overflow:hidden;">
+      <div style="width:76%;height:100%;background:#fff;border-radius:8px;"></div>
+    </div>
+  </div>
+
+  <!-- TABLEAU DYNAMIQUE (renderHist) -->
+  <div class="stitle" style="font-size:13px;">📋 Toutes les courses</div>
   <div class="table-wrap"><table>
-    <thead><tr><th>Date</th><th>Hippo</th><th>Disc.</th><th>CDJ</th><th>Pos.</th><th>Top5</th><th>Top3</th><th>Bilan</th></tr></thead>
+    <thead><tr><th>Date</th><th>Hippo</th><th>Disc.</th><th>CDJ</th><th>Pos.</th><th>Top5</th><th>Bilan</th></tr></thead>
     <tbody id="hist-body"></tbody>
   </table></div>
 </div>
@@ -358,77 +384,77 @@ tr:hover td{background:#1a1a2e55;}
 
       <!-- SOUS-ONGLETS CALC -->
       <div style="display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;">
-        <button id="ctab-analyse" class="ctab active" onclick="swCalc('analyse',this)">🎯 Analyse</button>
-        <button id="ctab-comb" class="ctab" onclick="swCalc('comb',this)">🎲 Combin.</button>
-        <button id="ctab-roi" class="ctab" onclick="swCalc('roi',this)">📈 ROI</button>
-        <button id="ctab-kelly" class="ctab" onclick="swCalc('kelly',this)">💎 Kelly</button>
+        <button id="v-ctab-analyse" class="ctab active" onclick="vSwCalc('analyse',this)">🎯 Analyse</button>
+        <button id="v-ctab-comb" class="ctab" onclick="vSwCalc('comb',this)">🎲 Combin.</button>
+        <button id="v-ctab-roi" class="ctab" onclick="vSwCalc('roi',this)">📈 ROI</button>
+        <button id="v-ctab-kelly" class="ctab" onclick="vSwCalc('kelly',this)">💎 Kelly</button>
       </div>
 
       <!-- ANALYSE PRONOSTIC -->
-      <div id="cc-analyse" class="cc-panel active">
+      <div id="v-cc-analyse" class="cc-panel active">
         <div class="ibox" style="border-color:#667eea55;font-size:12px;color:#aaa;">💡 Entrez votre pronostic — le calculateur génère les formules optimales.</div>
-        <div class="form-group"><label>🏇 Course</label><input type="text" id="c-course" value="Quinté+ du jour"></div>
+        <div class="form-group"><label>🏇 Course</label><input type="text" id="v-c-course" value="Quinté+ du jour"></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <div class="form-group"><label>Type</label>
-            <select id="c-type" style="background:#0d0d1a;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
+            <select id="v-c-type" style="background:#0d0d1a;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
               <option value="quinte">Quinté+</option><option value="quarte">Quarté+</option><option value="tierce">Tiercé</option>
             </select>
           </div>
-          <div class="form-group"><label>💰 Budget (€)</label><input type="number" id="c-budget" value="70" min="5"></div>
+          <div class="form-group"><label>💰 Budget (€)</label><input type="number" id="v-c-budget" value="70" min="5"></div>
         </div>
-        <div class="form-group"><label>🏆 Pronostic (ex: 1-12-2-8-16-11-7-5)</label><input type="text" id="c-prono" value="1-12-2-8-16-11-7-5"></div>
-        <div class="form-group"><label>⚡ Outsiders (optionnel)</label><input type="text" id="c-out" value="4-10"></div>
-        <div class="form-group"><label>⭐ CDJ (numéro)</label><input type="number" id="c-cdj" value="" min="1" placeholder="optionnel"></div>
+        <div class="form-group"><label>🏆 Pronostic (ex: 1-12-2-8-16-11-7-5)</label><input type="text" id="v-c-prono" value="1-12-2-8-16-11-7-5"></div>
+        <div class="form-group"><label>⚡ Outsiders (optionnel)</label><input type="text" id="v-c-out" value="4-10"></div>
+        <div class="form-group"><label>⭐ CDJ (numéro)</label><input type="number" id="v-c-cdj" value="" min="1" placeholder="optionnel"></div>
         <div class="form-group"><label>📊 Stratégie</label>
-          <select id="c-strat" style="background:#0d0d1a;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
+          <select id="v-c-strat" style="background:#0d0d1a;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
             <option value="securite">🛡️ Sécurité</option>
             <option value="equilibre" selected>⚖️ Équilibré</option>
             <option value="value">💎 Value</option>
             <option value="audace">⚔️ Audacieux</option>
           </select>
         </div>
-        <button class="btn" onclick="analyzeProno()">🔍 Générer les Formules</button>
-        <div id="c-result-analyse" style="margin-top:14px;"></div>
+        <button class="btn" onclick="vAnalyzeProno()">🔍 Générer les Formules</button>
+        <div id="v-c-result-analyse" style="margin-top:14px;"></div>
       </div>
 
       <!-- COMBINAISONS -->
-      <div id="cc-comb" class="cc-panel">
+      <div id="v-cc-comb" class="cc-panel">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <div class="form-group"><label>Type de pari</label>
-            <select id="cb-type" onchange="calcComb()" style="background:#0d0d1a;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
+            <select id="v-cb-type" onchange="vCalcComb()" style="background:#0d0d1a;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
               <option value="tierce">Tiercé (3)</option><option value="quarte">Quarté (4)</option>
               <option value="quinte">Quinté (5)</option><option value="multi4">Multi 4</option>
               <option value="multi5">Multi 5</option><option value="multi6">Multi 6</option><option value="multi7">Multi 7</option>
             </select>
           </div>
-          <div class="form-group"><label>Nb chevaux</label><input type="number" id="cb-nb" min="3" max="20" value="8" oninput="calcComb()"></div>
+          <div class="form-group"><label>Nb chevaux</label><input type="number" id="v-cb-nb" min="3" max="20" value="8" oninput="vCalcComb()"></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-          <div class="form-group"><label>Mise unitaire (€)</label><input type="number" id="cb-mise" min="0.1" step="0.1" value="1" oninput="calcComb()"></div>
+          <div class="form-group"><label>Mise unitaire (€)</label><input type="number" id="v-cb-mise" min="0.1" step="0.1" value="1" oninput="vCalcComb()"></div>
           <div class="form-group"><label>Ordre</label>
-            <select id="cb-ordre" onchange="calcComb()" style="background:#0d0d1a;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
+            <select id="v-cb-ordre" onchange="vCalcComb()" style="background:#0d0d1a;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
               <option value="desordre">Désordre</option><option value="ordre">Ordre</option>
             </select>
           </div>
         </div>
-        <button class="btn" onclick="calcComb()">🔢 Calculer</button>
-        <div id="c-result-comb" style="margin-top:14px;"></div>
+        <button class="btn" onclick="vCalcComb()">🔢 Calculer</button>
+        <div id="v-c-result-comb" style="margin-top:14px;"></div>
         <div class="stitle" style="font-size:13px;margin-top:16px;">📋 Table de Référence</div>
         <div class="table-wrap"><table style="min-width:300px;">
           <thead><tr><th>Type</th><th>Chevaux</th><th>Combin.</th><th>Coût 1€</th></tr></thead>
-          <tbody id="cb-table"></tbody>
+          <tbody id="v-cb-table"></tbody>
         </table></div>
       </div>
 
       <!-- ROI -->
-      <div id="cc-roi" class="cc-panel">
+      <div id="v-cc-roi" class="cc-panel">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-          <div class="form-group"><label>Total misé (€)</label><input type="number" id="roi-mise" min="0" value="252" oninput="calcROI()"></div>
-          <div class="form-group"><label>Total gains (€)</label><input type="number" id="roi-gains" min="0" value="331" oninput="calcROI()"></div>
+          <div class="form-group"><label>Total misé (€)</label><input type="number" id="v-roi-mise" min="0" value="252" oninput="vCalcROI()"></div>
+          <div class="form-group"><label>Total gains (€)</label><input type="number" id="v-roi-gains" min="0" value="331" oninput="vCalcROI()"></div>
         </div>
-        <div class="form-group"><label>Nombre de courses</label><input type="number" id="roi-nb" min="1" value="21" oninput="calcROI()"></div>
-        <button class="btn" onclick="calcROI()">📊 Calculer ROI</button>
-        <div id="c-result-roi" style="margin-top:14px;"></div>
+        <div class="form-group"><label>Nombre de courses</label><input type="number" id="v-roi-nb" min="1" value="21" oninput="vCalcROI()"></div>
+        <button class="btn" onclick="vCalcROI()">📊 Calculer ROI</button>
+        <div id="v-c-result-roi" style="margin-top:14px;"></div>
         <div class="ibox" style="margin-top:12px;font-size:12px;">
           <b style="color:#ff6b35;">Références Pro :</b><br>
           🔴 &lt;0% · Débutant · 🟡 0–10% · Intermédiaire<br>
@@ -437,21 +463,21 @@ tr:hover td{background:#1a1a2e55;}
       </div>
 
       <!-- KELLY -->
-      <div id="cc-kelly" class="cc-panel">
+      <div id="v-cc-kelly" class="cc-panel">
         <div class="ibox" style="border-color:#00c89655;font-size:12px;color:#aaa;">💡 Kelly calcule la mise optimale selon votre edge. Fractionné × 0.25 recommandé.</div>
-        <div class="form-group"><label>🎯 Cote proposée</label><input type="number" id="k-cote" step="0.1" value="3.5" min="1.01" oninput="calcKelly()"></div>
-        <div class="form-group"><label>📊 Probabilité estimée %</label><input type="number" id="k-prob" step="0.1" value="35" min="1" max="99" oninput="calcKelly()"></div>
-        <div class="form-group"><label>💰 Bankroll totale (€)</label><input type="number" id="k-bk" value="1000" min="1" oninput="calcKelly()"></div>
+        <div class="form-group"><label>🎯 Cote proposée</label><input type="number" id="v-k-cote" step="0.1" value="3.5" min="1.01" oninput="vCalcKelly()"></div>
+        <div class="form-group"><label>📊 Probabilité estimée %</label><input type="number" id="v-k-prob" step="0.1" value="35" min="1" max="99" oninput="vCalcKelly()"></div>
+        <div class="form-group"><label>💰 Bankroll totale (€)</label><input type="number" id="v-k-bk" value="1000" min="1" oninput="vCalcKelly()"></div>
         <div class="form-group"><label>⚙️ Fraction Kelly</label>
-          <select id="k-frac" onchange="calcKelly()" style="background:#0d0d1a;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
+          <select id="v-k-frac" onchange="vCalcKelly()" style="background:#0d0d1a;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
             <option value="1">Kelly Plein (risqué)</option>
             <option value="0.5">Kelly ½</option>
             <option value="0.25" selected>Kelly ¼ (recommandé)</option>
             <option value="0.1">Kelly 1/10 (conservateur)</option>
           </select>
         </div>
-        <button class="btn" onclick="calcKelly()">💎 Calculer Mise Kelly</button>
-        <div id="c-result-kelly" style="margin-top:14px;"></div>
+        <button class="btn" onclick="vCalcKelly()">💎 Calculer Mise Kelly</button>
+        <div id="v-c-result-kelly" style="margin-top:14px;"></div>
       </div>
 
     </div>
@@ -597,283 +623,6 @@ tr:hover td{background:#1a1a2e55;}
 </div>
 
 <!-- PERF -->
-<div id="tab-perf" class="tab-content">
-  <div class="stitle">⭐ Bilan Réel · 19/03 → 13/04 · 21 courses jouées</div>
-
-  <!-- KPI PERF -->
-  <div class="kpi-grid">
-    <div class="kpi-card green"><div class="val">14/18</div><div class="lbl">CDJ Wins</div></div>
-    <div class="kpi-card fire"><div class="val">77.8%</div><div class="lbl">Taux CDJ</div></div>
-    <div class="kpi-card blue"><div class="val">15/18</div><div class="lbl">Top5 Sél.</div></div>
-    <div class="kpi-card orange"><div class="val">3 🎉</div><div class="lbl">Quartés Pleins</div></div>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi-card" style="border-color:#b39ddb"><div class="val" style="color:#b39ddb">+112€</div><div class="lbl">P&L Total</div></div>
-    <div class="kpi-card green"><div class="val">325€</div><div class="lbl">Retours</div></div>
-    <div class="kpi-card blue"><div class="val">204€</div><div class="lbl">Mises</div></div>
-    <div class="kpi-card fire"><div class="val">60.8%</div><div class="lbl">ROI 🔥</div></div>
-  </div>
-
-  <!-- NIVEAU -->
-  <div style="background:linear-gradient(135deg,#ff6b35,#e94560);border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;">
-    <div style="font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Niveau CDJ Atteint</div>
-    <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:2px;">EXPERT ⭐⭐⭐⭐⭐</div>
-    <div style="font-size:12px;color:rgba(255,255,255,.8);margin-top:4px;">77.8% CDJ · 15/18 Top5 · P&L +112€ · ROI 51.9%</div>
-    <div style="margin-top:10px;background:rgba(0,0,0,.2);border-radius:8px;height:8px;overflow:hidden;">
-      <div style="width:80%;height:100%;background:#fff;border-radius:8px;"></div>
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.5);margin-top:4px;"><span>0%</span><span>Expert 80%+</span><span>100%</span></div>
-  </div>
-
-  <!-- TABLEAU PAR JOUR -->
-  <div class="stitle" style="font-size:13px;">📋 Détail 21 Courses jouées</div>
-  <div class="table-wrap"><table style="min-width:400px;">
-    <thead><tr><th>Date</th><th>Hippo</th><th>Top5</th><th>CDJ</th><th>Retour</th><th>P&L</th></tr></thead>
-    <tbody>
-      <tr><td><b>19/03</b></td><td>Vincennes</td><td><span class="badge win">4/5</span></td><td><span class="badge win">1er ✅</span></td><td>18.5€</td><td style="color:#00c896">+6.5€</td></tr>
-      <tr style="background:#f5a62308"><td><b>20/03</b></td><td>Vincennes</td><td><span class="badge win">5/5</span></td><td><span class="badge win">1er ✅</span></td><td>42€</td><td style="color:#00c896;font-weight:700">+30€ 🎉</td></tr>
-      <tr style="background:#f5a62308"><td><b>21/03</b></td><td>Cagnes</td><td><span class="badge win">4/5</span></td><td><span class="badge win">2e ✅</span></td><td>28€</td><td style="color:#00c896;font-weight:700">+16€ 🎉</td></tr>
-      <tr><td><b>22/03</b></td><td>Compiègne</td><td><span class="badge win">4/5</span></td><td><span class="badge win">2e ✅</span></td><td>14€</td><td style="color:#00c896">+2€</td></tr>
-      <tr><td><b>23/03</b></td><td>Vincennes</td><td><span class="badge win">4/5</span></td><td><span class="badge win">2e ✅</span></td><td>12€</td><td style="color:#888">0€</td></tr>
-      <tr style="background:#e9456008"><td><b>24/03</b></td><td>Chantilly</td><td><span class="badge loss">3/5</span></td><td><span class="badge loss">❌</span></td><td>0€</td><td style="color:#e94560;font-weight:700">-12€ ❌</td></tr>
-      <tr style="background:#f5a62308"><td><b>25/03</b></td><td>Vincennes</td><td><span class="badge win">5/5</span></td><td><span class="badge win">1er ✅</span></td><td>56€</td><td style="color:#00c896;font-weight:700">+44€ 🎉</td></tr>
-      <tr><td><b>26/03</b></td><td>Lyon</td><td><span class="badge win">4/5</span></td><td><span class="badge win">1er ✅</span></td><td>16€</td><td style="color:#00c896">+4€</td></tr>
-      <tr><td><b>27/03</b></td><td>Vincennes</td><td><span class="badge win">5/5</span></td><td><span class="badge win">1er ✅</span></td><td>22€</td><td style="color:#00c896">+10€</td></tr>
-      <tr><td><b>28/03</b></td><td>Deauville</td><td><span class="badge win">5/5</span></td><td><span class="badge win">1er ✅</span></td><td>19€</td><td style="color:#00c896">+7€</td></tr>
-      <tr><td><b>29/03</b></td><td>Saint-Cloud</td><td><span class="badge win">4/5</span></td><td><span class="badge win">2e ✅</span></td><td>13€</td><td style="color:#00c896">+1€</td></tr>
-      <tr><td><b>30/03</b></td><td>Chantilly</td><td><span class="badge win">4/5</span></td><td><span class="badge win">1er ✅</span></td><td>15.5€</td><td style="color:#00c896">+3.5€</td></tr>
-      <tr style="background:#e9456008"><td><b>31/03</b></td><td>Fontaineb.</td><td><span class="badge win">4/5</span></td><td><span class="badge loss">❌</span></td><td>16€</td><td style="color:#00c896">+4€</td></tr>
-      <tr><td><b>01/04</b></td><td>Angers</td><td><span class="badge win">5/5</span></td><td><span class="badge win">1er ✅</span></td><td>28€</td><td style="color:#00c896">+19€</td></tr>
-      <tr style="background:#f5a62308"><td><b>04/04</b></td><td>Vincennes</td><td><span class="badge win">5/5</span></td><td><span class="badge loss">❌</span></td><td>45€</td><td style="color:#00c896;font-weight:700">+33€ 🏆</td></tr>
-      <tr style="background:#e9456008"><td><b>05/04</b></td><td>Longchamp</td><td><span class="badge loss">3/5</span></td><td><span class="badge loss">❌</span></td><td>9€</td><td style="color:#e94560">-3€</td></tr>
-      <tr><td><b>06/04</b></td><td>Compiègne</td><td><span class="badge win">4/5</span></td><td><span class="badge win">✅</span></td><td>7.3€</td><td style="color:#e94560">-4.7€</td></tr>
-      <tr style="background:#e9456008"><td><b>07/04</b></td><td>Plat R1C1</td><td><span class="badge win">4/5</span></td><td><span class="badge win">✅</span></td><td>2.5€</td><td style="color:#e94560">-9.5€</td></tr>
-      <tr style="background:#e9456008"><td><b>08/04</b></td><td>Lyon-Parilly</td><td><span class="badge win">4/5</span></td><td><span class="badge win">✅</span></td><td>3.1€</td><td style="color:#e94560">-8.9€</td></tr>
-      <tr style="background:#e9456008"><td><b>09/04</b></td><td>Prix Oiseleur</td><td><span class="badge win">3/5</span></td><td><span class="badge win">✅</span></td><td>1.7€</td><td style="color:#e94560">-10.3€</td></tr>
-      <tr style="background:#e9456008"><td><b>10/04</b></td><td>Vincennes</td><td><span class="badge win">3/5</span></td><td><span class="badge loss">❌</span></td><td>0€</td><td style="color:#e94560">-12€</td></tr>
-      <tr style="background:#f5a62308"><td><b>11/04</b></td><td>Vincennes</td><td><span class="badge win">5/5 🎉</span></td><td><span class="badge win">✅</span></td><td>1.6€</td><td style="color:#e94560">-10.4€ 🏆</td></tr>
-      <tr style="background:#e9456008"><td><b>12/04</b></td><td>Longchamp</td><td><span class="badge win">3/5</span></td><td><span class="badge loss">❌</span></td><td>0€ ⛔NP</td><td style="color:#e94560">-12€</td></tr>
-      <tr style="background:#f5a62308"><td><b>13/04</b></td><td>Auteuil</td><td><span class="badge win">5/5 🎉</span></td><td><span class="badge win">✅</span></td><td>2.2€</td><td style="color:#e94560">-9.8€</td></tr>
-    </tbody>
-  </table></div>
-    </tbody>
-  </table></div>
-
-  <!-- GRAPHIQUE CDJ CUMULÉ -->
-  <div class="stitle" style="font-size:13px;margin-top:16px;">📈 Taux CDJ Cumulé</div>
-  <div style="background:#1a1a2e;border:1px solid #333;border-radius:12px;padding:14px;margin-bottom:14px;">
-    <div style="display:flex;align-items:flex-end;justify-content:space-around;height:90px;gap:3px;">
-      <!-- J1→J12 hauteurs proportionnelles au taux CDJ cumulé -->
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#00c896;">100%</div>
-        <div style="width:100%;height:90px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">20/3</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#00c896;">100%</div>
-        <div style="width:100%;height:90px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">21/3</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#00c896;">100%</div>
-        <div style="width:100%;height:90px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">22/3</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#00c896;">100%</div>
-        <div style="width:100%;height:90px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">23/3</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#f5a623;">80%</div>
-        <div style="width:100%;height:72px;background:linear-gradient(180deg,#f5a623,#ff6b35);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">24/3</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#00c896;">83%</div>
-        <div style="width:100%;height:75px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">25/3</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#00c896;">86%</div>
-        <div style="width:100%;height:77px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">26/3</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#00c896;">88%</div>
-        <div style="width:100%;height:79px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">27/3</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#00c896;">89%</div>
-        <div style="width:100%;height:80px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">28/3</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#00c896;">90%</div>
-        <div style="width:100%;height:81px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">29/3</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#00c896;">91%</div>
-        <div style="width:100%;height:82px;background:linear-gradient(180deg,#00c896,#0288d1);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">30/3</div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
-        <div style="font-size:8px;color:#f5a623;">83%</div>
-        <div style="width:100%;height:75px;background:linear-gradient(180deg,#f5a623,#ff6b35);border-radius:3px 3px 0 0;"></div>
-        <div style="font-size:8px;color:#aaa;">31/3</div>
-      </div>
-    </div>
-    <div style="border-top:1px solid #2a2a3e;margin-top:8px;padding-top:5px;display:flex;justify-content:center;gap:16px;font-size:10px;">
-      <span style="color:#00c896;">■ WIN CDJ</span>
-      <span style="color:#f5a623;">■ LOSS CDJ</span>
-    </div>
-  </div>
-
-  <!-- STATS CLÉS -->
-  <div class="stitle" style="font-size:13px;">🏆 Points Forts Confirmés</div>
-  <div class="ibox" style="padding:10px 12px;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <div style="background:#f5a62311;border-left:3px solid #f5a623;padding:8px;border-radius:6px;font-size:11px;"><b>🎉 3 Quartés Pleins</b><br><span style="color:#aaa">20/03 · 21/03 · 25/03</span></div>
-      <div style="background:#00c89611;border-left:3px solid #00c896;padding:8px;border-radius:6px;font-size:11px;"><b>✅ 14/16 Gagnant sél.</b><br><span style="color:#aaa">87.5% — seules 24/03 et 05/04 hors sél.</span></div>
-      <div style="background:#00c89611;border-left:3px solid #00c896;padding:8px;border-radius:6px;font-size:11px;"><b>🥇 8 CDJ à la 1ère place</b><br><span style="color:#aaa">19 · 20 · 25 · 26 · 27 · 28 · 30/03 · 01/04</span></div>
-      <div style="background:#f5a62311;border-left:3px solid #f5a623;padding:8px;border-radius:6px;font-size:11px;"><b>🏆 04/04 QUARTÉ ORDRE</b><br><span style="color:#aaa">5/5 en ordre · Retour +33€</span></div>
-      <div style="background:#00c89611;border-left:3px solid #00c896;padding:8px;border-radius:6px;font-size:11px;"><b>💰 ROI +82.1%</b><br><span style="color:#aaa">201€ misés → 354€ retours</span></div>
-      <div style="background:#e9456011;border-left:3px solid #e94560;padding:8px;border-radius:6px;font-size:11px;"><b>⚠️ 3 LOSS CDJ</b><br><span style="color:#aaa">24/03 · 31/03 · 04/04 · 05/04</span></div>
-    </div>
-  </div>
-
-  <!-- OBJECTIFS SUITE -->
-  <div class="stitle" style="font-size:13px;">🎯 Objectifs Avril</div>
-  <div class="dmbox" style="font-size:12px;line-height:2;">
-    🏆 Maintenir CDJ 80%+ (80% — seuil Expert ✅)<br>
-    🎉 Viser un 4ème Quarté Plein<br>
-    💎 Bonus3 : continuer à couvrir le Top3<br>
-    📈 ROI +82.1% → objectif +100%<br>
-    🏇 Compiègne 06/04 : Steeple résultats ⏳
-  </div>
-
-  <!-- ECHELLE NIVEAUX -->
-  <div class="stitle" style="font-size:13px;">📊 Niveau CDJ</div>
-  <div class="ibox" style="padding:10px;">
-    <div style="padding:7px 10px;border-left:3px solid #ffd700;font-size:12px;color:#ffd700;margin-bottom:4px;">Expert · 80–100% · ← TU ES ICI (80%) ✅</div>
-    <div style="padding:7px 10px;border-left:3px solid #ff6b35;font-size:12px;color:#ff6b35;font-weight:700;background:#ff6b3511;border-radius:0 6px 6px 0;margin-bottom:4px;">Très Avancé · 70–80%</div>
-    <div style="padding:7px 10px;border-left:3px solid #00c896;font-size:12px;color:#00c896;margin-bottom:4px;">Avancé · 60–70%</div>
-    <div style="padding:7px 10px;border-left:3px solid #555;font-size:12px;color:#555;">Intermédiaire · &lt;60%</div>
-  </div>
-</div>
-
-<!-- CALC -->
-<div id="tab-calc" class="tab-content">
-  <div class="stitle">🧮 Calculateur Paris Pro</div>
-
-  <!-- SOUS-ONGLETS CALC -->
-  <div style="display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;">
-    <button id="ctab-analyse" class="ctab active" onclick="swCalc('analyse',this)">🎯 Analyse</button>
-    <button id="ctab-comb" class="ctab" onclick="swCalc('comb',this)">🎲 Combinaisons</button>
-    <button id="ctab-roi" class="ctab" onclick="swCalc('roi',this)">📈 ROI</button>
-    <button id="ctab-kelly" class="ctab" onclick="swCalc('kelly',this)">💎 Kelly</button>
-  </div>
-
-  <!-- ANALYSE PRONOSTIC -->
-  <div id="cc-analyse" class="cc-panel active">
-    <div class="ibox" style="border-color:#667eea55;font-size:12px;color:#aaa;">
-      💡 Entrez votre pronostic — le calculateur génère les formules optimales selon votre budget et stratégie.
-    </div>
-    <div class="form-group"><label>🏇 Nom de la course</label><input type="text" id="c-course" value="Quinté+ du 11/04/2026 · Vincennes"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div class="form-group"><label>Type de course</label>
-        <select id="c-type" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
-          <option value="quinte">Quinté+</option><option value="quarte">Quarté+</option><option value="tierce">Tiercé</option>
-        </select>
-      </div>
-      <div class="form-group"><label>💰 Budget (€)</label><input type="number" id="c-budget" value="50" min="5"></div>
-    </div>
-    <div class="form-group"><label>🏆 Pronostic (ex: 1-6-4-14-7-11-2-3)</label><input type="text" id="c-prono" value="1-6-4-14-7-11-2-3" placeholder="séparés par tirets"></div>
-    <div class="form-group"><label>⚡ Outsiders (optionnel, ex: 13-12)</label><input type="text" id="c-out" value="13-12" placeholder="séparés par tirets"></div>
-    <div class="form-group"><label>⭐ Cheval du Jour (numéro)</label><input type="number" id="c-cdj" value="" min="1" placeholder="optionnel"></div>
-    <div class="form-group"><label>📊 Stratégie</label>
-      <select id="c-strat" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
-        <option value="securite">🛡️ Sécurité — Favoriser les bases</option>
-        <option value="equilibre" selected>⚖️ Équilibré — Mix bases/outsiders</option>
-        <option value="value">💎 Value — Exploiter les cotes</option>
-        <option value="audace">⚔️ Audacieux — Gros rapports</option>
-      </select>
-    </div>
-    <button class="btn" onclick="analyzeProno()">🔍 Générer les Formules</button>
-    <div id="c-result-analyse" style="margin-top:14px;"></div>
-  </div>
-
-  <!-- COMBINAISONS -->
-  <div id="cc-comb" class="cc-panel">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div class="form-group"><label>Type de pari</label>
-        <select id="cb-type" onchange="calcComb()" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
-          <option value="tierce">Tiercé (3)</option><option value="quarte">Quarté (4)</option>
-          <option value="quinte">Quinté (5)</option><option value="multi4">Multi 4</option>
-          <option value="multi5">Multi 5</option><option value="multi6">Multi 6</option>
-          <option value="multi7">Multi 7</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Nb chevaux sélectionnés</label><input type="number" id="cb-nb" min="3" max="20" value="8" oninput="calcComb()"></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div class="form-group"><label>Mise unitaire (€)</label><input type="number" id="cb-mise" min="0.1" step="0.1" value="1" oninput="calcComb()"></div>
-      <div class="form-group"><label>Ordre</label>
-        <select id="cb-ordre" onchange="calcComb()" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
-          <option value="desordre">Désordre</option><option value="ordre">Ordre</option>
-        </select>
-      </div>
-    </div>
-    <button class="btn" onclick="calcComb()">🔢 Calculer</button>
-    <div id="c-result-comb" style="margin-top:14px;"></div>
-
-    <div class="stitle" style="font-size:13px;margin-top:16px;">📋 Table de Référence</div>
-    <div class="table-wrap"><table style="min-width:320px;">
-      <thead><tr><th>Type</th><th>Chevaux</th><th>Combin.</th><th>Coût 1€</th></tr></thead>
-      <tbody id="cb-table"></tbody>
-    </table></div>
-  </div>
-
-  <!-- ROI -->
-  <div id="cc-roi" class="cc-panel">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div class="form-group"><label>Total misé (€)</label><input type="number" id="roi-mise" min="0" value="201" oninput="calcROI()"></div>
-      <div class="form-group"><label>Total gains (€)</label><input type="number" id="roi-gains" min="0" value="354" oninput="calcROI()"></div>
-    </div>
-    <div class="form-group"><label>Nombre de courses</label><input type="number" id="roi-nb" min="1" value="16" oninput="calcROI()"></div>
-    <button class="btn" onclick="calcROI()">📊 Calculer ROI</button>
-    <div id="c-result-roi" style="margin-top:14px;"></div>
-    <div class="ibox" style="margin-top:12px;font-size:12px;">
-      <b style="color:#ff6b35;">Références Pro :</b><br>
-      🔴 &lt;0% · Débutant<br>
-      🟡 0–10% · Intermédiaire<br>
-      🟢 10–20% · Avancé<br>
-      ⭐ &gt;20% · Expert
-    </div>
-  </div>
-
-  <!-- KELLY -->
-  <div id="cc-kelly" class="cc-panel">
-    <div class="ibox" style="border-color:#00c89655;font-size:12px;color:#aaa;">
-      💡 Le critère de Kelly calcule la mise optimale selon votre edge et vos cotes. Kelly fractionné recommandé (×0.25).
-    </div>
-    <div class="form-group"><label>🎯 Cote proposée (ex: 3.5)</label><input type="number" id="k-cote" step="0.1" value="3.5" min="1.01" oninput="calcKelly()"></div>
-    <div class="form-group"><label>📊 Probabilité estimée % (ex: 35)</label><input type="number" id="k-prob" step="0.1" value="35" min="1" max="99" oninput="calcKelly()"></div>
-    <div class="form-group"><label>💰 Bankroll totale (€)</label><input type="number" id="k-bk" value="1000" min="1" oninput="calcKelly()"></div>
-    <div class="form-group"><label>⚙️ Fraction Kelly</label>
-      <select id="k-frac" onchange="calcKelly()" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:13px;width:100%;">
-        <option value="1">Kelly Plein (risqué)</option>
-        <option value="0.5">Kelly ½</option>
-        <option value="0.25" selected>Kelly ¼ (recommandé)</option>
-        <option value="0.1">Kelly 1/10 (très conservateur)</option>
-      </select>
-    </div>
-    <button class="btn" onclick="calcKelly()">💎 Calculer Mise Kelly</button>
-    <div id="c-result-kelly" style="margin-top:14px;"></div>
-  </div>
-</div>
 
 <!-- PMU -->
 <div id="tab-pmu" class="tab-content">
@@ -1006,7 +755,7 @@ const CONFIG = {
   quintea: ['1','12','2','7','5'], quinteB: ['1','2','8','11','5'],
 };
 // ═══════════════════════════════════════════════════════════
-const KEY='pnturf_v154';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='1111';
+const KEY='pnturf_v156';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='1111';
 const INIT=[
   {"date":"2026-03-19","hippo":"Vincennes","disc":"Trot","sel":"11-5-6-2-1-9-7-8","cdj":"11","dm":"—","mise":12.0,"arr":"16-11-1-9-10","top5":"3/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":18.5},
   {"date":"2026-03-20","hippo":"Vincennes","disc":"Trot","sel":"1-7-8-12-4-3-2-5","cdj":"1","dm":"—","mise":12.0,"arr":"5-8-7-3-2","top5":"5/5","top3":"3/3","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"—","tck":"Quarté Plein","bilan":"5/5 ✅ QUARTÉ PLEIN 🎉","retour":42.0},
@@ -1563,6 +1312,61 @@ document.addEventListener('DOMContentLoaded',()=>{
   updateClock();
   setInterval(updateClock, 1000);
 });
+
+// ── WRAPPERS CALC VIP (IDs préfixés v-) ─────────────────────────
+function vSwCalc(name, btn){
+  document.querySelectorAll('#vip-content .cc-panel').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('#vip-content .ctab').forEach(x=>x.classList.remove('active'));
+  const panel = document.getElementById('v-cc-'+name);
+  if(panel) panel.classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+function vGet(id){ return document.getElementById('v-'+id); }
+function vAnalyzeProno(){
+  const course=vGet('c-course').value, type=vGet('c-type').value;
+  const budget=parseFloat(vGet('c-budget').value)||70;
+  const prono=vGet('c-prono').value.split('-').filter(x=>x);
+  const out=vGet('c-out').value.split('-').filter(x=>x);
+  const strat=vGet('c-strat').value;
+  const res=vGet('c-result-analyse');
+  if(!prono.length){res.innerHTML='<div class="ibox" style="color:#e94560;">❌ Entre un pronostic</div>';return;}
+  const c1=prono[0], c2=prono[1]||'—', p8=prono[prono.length-1], p7=prono[prono.length-2]||'—';
+  res.innerHTML=`<div class="ibox" style="border-color:#4fc3f755;">
+    <b style="color:#4fc3f7;">🎯 ${course}</b><br>
+    <b>C1 ⭐:</b> N°${c1} · <b>C2:</b> N°${c2}<br>
+    <b>Quarté A:</b> N°${[c1,c2,prono[2]||'—',p8].join('·')}<br>
+    <b>Quarté B:</b> N°${[c1,prono[2]||'—',p7,p8].join('·')}<br>
+    <b>Quinté A:</b> N°${[c1,c2,prono[2]||'—',p7,p8].join('·')}<br>
+    <b>Budget:</b> ${budget}€
+  </div>`;
+}
+function vCalcComb(){
+  const type=vGet('cb-type').value, nb=parseInt(vGet('cb-nb').value)||8;
+  const mise=parseFloat(vGet('cb-mise').value)||1, ordre=vGet('cb-ordre').value;
+  function fact(n){let r=1;for(let i=2;i<=n;i++)r*=i;return r;}
+  function comb(n,k){return k>n?0:fact(n)/(fact(k)*fact(n-k));}
+  const sizes={'tierce':3,'quarte':4,'quinte':5,'multi4':4,'multi5':5,'multi6':6,'multi7':7};
+  const k=sizes[type]||5;
+  const c=ordre==='ordre'?fact(nb)/fact(nb-k):comb(nb,k);
+  const cout=(c*mise).toFixed(2);
+  vGet('c-result-comb').innerHTML=`<div class="ibox"><b>${nb} chevaux</b> en ${type} ${ordre} → <b style="color:#f5a623">${c} combinaisons</b> · Coût: <b style="color:#ff6b35">${cout}€</b></div>`;
+}
+function vCalcROI(){
+  const mise=parseFloat(vGet('roi-mise').value)||0;
+  const gains=parseFloat(vGet('roi-gains').value)||0;
+  const nb=parseInt(vGet('roi-nb').value)||1;
+  const pl=gains-mise, roi=mise>0?(pl/mise*100).toFixed(1):0;
+  const level=roi>20?'⭐ Expert':roi>10?'🟢 Avancé':roi>0?'🟡 Intermédiaire':'🔴 Débutant';
+  vGet('c-result-roi').innerHTML=`<div class="ibox"><b>P&L:</b> ${pl>=0?'+':''}${pl.toFixed(2)}€ · <b>ROI:</b> <span style="color:${roi>0?'#00c896':'#e94560'}">${roi}%</span> · ${level}<br><b>Moyenne/course:</b> ${(pl/nb).toFixed(2)}€</div>`;
+}
+function vCalcKelly(){
+  const cote=parseFloat(vGet('k-cote').value)||1, prob=parseFloat(vGet('k-prob').value)/100||0;
+  const bk=parseFloat(vGet('k-bk').value)||1000, frac=parseFloat(vGet('k-frac').value)||0.25;
+  const edge=prob-(1-prob)/(cote-1), kelly=edge>0?(edge*frac):(0);
+  const mise=(kelly*bk).toFixed(2);
+  vGet('c-result-kelly').innerHTML=`<div class="ibox"><b>Edge:</b> <span style="color:${edge>0?'#00c896':'#e94560'}">${(edge*100).toFixed(1)}%</span><br><b>Kelly ${frac*100}%:</b> <b style="color:#f5a623">${mise}€</b> ${edge<=0?'<span style="color:#e94560;">(pas d’edge)</span>':''}</div>`;
+}
+
 </script>
 
 </body>
