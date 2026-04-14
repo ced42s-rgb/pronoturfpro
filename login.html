@@ -25,12 +25,10 @@ body{font-family:sans-serif;background:linear-gradient(135deg,#0a0a0a,#1a1a2e);c
 <div class="box">
   <div class="logo">🏇 PRONOTURF VIP</div>
   <p style="color:#aaa;margin-bottom:28px;">Accès membres VIP exclusif</p>
-
   <div class="card">
     <div style="font-size:2.5em;margin-bottom:12px;">🔐</div>
     <div style="font-size:1.3em;font-weight:700;margin-bottom:6px;">Code accès VIP</div>
     <p style="color:#aaa;font-size:.85em;margin-bottom:20px;">Entrez votre code à 8 chiffres</p>
-
     <div class="inputs">
       <input class="d" id="d0" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
       <input class="d" id="d1" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
@@ -41,44 +39,35 @@ body{font-family:sans-serif;background:linear-gradient(135deg,#0a0a0a,#1a1a2e);c
       <input class="d" id="d6" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
       <input class="d" id="d7" maxlength="1" type="tel" inputmode="numeric" autocomplete="off">
     </div>
-
     <div class="msg err" id="er">❌ Code incorrect. Vérifiez votre code VIP.</div>
     <div class="msg exp" id="ex">⏰ Accès expiré — Renouvelez votre abonnement.</div>
-
     <button class="btn" id="btn" onclick="go()" disabled>ACCÉDER AUX PRONOS →</button>
-
     <a href="https://pronoturfpro.fr" style="color:#00B1FA;font-size:.85em;text-decoration:none;font-weight:600;">
       💎 S'abonner — 5,99€/mois
     </a>
   </div>
-
   <div style="color:#555;font-size:.8em;">🏇 PRONOTURF PRO · pronoturfpro.fr</div>
 </div>
 
 <script>
 // ══════════════════════════════════════════════════════
-// CODES VIP — 8 chiffres uniquement
+// CODES VIP — tous à 8 chiffres
 // ══════════════════════════════════════════════════════
 const CODES = {
-  "15081972": { nom: "Admin",           exp: "2099-12-31" },
-  "00000000": { nom: "Code secours",    exp: "2099-12-31" },
-  "93847162": { nom: "Abonné · Pierre", exp: "2026-05-12" },
-  "28374951": { nom: "Abonné · Karim",  exp: "2026-04-30" },
-  "12345678": { nom: "Abonné · Lucas",  exp: "2026-06-30" },
-  "81926374": { nom: "Abonné · Marie",  exp: "2026-05-25" },
-  "56473829": { nom: "Abonné · Nadia",  exp: "2026-05-31" },
-  "90785631": { nom: "Abonné · Thomas", exp: "2026-06-15" },
-  "31429586": { nom: "Abonné · Antoine",exp: "2026-06-01" },
-  "75019384": { nom: "Abonné · Sophie", exp: "2026-05-20" },
+  "15081972": { nom: "Admin",                              exp: "2099-12-31" },
+  "00000000": { nom: "Code secours",                       exp: "2099-12-31" },
+  "99615696": { nom: "Roger",                              exp: "2026-05-15" },
+  "14940301": { nom: "Cedric (test)",                      exp: "2026-05-15" },
+  "98190599": { nom: "Cedric Admin",                       exp: "2099-12-31" },
+  "40140000": { nom: "Hamza Amalfi",                       exp: "2026-05-15" },
+  "79610000": { nom: "Abdelatif Boumegnane",               exp: "2026-05-15" },
 };
 
 // ── Redirection si déjà connecté ──────────────────────
 (function(){
-  const vip = sessionStorage.getItem("vip");
+  const vip  = sessionStorage.getItem("vip");
   const days = parseInt(sessionStorage.getItem("days") || "0", 10);
-  if (vip === "1" && days > 0) {
-    window.location.href = "pronoturf_pro_v10.html";
-  }
+  if (vip === "1" && days > 0) window.location.href = "pronoturf_pro_v10.html";
 })();
 
 // ── Navigation entre les 8 cases ──────────────────────
@@ -91,7 +80,7 @@ function getCode(){
 
 for (let n = 0; n < 8; n++) {
   (function(i){
-    gd(i).oninput = function(e){
+    gd(i).oninput = function(){
       this.value = this.value.replace(/[^0-9]/g, "").slice(0, 1);
       this.className = "d" + (this.value ? " ok" : "");
       if (this.value && i < 7) gd(i + 1).focus();
@@ -105,7 +94,7 @@ for (let n = 0; n < 8; n++) {
 
 // ── Validation ────────────────────────────────────────
 function go(){
-  const code = getCode();
+  const code  = getCode();
   const errEl = document.getElementById("er");
   const expEl = document.getElementById("ex");
   errEl.style.display = "none";
