@@ -675,7 +675,7 @@ const CONFIG = {
   quintea: ['1','15','5','10','9'], quinteB: ['1','5','12','14','9'],
 };
 // ═══════════════════════════════════════════════════════════
-const KEY='pnturf_v156';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
+const KEY='pnturf_v157';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
 const INIT=[
   {"date":"2026-03-19","hippo":"Vincennes","disc":"Trot","sel":"11-5-6-2-1-9-7-8","cdj":"11","dm":"—","mise":12.0,"arr":"16-11-1-9-10","top5":"3/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":18.5},
   {"date":"2026-03-20","hippo":"Vincennes","disc":"Trot","sel":"1-7-8-12-4-3-2-5","cdj":"1","dm":"—","mise":12.0,"arr":"5-8-7-3-2","top5":"5/5","top3":"3/3","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"—","tck":"Quarté Plein","bilan":"5/5 ✅ QUARTÉ PLEIN 🎉","retour":42.0},
@@ -1436,15 +1436,31 @@ async function adminGenererAbonne() {
   const pin = String(Math.floor(10000000 + Math.random() * 90000000));
   const btn = document.getElementById('btn-gen-ab');
   btn.textContent = '⏳ Envoi...'; btn.disabled = true;
-  const ok = await sheetAddAbonne(email, pin);
+
+  // 1. Ajouter dans Google Sheet
+  const sheetOk = await sheetAddAbonne(email, pin);
+
+  // 2. Envoyer email avec PIN via EmailJS
+  let emailOk = false;
+  try {
+    const result = await emailjs.send(
+      'service_412jzkn',
+      'qzn3dg5',
+      { to_email: email, email: email, name: email.split('@')[0], pin: pin },
+      'q56Lq8ctvgMFpYjTv'
+    );
+    emailOk = result.status === 200;
+  } catch(e) { console.error('EmailJS error:', e); }
+
   btn.textContent = '➕ Générer Abonné'; btn.disabled = false;
-  if (ok) {
+
+  if (sheetOk) {
     document.getElementById('ab-result').innerHTML = `
       <div style="background:#00c89622;border:1px solid #00c896;border-radius:10px;padding:12px;margin-top:10px;text-align:center;">
         <div style="color:#00c896;font-weight:700;font-size:13px;">✅ Abonné ajouté !</div>
         <div style="color:#fff;font-size:14px;margin:6px 0;">📧 ${email}</div>
-        <div style="color:#f5a623;font-size:20px;font-weight:900;letter-spacing:3px;">🔑 ${pin}</div>
-        <div style="color:#888;font-size:11px;margin-top:4px;">PIN 8 chiffres à communiquer</div>
+        <div style="color:#f5a623;font-size:22px;font-weight:900;letter-spacing:4px;">🔑 ${pin}</div>
+        <div style="color:#888;font-size:11px;margin-top:4px;">${emailOk ? '✅ Email envoyé avec le PIN' : '⚠️ Email non envoyé — PIN à communiquer manuellement'}</div>
       </div>`;
     chargerListeAbonnes();
   } else {
