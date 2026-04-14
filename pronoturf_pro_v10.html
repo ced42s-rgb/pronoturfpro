@@ -863,7 +863,7 @@ const CONFIG = {
   quinteB: ['9','12','5','6','14'],
 };
 // ═══════════════════════════════════════════════════════════
-const KEY='pnturf_v167';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
+const KEY='pnturf_v168';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
 const INIT=[
   {"date":"2026-03-19","hippo":"Vincennes","disc":"Trot","sel":"11-5-6-2-1-9-7-8","cdj":"11","dm":"—","mise":12.0,"arr":"16-11-1-9-10","top5":"3/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":18.5},
   {"date":"2026-03-20","hippo":"Vincennes","disc":"Trot","sel":"1-7-8-12-4-3-2-5","cdj":"1","dm":"—","mise":12.0,"arr":"5-8-7-3-2","top5":"5/5","top3":"3/3","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"—","tck":"Quarté Plein","bilan":"5/5 ✅ QUARTÉ PLEIN 🎉","retour":42.0},
@@ -1401,7 +1401,21 @@ function genererPinAbonne(){
   const pins=getPinsAbonnes(); const ex=pins.find(p=>p.email===email); let pin;
   if(ex){pin=ex.pin;res.style.color='#f5a623';res.innerHTML='⚠️ Existant · PIN : <b style="color:#ff6b35;font-size:16px;letter-spacing:2px;">'+pin+'</b>';}
   else{pin=genererPinUnique();pins.push({email,pin,date:new Date().toISOString().split('T')[0],actif:true});savePinsAbonnes(pins);res.style.color='#00c896';res.innerHTML='✅ PIN : <b style="color:#ff6b35;font-size:18px;letter-spacing:3px;">'+pin+'</b><br><small style="color:#888;">→ '+email+'</small>';}
-  if(typeof emailjs!=='undefined'){emailjs.send(_ES,_ET,{to_email:email,pin:pin,magic_link:'Ton PIN PRONOTURF PRO : '+pin,code:pin,from_name:'PRONOTURF PRO'}).then(()=>{res.innerHTML+='<br><small style="color:#00c896;">📧 Email envoyé !</small>';}).catch(()=>{});}
+  if(typeof emailjs!=='undefined'){
+    emailjs.init(_EK);
+    emailjs.send(_ES,_ET,{
+      to_email: email,
+      pin: pin,
+      magic_link: 'Ton code VIP PRONOTURF PRO : ' + pin,
+      code: pin,
+      from_name: 'PRONOTURF PRO'
+    }).then(function(){
+      res.innerHTML += '<br><small style="color:#00c896;">📧 Email envoyé avec le PIN !</small>';
+    }).catch(function(err){
+      console.error('EmailJS erreur:', err);
+      res.innerHTML += '<br><small style="color:#f5a623;">⚠️ Email non envoyé (voir console)</small>';
+    });
+  }
   afficherPins(); document.getElementById('ab-email').value='';
 }
 function afficherPins(){
