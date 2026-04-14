@@ -658,7 +658,7 @@ tr:hover td{background:#1a1a2e55;}
 <div class="copy-confirm" id="copy-confirm">✅ Copié !</div>
 
 <script>
-const SHEET_URL='https://script.google.com/macros/s/AKfycbz--8MZuMViXo3RexYiVuq7g7XH07EdKBhIlfjYKf59UQsakG6dTTrfHZC5Rfi89T2i/exec';
+const SHEET_URL='https://script.google.com/macros/s/AKfycbyaSA_who_XNJiXdliDRlT5np58qoz5AhL-Hj4sJ3iYo7Ctjnaos1snYH1xrkarpHV9/exec';
 
 // ═══════════════════════════════════════════════════════════
 // CONFIG COURSE DU JOUR — Modifier ici pour chaque nouvelle course
@@ -675,7 +675,7 @@ const CONFIG = {
   quintea: ['1','15','5','10','9'], quinteB: ['1','5','12','14','9'],
 };
 // ═══════════════════════════════════════════════════════════
-const KEY='pnturf_v154';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
+const KEY='pnturf_v156';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
 const INIT=[
   {"date":"2026-03-19","hippo":"Vincennes","disc":"Trot","sel":"11-5-6-2-1-9-7-8","cdj":"11","dm":"—","mise":12.0,"arr":"16-11-1-9-10","top5":"3/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":18.5},
   {"date":"2026-03-20","hippo":"Vincennes","disc":"Trot","sel":"1-7-8-12-4-3-2-5","cdj":"1","dm":"—","mise":12.0,"arr":"5-8-7-3-2","top5":"5/5","top3":"3/3","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"—","tck":"Quarté Plein","bilan":"5/5 ✅ QUARTÉ PLEIN 🎉","retour":42.0},
@@ -1400,7 +1400,90 @@ function vCalcKelly(){
 
 
 // ═══════════════════════════════════════════════
-// GESTION ABONNÉS — Google Sheets
+// GESTION ABONNÉS — Google Sheets (doGet)
+// ═══════════════════════════════════════════════
+async function sheetGet(params) {
+  const url = SHEET_URL + '?' + new URLSearchParams(params).toString();
+  try {
+    const r = await fetch(url);
+    return await r.json();
+  } catch(e) { console.error('Sheet error:', e); return {ok:false}; }
+}
+
+async function sheetAddAbonne(email, pin) {
+  const d = await sheetGet({action:'add', email, pin});
+  return d.ok;
+}
+
+async function sheetListAbonnes() {
+  const d = await sheetGet({action:'list'});
+  return d.ok ? d.abonnes : [];
+}
+
+async function sheetDeleteAbonne(pin) {
+  const d = await sheetGet({action:'delete', pin});
+  return d.ok;
+}
+
+async function verifierPinSheet(pin) {
+  const d = await sheetGet({action:'verify', pin});
+  return d.ok && d.valid;
+}
+
+async function adminGenererAbonne() {
+  const email = document.getElementById('ab-email').value.trim();
+  if (!email || !email.includes('@')) { showToast('❌ Email invalide'); return; }
+  const pin = String(Math.floor(10000000 + Math.random() * 90000000));
+  const btn = document.getElementById('btn-gen-ab');
+  btn.textContent = '⏳ Envoi...'; btn.disabled = true;
+  const ok = await sheetAddAbonne(email, pin);
+  btn.textContent = '➕ Générer Abonné'; btn.disabled = false;
+  if (ok) {
+    document.getElementById('ab-result').innerHTML = `
+      <div style="background:#00c89622;border:1px solid #00c896;border-radius:10px;padding:12px;margin-top:10px;text-align:center;">
+        <div style="color:#00c896;font-weight:700;font-size:13px;">✅ Abonné ajouté !</div>
+        <div style="color:#fff;font-size:14px;margin:6px 0;">📧 ${email}</div>
+        <div style="color:#f5a623;font-size:20px;font-weight:900;letter-spacing:3px;">🔑 ${pin}</div>
+        <div style="color:#888;font-size:11px;margin-top:4px;">PIN 8 chiffres à communiquer</div>
+      </div>`;
+    chargerListeAbonnes();
+  } else {
+    showToast('❌ Erreur Sheet — vérifier déploiement');
+  }
+}
+
+async function chargerListeAbonnes() {
+  const el = document.getElementById('ab-liste');
+  if (!el) return;
+  el.innerHTML = '<div style="color:#888;text-align:center;padding:12px;">⏳ Chargement...</div>';
+  const abonnes = await sheetListAbonnes();
+  if (!abonnes.length) {
+    el.innerHTML = '<div style="color:#888;text-align:center;padding:12px;">Aucun abonné</div>';
+    return;
+  }
+  el.innerHTML = abonnes.map(a => `
+    <div style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:10px;padding:10px;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#4fc3f7;">${a.email}</div>
+          <div style="font-size:11px;color:#888;">🔑 ${a.pin} · 📅 ${a.date} → ${a.exp}</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <span style="background:${a.statut==='actif'?'#00c89622':'#e9456022'};color:${a.statut==='actif'?'#00c896':'#e94560'};font-size:10px;padding:2px 8px;border-radius:8px;">${a.statut}</span>
+          <button onclick="supprimerAbonne('${a.pin}')" style="background:#e9456022;border:1px solid #e94560;color:#e94560;border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;">🗑️</button>
+        </div>
+      </div>
+    </div>`).join('');
+  const cnt = document.getElementById('ab-count');
+  if (cnt) cnt.textContent = abonnes.length;
+}
+
+async function supprimerAbonne(pin) {
+  if (!confirm('Supprimer cet abonné ?')) return;
+  const ok = await sheetDeleteAbonne(pin);
+  if (ok) { showToast('✅ Abonné supprimé'); chargerListeAbonnes(); }
+  else showToast('❌ Erreur suppression');
+}
 // ═══════════════════════════════════════════════
 async function sheetAddAbonne(email, pin) {
   try {
