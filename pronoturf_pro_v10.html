@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRONOTURF PRO V10.0 · 13/04/2026</title>
+<title>PRONOTURF PRO V10.0 · 11/04/2026</title>
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#ff6b35">
 <meta name="mobile-web-app-capable" content="yes">
@@ -125,7 +125,7 @@ tr:hover td{background:#1a1a2e55;}
   </div>
 </header>
 <div class="tabs">
-  <button class="tab-btn active" onclick="sw('aujourdhui',this)">🎯 13/04</button>
+  <button class="tab-btn active" onclick="sw('aujourdhui',this)">🎯 11/04</button>
   <button class="tab-btn" onclick="sw('tickets',this)">🎟️ Tickets</button>
   <button class="tab-btn" onclick="sw('vip',this)">💎 VIP</button>
   <button class="tab-btn" onclick="sw('analyse',this)">🧠 Analyse</button>
@@ -433,53 +433,94 @@ tr:hover td{background:#1a1a2e55;}
       <div class="stitle" style="margin:0">⚙️ Administration</div>
       <button onclick="logoutAdmin()" style="background:none;border:1px solid #ff6b35;color:#ff6b35;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:11px">Déco.</button>
     </div>
-    <div class="stitle">🔑 Code PIN VIP</div>
-    <div class="ibox">
-      <div class="form-group" style="margin-bottom:0"><label>Code PIN (5€99/mois)</label>
-        <div class="pin-input-row"><input type="text" id="set-vip" maxlength="8" placeholder="12345678"></div>
+
+    <!-- CONFIG SHEET URL -->
+    <div class="analyse-box" style="border-color:#f5a62355;margin-bottom:14px;">
+      <div class="a-title" style="color:#f5a623;">⚙️ Configuration Google Sheet</div>
+      <div class="form-group" style="margin-bottom:8px;">
+        <label style="font-size:11px;">URL Apps Script (Google Sheet)</label>
+        <input type="text" id="sheet-url" placeholder="https://script.google.com/macros/s/..." 
+          style="background:#0d0d0d;border:1px solid #333;border-radius:6px;color:#f0f0f0;padding:8px;font-size:11px;width:100%;"
+          oninput="localStorage.setItem('pnturf_sheet_url', this.value)">
       </div>
-      <button class="btn bl" style="margin-top:12px" onclick="savePins()">💾 Sauvegarder</button>
-    </div>
-    <button class="btn gr" onclick="exportJ()">📤 Exporter JSON</button>
-    
-    <!-- GESTION ABONNÉS -->
-    <div class="stitle" style="margin-top:14px;">👥 Gestion Abonnés</div>
-    <div class="ibox" style="padding:12px;">
-      <div class="form-group"><label>Email abonné</label>
-        <input type="email" id="ab-email" placeholder="email@exemple.fr" style="background:#0d0d0d;border:1px solid #333;border-radius:6px;color:#f0f0f0;padding:8px;font-size:13px;width:100%;">
-      </div>
-      <button class="btn bl" onclick="genererPinAbonne()">🎲 Générer PIN + Email</button>
-      <div id="ab-result" style="margin-top:8px;font-size:12px;min-height:16px;"></div>
-      <div style="border-top:1px solid #2a2a3e;margin-top:12px;padding-top:10px;">
-        <div style="font-size:11px;color:#888;margin-bottom:6px;">PINs actifs :</div>
-        <div id="ab-list"></div>
-        <button class="btn gr" style="margin-top:6px;font-size:11px;" onclick="afficherPins()">🔄 Actualiser</button>
-      </div>
+      <div style="font-size:10px;color:#555;">Colle l'URL de déploiement Apps Script ici — sauvegardé localement</div>
     </div>
 
-    <!-- DASHBOARD ABONNÉS -->
-    <div class="stitle" style="margin-top:16px;">👥 Abonnés en temps réel</div>
-    <div class="form-group">
-      <label>Mot de passe admin API</label>
-      <input type="password" id="admin-api-pwd" placeholder="pronoturf2026" style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px;font-size:14px;width:100%;">
+    <!-- STATS LIVE -->
+    <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:14px;">
+      <div class="kpi-card green"><div class="val" id="gs-actifs" style="font-size:20px;">—</div><div class="lbl">Actifs</div></div>
+      <div class="kpi-card fire"><div class="val" id="gs-mrr" style="font-size:20px;">—</div><div class="lbl">MRR €</div></div>
+      <div class="kpi-card orange"><div class="val" id="gs-total" style="font-size:20px;">—</div><div class="lbl">Total</div></div>
     </div>
-    <button class="btn bl" style="margin-top:0" onclick="loadAbonnes()">🔄 Charger les abonnés</button>
-    <div id="abonnes-stats" style="display:none;margin-top:12px;">
-      <div class="kpi-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:12px;">
-        <div class="kpi-card green"><div class="val" id="ab-actifs" style="font-size:22px;">-</div><div class="lbl">Actifs</div></div>
-        <div class="kpi-card fire"><div class="val" id="ab-mrr" style="font-size:22px;">-</div><div class="lbl">MRR €</div></div>
-        <div class="kpi-card" style="border-color:#e94560"><div class="val" id="ab-annules" style="font-size:22px;color:#e94560;">-</div><div class="lbl">Annulés</div></div>
-        <div class="kpi-card orange"><div class="val" id="ab-total" style="font-size:22px;">-</div><div class="lbl">Total</div></div>
+
+    <!-- PIN VIP GLOBAL -->
+    <div class="stitle" style="font-size:13px;">🔑 PIN VIP Global</div>
+    <div class="ibox" style="margin-bottom:14px;">
+      <div class="form-group" style="margin-bottom:8px;"><label>Code PIN VIP (accès général)</label>
+        <div class="pin-input-row"><input type="text" id="set-vip" maxlength="8" placeholder="12345678"></div>
       </div>
-      <div class="table-wrap">
-        <table style="min-width:400px;">
-          <thead><tr><th>Email</th><th>PIN</th><th>Statut</th><th>Fin</th></tr></thead>
-          <tbody id="ab-table"></tbody>
-        </table>
+      <button class="btn bl" style="margin-top:8px;" onclick="savePins()">💾 Sauvegarder PIN</button>
+    </div>
+
+    <!-- AJOUTER ABONNÉ -->
+    <div class="stitle" style="font-size:13px;">➕ Ajouter Abonné</div>
+    <div class="ibox" style="margin-bottom:14px;">
+      <div class="form-group" style="margin-bottom:8px;">
+        <label>Email abonné</label>
+        <input type="email" id="ab-email" placeholder="email@exemple.fr"
+          style="background:#0d0d0d;border:1px solid #333;border-radius:6px;color:#f0f0f0;padding:8px;font-size:13px;width:100%;">
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn bl" style="flex:1;" onclick="ajouterAbonne()">🎲 Générer PIN + Email</button>
+        <button class="btn gr" style="flex:1;" onclick="chargerAbonnes()">🔄 Actualiser liste</button>
+      </div>
+      <div id="ab-result" style="margin-top:8px;font-size:12px;min-height:16px;"></div>
+    </div>
+
+    <!-- LISTE ABONNÉS -->
+    <div class="stitle" style="font-size:13px;">👥 Liste Abonnés <span id="ab-count" style="color:#888;font-size:11px;"></span></div>
+    <div id="ab-list" style="margin-bottom:14px;"></div>
+    <div id="abonnes-err" style="color:#e94560;font-size:12px;margin-top:4px;"></div>
+
+    <!-- EXPORT -->
+    <button class="btn gr" onclick="exportJ()" style="width:100%;">📤 Exporter JSON local</button>
+  
+    <!-- ══ MODULE ABONNÉS GOOGLE SHEETS ══ -->
+    <div style="margin-top:20px;">
+      <div class="stitle" style="font-size:13px;display:flex;justify-content:space-between;align-items:center;">
+        👥 Abonnés Google Sheets
+        <span id="ab-count" style="background:#4fc3f722;color:#4fc3f7;font-size:11px;padding:2px 8px;border-radius:8px;">—</span>
+      </div>
+
+      <!-- Ajouter abonné -->
+      <div style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:12px;padding:14px;margin-bottom:12px;">
+        <div style="font-size:12px;color:#888;margin-bottom:8px;text-transform:uppercase;">➕ Nouvel abonné</div>
+        <input type="email" id="ab-email" placeholder="email@exemple.com"
+          style="width:100%;background:#0d0d1a;border:1px solid #333;border-radius:8px;padding:10px;color:#fff;font-size:13px;box-sizing:border-box;margin-bottom:8px;">
+        <button id="btn-gen-ab" onclick="adminGenererAbonne()"
+          style="width:100%;background:linear-gradient(135deg,#00c896,#00a878);color:#000;font-weight:700;border:none;border-radius:8px;padding:11px;font-size:13px;cursor:pointer;">
+          ➕ Générer Abonné + PIN
+        </button>
+        <div id="ab-result"></div>
+      </div>
+
+      <!-- Liste abonnés -->
+      <div style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:12px;padding:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-size:12px;color:#888;text-transform:uppercase;">📋 Liste abonnés</div>
+          <button onclick="chargerListeAbonnes()"
+            style="background:#4fc3f722;border:1px solid #4fc3f7;color:#4fc3f7;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;">
+            🔄 Actualiser
+          </button>
+        </div>
+        <div id="ab-liste">
+          <div style="color:#888;text-align:center;padding:12px;font-size:12px;">
+            Cliquer Actualiser pour charger
+          </div>
+        </div>
       </div>
     </div>
-    <div id="abonnes-err" style="color:#e94560;font-size:12px;margin-top:8px;"></div>
-  </div>
+</div>
 </div>
 
 <!-- SAISIE -->
@@ -617,6 +658,7 @@ tr:hover td{background:#1a1a2e55;}
 <div class="copy-confirm" id="copy-confirm">✅ Copié !</div>
 
 <script>
+const SHEET_URL='https://script.google.com/macros/s/AKfycbz--8MZuMViXo3RexYiVuq7g7XH07EdKBhIlfjYKf59UQsakG6dTTrfHZC5Rfi89T2i/exec';
 
 // ═══════════════════════════════════════════════════════════
 // CONFIG COURSE DU JOUR — Modifier ici pour chaque nouvelle course
@@ -633,7 +675,7 @@ const CONFIG = {
   quintea: ['1','15','5','10','9'], quinteB: ['1','5','12','14','9'],
 };
 // ═══════════════════════════════════════════════════════════
-const KEY='pnturf_v159';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='1111';
+const KEY='pnturf_v154';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
 const INIT=[
   {"date":"2026-03-19","hippo":"Vincennes","disc":"Trot","sel":"11-5-6-2-1-9-7-8","cdj":"11","dm":"—","mise":12.0,"arr":"16-11-1-9-10","top5":"3/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":18.5},
   {"date":"2026-03-20","hippo":"Vincennes","disc":"Trot","sel":"1-7-8-12-4-3-2-5","cdj":"1","dm":"—","mise":12.0,"arr":"5-8-7-3-2","top5":"5/5","top3":"3/3","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"—","tck":"Quarté Plein","bilan":"5/5 ✅ QUARTÉ PLEIN 🎉","retour":42.0},
@@ -667,12 +709,15 @@ function gd(){
 function sd(d){
   localStorage.setItem(KEY, JSON.stringify(d));
 }
-function getPin(){return localStorage.getItem(PINS_KEY)||'0404';}
+function getPin(){return localStorage.getItem(PINS_KEY)||'14143131';}
 
 function renderAll(){
   const d = gd();
-  renderDash(d);
   renderHist(d);
+  if(typeof afficherPins==='function' && document.getElementById('admin-content') && document.getElementById('admin-content').style.display==='block'){ afficherPins(); chargerAbonnes(); }
+  // Restaurer URL Sheet
+  const sheetInput = document.getElementById('sheet-url');
+  if(sheetInput) sheetInput.value = localStorage.getItem('pnturf_sheet_url') || '';
   const setVip = document.getElementById('set-vip');
   if(setVip) setVip.value = getPin();
   // Auto-restore VIP session
@@ -686,6 +731,8 @@ function renderAll(){
 
 const BK_INIT=1000;
 function renderDash(data){
+  // Guard — si les éléments dashboard n'existent plus, skip silencieusement
+  if(!document.getElementById('k-total')) return;
   const conf=data.filter(r=>r.cdj_res!=='⏳');
   const n=conf.length,mt=conf.reduce((s,r)=>s+(r.mise||0),0),rt=conf.reduce((s,r)=>s+(r.retour||0),0);
   const pl=rt-mt,roi=mt>0?(pl/mt*100).toFixed(1):0;
@@ -780,7 +827,7 @@ function _unlockVIP(){
   localStorage.setItem('is_vip', '1');
 }
 function logout(){document.getElementById('vip-locked').style.display='block';document.getElementById('vip-content').style.display='none';localStorage.removeItem('is_vip');}
-function checkAdminPin(){if(document.getElementById('admin-pin-in').value.trim()===ADMIN_PIN){document.getElementById('admin-locked-screen').style.display='none';document.getElementById('admin-content').style.display='block';}else document.getElementById('admin-pin-err').textContent='❌ PIN incorrect.';}
+function checkAdminPin(){if(document.getElementById('admin-pin-in').value.trim()===ADMIN_PIN){document.getElementById('admin-locked-screen').style.display='none';document.getElementById('admin-content').style.display='block'; chargerListeAbonnes(); if(typeof afficherPins==='function') afficherPins();afficherPins();}else document.getElementById('admin-pin-err').textContent='❌ PIN incorrect.';}
 function logoutAdmin(){document.getElementById('admin-locked-screen').style.display='block';document.getElementById('admin-content').style.display='none';}
 function savePins(){localStorage.setItem(PINS_KEY,document.getElementById('set-vip').value||'0404');alert('✅ PIN VIP sauvegardé !');}
 
@@ -1099,7 +1146,7 @@ function verifyMagicCode(){
   if(code!==mc){err.textContent='❌ Code incorrect.';return;}
   _clearMC();
   document.getElementById('admin-locked-screen').style.display='none';
-  document.getElementById('admin-content').style.display='block';
+  document.getElementById('admin-content').style.display='block'; chargerListeAbonnes(); if(typeof afficherPins==='function') afficherPins();
 }
 
 function checkMagicLinkUrl(){
@@ -1109,32 +1156,186 @@ function checkMagicLinkUrl(){
   if(c&&mc&&c===mc&&Date.now()<me){
     _clearMC();
     document.getElementById('admin-locked-screen').style.display='none';
-    document.getElementById('admin-content').style.display='block';
+    document.getElementById('admin-content').style.display='block'; chargerListeAbonnes(); if(typeof afficherPins==='function') afficherPins();
     window.history.replaceState({},'',window.location.pathname);
   }
 }
 
 // ── PIN ABONNÉS ────────────────────────────────────────────────────────────
-const PAK='pnturf_abonnes_pins';
-function getPinsAbonnes(){try{return JSON.parse(localStorage.getItem(PAK))||[];}catch{return [];}}
-function savePinsAbonnes(p){localStorage.setItem(PAK,JSON.stringify(p));}
-function genererPinUnique(){const p=getPinsAbonnes().map(x=>x.pin);let pin;do{pin=String(Math.floor(10000000+Math.random()*90000000));}while(p.includes(pin));return pin;}
-function genererPinAbonne(){
-  const email=document.getElementById('ab-email').value.trim().toLowerCase();
-  const res=document.getElementById('ab-result');
-  if(!email||!email.includes('@')){res.style.color='#e94560';res.textContent='❌ Email invalide.';return;}
-  const pins=getPinsAbonnes(); const ex=pins.find(p=>p.email===email); let pin;
-  if(ex){pin=ex.pin;res.style.color='#f5a623';res.innerHTML='⚠️ Existant · PIN : <b style="color:#ff6b35;font-size:16px;letter-spacing:2px;">'+pin+'</b>';}
-  else{pin=genererPinUnique();pins.push({email,pin,date:new Date().toISOString().split('T')[0],actif:true});savePinsAbonnes(pins);res.style.color='#00c896';res.innerHTML='✅ PIN : <b style="color:#ff6b35;font-size:18px;letter-spacing:3px;">'+pin+'</b><br><small style="color:#888;">→ '+email+'</small>';}
-  if(typeof emailjs!=='undefined'){emailjs.send(_ES,_ET,{to_email:email,magic_link:'PIN PRONOTURF PRO : '+pin+'\n\npronoturfpro.fr → VIP → entre ce PIN',code:pin}).then(()=>{res.innerHTML+='<br><small style="color:#00c896;">📧 Email envoyé !</small>';}).catch(()=>{});}
-  afficherPins(); document.getElementById('ab-email').value='';
+const PAK = 'pnturf_abonnes_pins';
+
+// ── Google Sheet URL ──────────────────────────────────────────
+function getSheetUrl() {
+  return localStorage.getItem('pnturf_sheet_url') || '';
 }
-function afficherPins(){
-  const pins=getPinsAbonnes(); const el=document.getElementById('ab-list'); if(!el)return;
-  if(!pins.length){el.innerHTML='<span style="color:#555;">Aucun abonné</span>';return;}
-  el.innerHTML=pins.map(function(p){return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #2a2a3e;"><span style="color:#aaa;font-size:11px;">'+p.email+'</span><span style="color:#ff6b35;font-weight:700;letter-spacing:2px;">'+p.pin+'</span><button onclick="supprimerPin(\''+p.pin+'\')" style="background:none;border:1px solid #e94560;color:#e94560;padding:1px 6px;border-radius:4px;font-size:10px;cursor:pointer;">✕</button></div>';}).join('');
+
+// ── Appel Google Sheet ────────────────────────────────────────
+async function callSheet(payload) {
+  const url = getSheetUrl();
+  if (!url) return { ok: false, error: 'URL Sheet non configurée' };
+  try {
+    const r = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    return await r.json();
+  } catch(e) {
+    return { ok: false, error: e.message };
+  }
 }
-function supprimerPin(pin){if(!confirm('Supprimer ?'))return;savePinsAbonnes(getPinsAbonnes().filter(p=>p.pin!==pin));afficherPins();}
+
+// ── Génération PIN unique ─────────────────────────────────────
+function genererPinUnique() {
+  const p = getPinsAbonnes().map(x => x.pin);
+  let pin;
+  do { pin = String(Math.floor(10000000 + Math.random() * 90000000)); }
+  while (p.includes(pin));
+  return pin;
+}
+
+// ── localStorage fallback ─────────────────────────────────────
+function getPinsAbonnes() {
+  try { return JSON.parse(localStorage.getItem(PAK)) || []; } catch { return []; }
+}
+function savePinsAbonnes(p) { localStorage.setItem(PAK, JSON.stringify(p)); }
+
+// ── Ajouter abonné (Sheet + EmailJS + localStorage) ───────────
+async function ajouterAbonne() {
+  const email = document.getElementById('ab-email').value.trim();
+  const res   = document.getElementById('ab-result');
+  const err   = document.getElementById('abonnes-err');
+  if (!email) { res.innerHTML = '<span style="color:#e94560">❌ Email requis</span>'; return; }
+
+  const pin = genererPinUnique();
+  res.innerHTML = '<span style="color:#f5a623">⏳ Enregistrement...</span>';
+
+  // 1. Sauvegarde localStorage
+  const local = getPinsAbonnes();
+  const exists = local.findIndex(p => p.email === email);
+  const entry = { email, pin, date: new Date().toLocaleDateString('fr-FR'), actif: true };
+  if (exists >= 0) local[exists] = entry; else local.push(entry);
+  savePinsAbonnes(local);
+
+  // 2. Sauvegarde Google Sheet
+  const sheetRes = await callSheet({ action: 'add', email, pin });
+
+  // 3. Email via EmailJS (fallback si Sheet échoue)
+  let emailSent = false;
+  if (typeof emailjs !== 'undefined') {
+    try {
+      await emailjs.send('service_412jzkn', 'template_6lvl1rs', {
+        to_email: email,
+        pin_vip: pin,
+        site_url: 'https://pronoturfpro.fr'
+      }, 'q56Lq8ctvgMFpYjTv');
+      emailSent = true;
+    } catch(e) { console.warn('EmailJS:', e); }
+  }
+
+  const sheetOk = sheetRes.ok;
+  res.innerHTML = `
+    <div style="background:#00c89611;border:1px solid #00c896;border-radius:8px;padding:8px;font-size:12px;">
+      ✅ <b>PIN généré : ${pin}</b><br>
+      📧 Email : ${email}<br>
+      ${sheetOk ? '☁️ Google Sheet : ✅ sauvegardé' : '☁️ Google Sheet : ⚠️ vérifier URL'}<br>
+      ${emailSent ? '📨 Email envoyé : ✅' : '📨 Email : ⚠️ configurer EmailJS'}
+    </div>`;
+
+  afficherPins();
+  chargerAbonnes();
+  document.getElementById('ab-email').value = '';
+}
+
+// ── Afficher liste locale ─────────────────────────────────────
+function afficherPins() {
+  const pins = getPinsAbonnes();
+  const el = document.getElementById('ab-list');
+  if (!el) return;
+  const count = document.getElementById('ab-count');
+  if (count) count.textContent = `(${pins.length} local)`;
+  if (!pins.length) {
+    el.innerHTML = '<div style="color:#555;font-size:12px;padding:8px;">Aucun abonné local</div>';
+    return;
+  }
+  el.innerHTML = pins.map(p => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #2a2a3e;">
+      <div>
+        <div style="color:#aaa;font-size:11px;">${p.email}</div>
+        <div style="color:#f5a623;font-weight:700;letter-spacing:2px;font-size:13px;">${p.pin}</div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="renvoyerEmail('${p.email}')" style="background:none;border:1px solid #4fc3f7;color:#4fc3f7;padding:2px 7px;border-radius:4px;font-size:10px;cursor:pointer;">📧</button>
+        <button onclick="supprimerPin('${p.pin}')" style="background:none;border:1px solid #e94560;color:#e94560;padding:2px 7px;border-radius:4px;font-size:10px;cursor:pointer;">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+// ── Supprimer abonné ──────────────────────────────────────────
+async function supprimerPin(pin) {
+  if (!confirm('Supprimer cet abonné ?')) return;
+  savePinsAbonnes(getPinsAbonnes().filter(p => p.pin !== pin));
+  await callSheet({ action: 'delete', pin });
+  afficherPins();
+  chargerAbonnes();
+}
+
+// ── Renvoyer email ────────────────────────────────────────────
+async function renvoyerEmail(email) {
+  const local = getPinsAbonnes().find(p => p.email === email);
+  if (!local) { alert('Abonné non trouvé'); return; }
+  try {
+    await emailjs.send('service_412jzkn', 'template_6lvl1rs', {
+      to_email: email,
+      pin_vip: local.pin,
+      site_url: 'https://pronoturfpro.fr'
+    }, 'q56Lq8ctvgMFpYjTv');
+    alert('📨 Email renvoyé à ' + email);
+  } catch(e) { alert('❌ Erreur EmailJS : ' + e.text); }
+  // Aussi via Sheet
+  await callSheet({ action: 'resend', email });
+}
+
+// ── Charger depuis Google Sheet ───────────────────────────────
+async function chargerAbonnes() {
+  const err = document.getElementById('abonnes-err');
+  if (err) err.textContent = '⏳ Chargement Sheet...';
+  const res = await callSheet({ action: 'list' });
+  if (!res.ok) {
+    if (err) err.textContent = res.error || '⚠️ Sheet non configuré — liste locale uniquement';
+    afficherPins();
+    return;
+  }
+  if (err) err.textContent = '';
+  // Mettre à jour stats
+  const s = res.stats || {};
+  const ga = document.getElementById('gs-actifs');
+  const gm = document.getElementById('gs-mrr');
+  const gt = document.getElementById('gs-total');
+  if (ga) ga.textContent = s.actifs || 0;
+  if (gm) gm.textContent = (s.mrr || 0) + '€';
+  if (gt) gt.textContent = s.total || 0;
+  // Afficher liste Sheet
+  const el = document.getElementById('ab-list');
+  const count = document.getElementById('ab-count');
+  if (count) count.textContent = `(${res.abonnes.length} Sheet)`;
+  if (!el) return;
+  if (!res.abonnes.length) { el.innerHTML = '<div style="color:#555;font-size:12px;padding:8px;">Aucun abonné</div>'; return; }
+  el.innerHTML = res.abonnes.map(a => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #2a2a3e;">
+      <div>
+        <div style="color:#aaa;font-size:11px;">${a.email} · <span style="color:${a.statut==='actif'?'#00c896':'#e94560'}">${a.statut}</span> · exp: ${a.exp}</div>
+        <div style="color:#f5a623;font-weight:700;letter-spacing:2px;font-size:13px;">${a.pin}</div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="renvoyerEmail('${a.email}')" style="background:none;border:1px solid #4fc3f7;color:#4fc3f7;padding:2px 7px;border-radius:4px;font-size:10px;cursor:pointer;">📧</button>
+        <button onclick="supprimerPin('${a.pin}')" style="background:none;border:1px solid #e94560;color:#e94560;padding:2px 7px;border-radius:4px;font-size:10px;cursor:pointer;">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+// ── genererPinAbonne (legacy compat) ─────────────────────────
+function genererPinAbonne() { ajouterAbonne(); }
+
 
 // Init au chargement
 document.addEventListener('DOMContentLoaded',()=>{
@@ -1197,6 +1398,111 @@ function vCalcKelly(){
   vGet('c-result-kelly').innerHTML=`<div class="ibox"><b>Edge:</b> <span style="color:${edge>0?'#00c896':'#e94560'}">${(edge*100).toFixed(1)}%</span><br><b>Kelly ${frac*100}%:</b> <b style="color:#f5a623">${mise}€</b> ${edge<=0?'<span style="color:#e94560;">(pas d’edge)</span>':''}</div>`;
 }
 
+
+// ═══════════════════════════════════════════════
+// GESTION ABONNÉS — Google Sheets
+// ═══════════════════════════════════════════════
+async function sheetAddAbonne(email, pin) {
+  try {
+    const r = await fetch(SHEET_URL, {
+      method:'POST', body: JSON.stringify({action:'add', email, pin}),
+      headers:{'Content-Type':'application/json'}
+    });
+    const d = await r.json();
+    return d.ok;
+  } catch(e) { console.error('Sheet add error:', e); return false; }
+}
+
+async function sheetListAbonnes() {
+  try {
+    const r = await fetch(SHEET_URL, {
+      method:'POST', body: JSON.stringify({action:'list'}),
+      headers:{'Content-Type':'application/json'}
+    });
+    const d = await r.json();
+    return d.ok ? d.abonnes : [];
+  } catch(e) { console.error('Sheet list error:', e); return []; }
+}
+
+async function sheetDeleteAbonne(pin) {
+  try {
+    const r = await fetch(SHEET_URL, {
+      method:'POST', body: JSON.stringify({action:'delete', pin}),
+      headers:{'Content-Type':'application/json'}
+    });
+    const d = await r.json();
+    return d.ok;
+  } catch(e) { console.error('Sheet delete error:', e); return false; }
+}
+
+async function verifierPinSheet(pin) {
+  try {
+    const abonnes = await sheetListAbonnes();
+    const found = abonnes.find(a => String(a.pin) === String(pin) && a.statut === 'actif');
+    if (found) {
+      const exp = new Date(found.exp.split('/').reverse().join('-'));
+      return exp >= new Date();
+    }
+    return false;
+  } catch(e) { return false; }
+}
+
+async function adminGenererAbonne() {
+  const email = document.getElementById('ab-email').value.trim();
+  if (!email || !email.includes('@')) {
+    showToast('❌ Email invalide'); return;
+  }
+  const pin = String(Math.floor(10000000 + Math.random() * 90000000));
+  const btn = document.getElementById('btn-gen-ab');
+  btn.textContent = '⏳ Envoi...'; btn.disabled = true;
+  const ok = await sheetAddAbonne(email, pin);
+  btn.textContent = '➕ Générer Abonné'; btn.disabled = false;
+  if (ok) {
+    document.getElementById('ab-result').innerHTML = `
+      <div style="background:#00c89622;border:1px solid #00c896;border-radius:10px;padding:12px;margin-top:10px;text-align:center;">
+        <div style="color:#00c896;font-weight:700;font-size:13px;">✅ Abonné ajouté !</div>
+        <div style="color:#fff;font-size:14px;margin:6px 0;">📧 ${email}</div>
+        <div style="color:#f5a623;font-size:20px;font-weight:900;letter-spacing:3px;">🔑 ${pin}</div>
+        <div style="color:#888;font-size:11px;margin-top:4px;">PIN 8 chiffres à communiquer à l'abonné</div>
+      </div>`;
+    chargerListeAbonnes();
+  } else {
+    showToast('❌ Erreur Sheet — vérifier le déploiement');
+  }
+}
+
+async function chargerListeAbonnes() {
+  const el = document.getElementById('ab-liste');
+  if (!el) return;
+  el.innerHTML = '<div style="color:#888;text-align:center;padding:12px;">⏳ Chargement...</div>';
+  const abonnes = await sheetListAbonnes();
+  if (!abonnes.length) {
+    el.innerHTML = '<div style="color:#888;text-align:center;padding:12px;">Aucun abonné</div>';
+    return;
+  }
+  el.innerHTML = abonnes.map((a,i) => `
+    <div style="background:#1a1a2e;border:1px solid #2a2a3e;border-radius:10px;padding:10px;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#4fc3f7;">${a.email}</div>
+          <div style="font-size:11px;color:#888;">🔑 ${a.pin} · 📅 ${a.date} → ${a.exp}</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <span style="background:${a.statut==='actif'?'#00c89622':'#e9456022'};color:${a.statut==='actif'?'#00c896':'#e94560'};font-size:10px;padding:2px 8px;border-radius:8px;">${a.statut}</span>
+          <button onclick="supprimerAbonne('${a.pin}')" style="background:#e9456022;border:1px solid #e94560;color:#e94560;border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;">🗑️</button>
+        </div>
+      </div>
+    </div>`).join('');
+  document.getElementById('ab-count').textContent = abonnes.length;
+}
+
+async function supprimerAbonne(pin) {
+  if (!confirm('Supprimer cet abonné ?')) return;
+  const ok = await sheetDeleteAbonne(pin);
+  if (ok) { showToast('✅ Abonné supprimé'); chargerListeAbonnes(); }
+  else showToast('❌ Erreur suppression');
+}
+// ═══════════════════════════════════════════════
 </script>
 
 </body>
