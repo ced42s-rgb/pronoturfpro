@@ -675,7 +675,7 @@ const CONFIG = {
   quintea: ['1','15','5','10','9'], quinteB: ['1','5','12','14','9'],
 };
 // ═══════════════════════════════════════════════════════════
-const KEY='pnturf_v157';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
+const KEY='pnturf_v158';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
 const INIT=[
   {"date":"2026-03-19","hippo":"Vincennes","disc":"Trot","sel":"11-5-6-2-1-9-7-8","cdj":"11","dm":"—","mise":12.0,"arr":"16-11-1-9-10","top5":"3/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":18.5},
   {"date":"2026-03-20","hippo":"Vincennes","disc":"Trot","sel":"1-7-8-12-4-3-2-5","cdj":"1","dm":"—","mise":12.0,"arr":"5-8-7-3-2","top5":"5/5","top3":"3/3","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"—","tck":"Quarté Plein","bilan":"5/5 ✅ QUARTÉ PLEIN 🎉","retour":42.0},
@@ -1166,7 +1166,7 @@ const PAK = 'pnturf_abonnes_pins';
 
 // ── Google Sheet URL ──────────────────────────────────────────
 function getSheetUrl() {
-  return localStorage.getItem('pnturf_sheet_url') || '';
+  return SHEET_URL || localStorage.getItem('pnturf_sheet_url') || '';
 }
 
 // ── Appel Google Sheet ────────────────────────────────────────
@@ -1174,10 +1174,8 @@ async function callSheet(payload) {
   const url = getSheetUrl();
   if (!url) return { ok: false, error: 'URL Sheet non configurée' };
   try {
-    const r = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
+    const params = new URLSearchParams(payload).toString();
+    const r = await fetch(url + '?' + params);
     return await r.json();
   } catch(e) {
     return { ok: false, error: e.message };
@@ -1437,42 +1435,57 @@ async function adminGenererAbonne() {
   const btn = document.getElementById('btn-gen-ab');
   btn.textContent = '⏳ Envoi...'; btn.disabled = true;
 
-  // 1. Ajouter dans Google Sheet
-  const sheetOk = await sheetAddAbonne(email, pin);
+  // 1. Google Sheet
+  const sheetRes = await callSheet({action:'add', email, pin});
+  const sheetOk = sheetRes.ok;
 
-  // 2. Envoyer email avec PIN via EmailJS
+  // 2. EmailJS avec PIN
   let emailOk = false;
   try {
-    const result = await emailjs.send(
-      'service_412jzkn',
-      'qzn3dg5',
+    const result = await emailjs.send('service_412jzkn','qzn3dg5',
       { to_email: email, email: email, name: email.split('@')[0], pin: pin },
       'q56Lq8ctvgMFpYjTv'
     );
     emailOk = result.status === 200;
-  } catch(e) { console.error('EmailJS error:', e); }
+  } catch(e) { console.error('EmailJS:', e); }
 
   btn.textContent = '➕ Générer Abonné'; btn.disabled = false;
 
-  if (sheetOk) {
-    document.getElementById('ab-result').innerHTML = `
-      <div style="background:#00c89622;border:1px solid #00c896;border-radius:10px;padding:12px;margin-top:10px;text-align:center;">
-        <div style="color:#00c896;font-weight:700;font-size:13px;">✅ Abonné ajouté !</div>
-        <div style="color:#fff;font-size:14px;margin:6px 0;">📧 ${email}</div>
-        <div style="color:#f5a623;font-size:22px;font-weight:900;letter-spacing:4px;">🔑 ${pin}</div>
-        <div style="color:#888;font-size:11px;margin-top:4px;">${emailOk ? '✅ Email envoyé avec le PIN' : '⚠️ Email non envoyé — PIN à communiquer manuellement'}</div>
-      </div>`;
-    chargerListeAbonnes();
-  } else {
-    showToast('❌ Erreur Sheet — vérifier déploiement');
-  }
+  document.getElementById('ab-result').innerHTML = `
+    <div style="background:#00c89622;border:1px solid #00c896;border-radius:10px;padding:12px;margin-top:10px;text-align:center;">
+      <div style="color:#00c896;font-weight:700;font-size:13px;">${sheetOk?'✅':'⚠️'} ${sheetOk?'Abonné ajouté !':'Ajouté localement'}</div>
+      <div style="color:#fff;font-size:14px;margin:6px 0;">📧 ${email}</div>
+      <div style="color:#f5a623;font-size:22px;font-weight:900;letter-spacing:4px;">🔑 ${pin}</div>
+      <div style="color:#888;font-size:11px;margin-top:4px;">
+        Sheet: ${sheetOk?'✅':'❌ '+sheetRes.error} · Email: ${emailOk?'✅ envoyé':'❌ non envoyé'}
+      </div>
+    </div>`;
+
+  // Sauvegarder localement aussi
+  const local = JSON.parse(localStorage.getItem('pnturf_abonnes')||'[]');
+  local.push({email, pin, date: new Date().toLocaleDateString('fr-FR'), statut:'actif', exp: new Date(Date.now()+30*24*60*60*1000).toLocaleDateString('fr-FR')});
+  localStorage.setItem('pnturf_abonnes', JSON.stringify(local));
+  chargerListeAbonnes();
 }
 
 async function chargerListeAbonnes() {
   const el = document.getElementById('ab-liste');
+  const cnt = document.getElementById('ab-count');
   if (!el) return;
   el.innerHTML = '<div style="color:#888;text-align:center;padding:12px;">⏳ Chargement...</div>';
-  const abonnes = await sheetListAbonnes();
+
+  // Essayer Sheet d'abord
+  let abonnes = [];
+  const res = await callSheet({action:'list'});
+  if (res.ok && res.abonnes && res.abonnes.length) {
+    abonnes = res.abonnes;
+  } else {
+    // Fallback localStorage
+    abonnes = JSON.parse(localStorage.getItem('pnturf_abonnes')||'[]');
+  }
+
+  if (cnt) cnt.textContent = abonnes.length + (res.ok ? '' : ' local');
+
   if (!abonnes.length) {
     el.innerHTML = '<div style="color:#888;text-align:center;padding:12px;">Aucun abonné</div>';
     return;
@@ -1482,16 +1495,15 @@ async function chargerListeAbonnes() {
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <div>
           <div style="font-size:12px;font-weight:700;color:#4fc3f7;">${a.email}</div>
-          <div style="font-size:11px;color:#888;">🔑 ${a.pin} · 📅 ${a.date} → ${a.exp}</div>
+          <div style="font-size:13px;color:#f5a623;font-weight:700;letter-spacing:2px;">🔑 ${a.pin}</div>
+          <div style="font-size:10px;color:#888;">📅 ${a.date||''} · exp: ${a.exp||'30j'}</div>
         </div>
         <div style="display:flex;gap:6px;align-items:center;">
-          <span style="background:${a.statut==='actif'?'#00c89622':'#e9456022'};color:${a.statut==='actif'?'#00c896':'#e94560'};font-size:10px;padding:2px 8px;border-radius:8px;">${a.statut}</span>
+          <span style="background:${(a.statut||'actif')==='actif'?'#00c89622':'#e9456022'};color:${(a.statut||'actif')==='actif'?'#00c896':'#e94560'};font-size:10px;padding:2px 8px;border-radius:8px;">${a.statut||'actif'}</span>
           <button onclick="supprimerAbonne('${a.pin}')" style="background:#e9456022;border:1px solid #e94560;color:#e94560;border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;">🗑️</button>
         </div>
       </div>
     </div>`).join('');
-  const cnt = document.getElementById('ab-count');
-  if (cnt) cnt.textContent = abonnes.length;
 }
 
 async function supprimerAbonne(pin) {
@@ -1584,7 +1596,7 @@ async function chargerListeAbonnes() {
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <div>
           <div style="font-size:12px;font-weight:700;color:#4fc3f7;">${a.email}</div>
-          <div style="font-size:11px;color:#888;">🔑 ${a.pin} · 📅 ${a.date} → ${a.exp}</div>
+          <div style="font-size:11px;color:#888;">🔑 ${a.pin} · 📅 ${a.date} → exp: ${a.exp||'30j'}</div>
         </div>
         <div style="display:flex;gap:6px;align-items:center;">
           <span style="background:${a.statut==='actif'?'#00c89622':'#e9456022'};color:${a.statut==='actif'?'#00c896':'#e94560'};font-size:10px;padding:2px 8px;border-radius:8px;">${a.statut}</span>
