@@ -1110,8 +1110,8 @@ async function adminGenererAbonne() {
   // 2. EmailJS avec PIN
   let emailOk = false;
   try {
-    const result = await emailjs.send('service_412jzkn','qzn3dg5',
-      { to_email: email, email: email, name: email.split('@')[0], pin: pin },
+    const result = await emailjs.send('service_412jzkn','template_6lvl1rs',
+      { to_email: email, pin_vip: pin, site_url: 'https://pronoturfpro.fr' },
       'q56Lq8ctvgMFpYjTv'
     );
     emailOk = result.status === 200;
