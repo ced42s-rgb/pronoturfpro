@@ -2,7 +2,7 @@
 // Stratégie : Network First → toujours la version la plus récente
 
 const CACHE_NAME = 'pronoturf-v98';
-const OFFLINE_URLS = ['/index.html', '/app.html'];
+const OFFLINE_URLS = ['/index.html', '/pronoturf_pro_v10.html'];
 
 self.addEventListener('install', event => {
   self.skipWaiting();
