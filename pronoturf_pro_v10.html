@@ -846,19 +846,26 @@ tr:hover td{background:#1a1a2e55;}
 // CONFIG COURSE DU JOUR — Modifier ici pour chaque nouvelle course
 // ═══════════════════════════════════════════════════════════
 const CONFIG = {
-  date: '15/04/2026',
-  hippo: 'Cordemais',
-  disc: 'Trot Attelé',
-  course: 'R1 · 4ème course',
-  sel: '9-3-12-5-7-6-8-14',
-  outsiders: 'N°16 · N°15',
-  cdj: { course: 'R1', num: '504', mise: 20 },
-  dm:  { course: '', num: '', mise: 0 },
-  c1: '9', c2: '3',
-  quartea: ['9','3','12','14'],
-  quarteB: ['9','12','8','14'],
-  quintea: ['9','3','12','8','14'],
-  quinteB: ['9','12','5','6','14'],
+  date: '16/04/2026',        // ← DATE DU JOUR
+  hippo: 'Vincennes',        // ← HIPPODROME
+  disc: 'Trot Attelé',       // ← DISCIPLINE
+  course: 'R1 · C5',         // ← N° DE COURSE
+
+  sel: '9-3-12-5-7-6-8-14', // ← 8 CHEVAUX
+  outsiders: 'N°2 · N°11',  // ← OUTSIDERS
+
+  cdj:  { course: 'R1', num: 9,  mise: 20 }, // ← CHEVAL DU JOUR
+  dm:   { course: '',   num: '', mise: 0  }, // ← DM (vide si aucune)
+
+  c1: 9,                     // ← BASE 1
+  c2: 3,                     // ← BASE 2
+
+  quarteA: [9, 3, 12, 14],
+  quarteB: [9, 12, 8, 14],
+  quinteA: [9, 3, 12, 8, 14],
+  quinteB: [9, 12, 5, 6, 14],
+
+  depart: { h: 15, m: 15 }, // ← HEURE DÉPART
 };
 // ═══════════════════════════════════════════════════════════
 const KEY='pnturf_v170';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
