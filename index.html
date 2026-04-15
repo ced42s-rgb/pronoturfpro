@@ -326,5 +326,15 @@ function shareWA(){
   window.open('https://wa.me/?text='+encodeURIComponent(txt));
 }
 </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('[SW] Enregistré:', reg.scope))
+          .catch(err => console.warn('[SW] Échec:', err));
+      });
+    }
+  </script>
 </body>
 </html>

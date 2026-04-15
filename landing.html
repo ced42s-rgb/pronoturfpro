@@ -167,7 +167,7 @@ footer strong{color:#666;}
 <!-- NAV -->
 <nav>
   <div class="nav-logo">🏇 PRONOTURF PRO</div>
-  <button class="nav-cta" onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'})">5€99 · 3J offerts →</button>
+  <button class="nav-cta" onclick="window.location.href='connexion.html'">Déjà abonné ? Accéder →</button>
 </nav>
 
 <!-- HERO -->
@@ -334,7 +334,7 @@ footer strong{color:#666;}
         <div class="feat locked"><span class="fi">🔒</span>⚡ Dernière Minute quotidienne</div>
         <div class="feat locked"><span class="fi">🔒</span>Accès application + Bilan P&L</div>
       </div>
-      <button class="plan-cta free-btn" onclick="alert('Accès gratuit disponible sur l\'application !')">Voir l'aperçu →</button>
+      <button class="plan-cta free-btn" onclick="window.location.href='connexion.html'">Accéder à l'app →</button>
       <div class="stripe-note">Aucune carte requise</div>
     </div>
 
@@ -377,6 +377,7 @@ footer strong{color:#666;}
         ></stripe-buy-button>
       </div>
       <a href="https://buy.stripe.com/9B6bJ25WAaiU2w2djG1ZS03" target="_blank" style="display:block;text-align:center;margin-top:6px;color:#ff6b35;font-size:13px;font-weight:700;text-decoration:underline;">→ Ou payer directement via ce lien</a>
+<div style="text-align:center;margin-top:12px"><a href="connexion.html" style="color:#aaa;font-size:13px;text-decoration:none;">Déjà abonné ? <span style="color:#00c896;font-weight:700;">Se connecter →</span></a></div>
       <div style="text-align:center;margin-top:10px;font-size:13px;color:var(--green);font-weight:700;">
         ✅ 3 jours offerts · Accès immédiat par PIN
       </div>
@@ -458,7 +459,7 @@ footer strong{color:#666;}
        style="background:#1877F2;border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:8px;text-decoration:none;">
       <span style="font-size:18px;">📘</span><span style="color:#fff;font-weight:700;font-size:13px;">Facebook</span>
     </a>
-    <a href="https://chat.whatsapp.com/GOx17Gz6ybO26x70bdnX4t?mode=gi_t" target="_blank"
+    <a href="https://chat.whatsapp.com/GOx17Gz6ybO26x70bdnX4t" target="_blank"
        style="background:#25D366;border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:8px;text-decoration:none;">
       <span style="font-size:18px;">💬</span><span style="color:#fff;font-weight:700;font-size:13px;">WhatsApp</span>
     </a>
@@ -477,7 +478,7 @@ footer strong{color:#666;}
     <a href="#bilan">Bilan</a>
     <a href="#analyse">Analyse</a>
     <a href="#plans">Abonnement</a>
-    <a href="https://chat.whatsapp.com/GOx17Gz6ybO26x70bdnX4t?mode=gi_t" target="_blank">WhatsApp</a>
+    <a href="https://chat.whatsapp.com/GOx17Gz6ybO26x70bdnX4t" target="_blank">WhatsApp</a>
     <a href="https://t.me/+Y1GWodzG4zJmNTM0" target="_blank">Telegram</a>
     <a href="https://www.instagram.com/zoneparionsport" target="_blank">Instagram</a>
     <a href="https://www.facebook.com/profile.php?id=61582853518286" target="_blank">Facebook</a>
@@ -501,6 +502,16 @@ function toggleFaq(el){
   const a=el.nextElementSibling;
   a.classList.toggle('show');
 }
+</script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(r => console.log('[SW] OK:', r.scope))
+        .catch(e => console.warn('[SW] Erreur:', e));
+    });
+  }
 </script>
 </body>
 </html>
