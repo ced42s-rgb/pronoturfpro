@@ -488,6 +488,11 @@ tr:hover td{background:#1a1a2e55;}
       <div class="stitle" style="margin:0">⚙️ Administration</div>
       <button onclick="logoutAdmin()" style="background:none;border:1px solid #ff6b35;color:#ff6b35;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:11px">Déco.</button>
     </div>
+    <!-- Accès rapide -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <button class="btn" style="flex:1;font-size:13px;" onclick="sw('saisie',null)">📝 Saisir résultats</button>
+      <button class="btn gr" style="flex:1;font-size:13px;" onclick="exportJson()">📥 Exporter JSON</button>
+    </div>
     <div class="stitle">🔑 Code PIN VIP</div>
     <div class="ibox">
       <div class="form-group" style="margin-bottom:0"><label>Code PIN (5€99/mois)</label>
@@ -1576,6 +1581,16 @@ document.addEventListener('DOMContentLoaded',()=>{
   setInterval(updateClock, 1000);
 });
 
+
+function exportJson(){
+  const d = gd();
+  const blob = new Blob([JSON.stringify(d, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'prono_v90.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 function calcVipKelly(){
   const cote=parseFloat(document.getElementById('vk-cote').value)||3.5;
   const prob=parseFloat(document.getElementById('vk-prob').value)/100||0.35;
