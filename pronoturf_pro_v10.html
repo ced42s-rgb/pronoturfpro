@@ -125,7 +125,7 @@ tr:hover td{background:#1a1a2e55;}
   </div>
 </header>
 <div class="tabs">
-  <button class="tab-btn active" onclick="sw('aujourdhui',this)">🎯 15/04</button>
+  <button class="tab-btn active" onclick="sw('aujourdhui',this)">🎯 17/04</button>
   <button class="tab-btn" onclick="sw('tickets',this)">🎟️ Tickets</button>
   <button class="tab-btn" onclick="sw('vip',this)">💎 VIP</button>
   <button class="tab-btn" onclick="sw('analyse',this)">🧠 Analyse</button>
@@ -225,24 +225,39 @@ tr:hover td{background:#1a1a2e55;}
 </div>
 
 <div id="tab-tickets" class="tab-content">
-  <div class="stitle">🎟️ Pronostics · 15/04 · Cordemais</div>
+  <div class="stitle" id="tck-date-title">🎟️ Pronostics · <span id="tck-date">17/04 · Vincennes</span></div>
 
   <div class="today-card" style="border-color:#ff6b35;margin-bottom:14px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
       <span style="color:#ff6b35;font-weight:700;">📋 Sélection Publique</span>
       <span style="color:#888;font-size:11px;">15/04 · Attelé</span>
     </div>
-    <div class="trow"><span class="lb">🐴 Sélection</span><span class="vl" style="color:#4fc3f7">9·3·12·5·7·6·8·14</span></div>
-    <div class="trow"><span class="lb">🎲 Outsiders</span><span class="vl" style="color:#f5a623">N°16 · N°15</span></div>
-    <div class="trow"><span class="lb">🎯 CDJ</span><span class="vl" style="color:#f5a623">R1 · N°504</span></div>
+    <div class="trow"><span class="lb">🐴 Sélection</span><span class="vl" style="color:#4fc3f7" id="tck-sel">16·2·12·6·13·4·11·7</span></div>
+    <div class="trow"><span class="lb">🎲 Outsiders</span><span class="vl" style="color:#f5a623" id="tck-out">N°1 · N°15</span></div>
+    <div class="trow"><span class="lb">🎯 CDJ</span><span class="vl" style="color:#f5a623" id="tck-cdj">R1 · N°409</span></div>
     <div class="trow"><span class="lb">🎟️ Tickets VIP</span><span class="vl" style="color:#4fc3f7">🔒 Accès VIP</span></div>
   </div>
 
-  <div style="background:linear-gradient(135deg,#4fc3f711,#1a1a2e);border:2px solid #4fc3f7;border-radius:14px;padding:16px;text-align:center;">
-    <div style="font-size:13px;font-weight:700;color:#4fc3f7;margin-bottom:6px;">💎 C1 · C2 · D1 · Quarté A+B · Quinté A+B</div>
+  
+  <!-- TICKETS — générés par renderConfig() -->
+  <div class="ibox" style="margin-top:12px;">
+    <div class="stitle" style="font-size:13px;margin-bottom:10px;">🎯 Bases du jour</div>
+    <div class="trow"><span class="lb">🥇 C1 — Base absolue</span><span class="vl" id="tck-c1"><b style="color:#ff6b35">N°2</b></span></div>
+    <div class="trow"><span class="lb">🥈 C2 — Base 2</span><span class="vl" id="tck-c2"><span style="color:#ff6b35">N°7</span></span></div>
+  </div>
+  <div class="ibox" style="margin-top:10px;">
+    <div class="stitle" style="font-size:13px;margin-bottom:10px;">🎟️ Tickets générés (formule top5)</div>
+    <div class="trow"><span class="lb">Quarté A — sécurité</span><span class="vl" id="tck-qa" style="color:#4fc3f7">N°2 · N°16 · N°4 · N°11</span></div>
+    <div class="trow"><span class="lb">Quarté B — value P4-P8</span><span class="vl" id="tck-qb" style="color:#4fc3f7">N°2 · N°7 · N°6 · N°13</span></div>
+    <div class="trow"><span class="lb">Quinté A — sécurité</span><span class="vl" id="tck-q5a" style="color:#00c896">N°2 · N°7 · N°6 · N°13 · N°16</span></div>
+    <div class="trow"><span class="lb">Quinté B — value P4-P8</span><span class="vl" id="tck-q5b" style="color:#00c896">N°2 · N°16 · N°4 · N°11 · N°12</span></div>
+  </div>
+  <div style="background:linear-gradient(135deg,#4fc3f711,#1a1a2e);border:2px solid #4fc3f7;border-radius:14px;padding:16px;text-align:center;margin-top:12px;">
+    <div style="font-size:13px;font-weight:700;color:#4fc3f7;margin-bottom:6px;">💎 Accès VIP — Tickets complets</div>
     <div style="font-size:11px;color:#555;margin-bottom:12px;">5€99/mois · 3 jours offerts</div>
     <button class="btn bl" style="max-width:220px;margin:0 auto;" onclick="sw('vip',document.querySelectorAll('.tab-btn')[5])">🔓 Accéder au VIP</button>
   </div>
+
 </div>
 
 <div id="tab-dashboard" class="tab-content">
@@ -846,26 +861,27 @@ tr:hover td{background:#1a1a2e55;}
 // CONFIG COURSE DU JOUR — Modifier ici pour chaque nouvelle course
 // ═══════════════════════════════════════════════════════════
 const CONFIG = {
-  date: '16/04/2026',          // ← Date du jour
-  hippo: 'Vincennes',          // ← Hippodrome
-  disc: 'Trot Attelé',         // ← Discipline
-  course: 'R1 · 5ème course',  // ← Numéro de course
+  date:   '17/04/2026',
+  hippo:  'Vincennes',
+  disc:   'Trot Attelé',
+  course: 'R1C8',
 
-  sel: '9-3-12-5-7-6-8-14',   // ← 8 chevaux sélectionnés
-  outsiders: 'N°2 · N°11',    // ← Outsiders
+  sel:       '16-2-12-6-13-4-11-7',
+  outsiders: 'N°1 · N°15',
 
-  cdj:  { course: 'R1', num: 504,  mise: 20 },  // ← Cheval du Jour
-  dm:   { course: '',   num: '',   mise: 0  },  // ← Dernière Minute (vide si aucune)
+  cdj: { course: 'R1', num: 409, mise: 20 },
+  dm:  { course: '',   num: '',  mise: 0  },
 
-  c1: 9,   // ← Base 1
-  c2: 3,   // ← Base 2
+  c1: 16, c2: 7,
 
-  quarteA:  [9, 3, 12, 14],      // ← Ticket Quarté A
-  quarteB:  [9, 12, 8, 14],      // ← Ticket Quarté B
-  quinteA:  [9, 3, 12, 8, 14],   // ← Ticket Quinté A
-  quinteB:  [9, 12, 5, 6, 14],   // ← Ticket Quinté B
+  // Tickets par score de POSITION historique (20 courses)
+  // P1=90% · P8=50% · P7=45% · P2=50% · P3=40% · P4=40% · P6=50% · P5=15%
+  quarteA: [16, 7, 11, 2],   // top 4 positions → sécurité
+  quarteB: [16, 12, 6, 4],   // C1 + positions hors A → value
+  quinteA: [16, 7, 11, 2, 12],  // top 5 positions
+  quinteB: [16, 12, 6, 4, 13],  // C1 + positions hors A
 
-  depart: { h: 15, m: 15 },     // ← Heure de départ (compte à rebours)
+  depart: { h: 20, m: 15 },
 };
 // ═══════════════════════════════════════════════════════════
 const KEY='pnturf_v170';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
@@ -980,7 +996,7 @@ function renderHist(data){
     const pos=r.cdj_pos||'—';
     const bilan=r.bilan||r.tck||'—';
     const bilanShort=bilan.length>18?bilan.substring(0,18)+'…':bilan;
-    const top3=r.top3||'—';
+    const top3=r.top3||'—'||'—';
     const discColor=r.disc==='Trot'||r.disc==='Attelé'?'#4fc3f7':r.disc==='Steeple'||r.disc==='Haies'?'#b39ddb':r.disc==='GNT'?'#00c896':'#aaa';
     tb.insertAdjacentHTML('beforeend',`<tr>
       <td>${d}</td>
@@ -1179,7 +1195,7 @@ function calcComb(){
 function buildRefTable(){
   const rows=[{n:'Tiercé',k:3,ch:[3,4,5,6,7]},{n:'Quarté',k:4,ch:[4,5,6,7,8]},{n:'Quinté',k:5,ch:[5,6,7,8,9]}];
   let h='';
-  rows.forEach(r=>r.ch.forEach(c=>{const nc=comb(c,r.k);h+=`<tr><td><b>${r.n}</b></td><td>${c} ch.</td><td>${nc.toLocaleString('fr-FR')}</td><td>${nc.toFixed(2)}€</td></tr>`;}));
+  rows.forEach(r=>r.ch.forEach(c=>{const nc=comb(c,r.k);h+=`<tr><td><b>${r.n}</b></td><td>${c} ch.</td><td>${nc.toLocaleString('fr-FR')}</td><td>${nc.toLocaleString('fr-FR')}€</td></tr>`;}));
   document.getElementById('cb-table').innerHTML=h;
 }
 
@@ -1432,7 +1448,100 @@ function afficherPins(){
 function supprimerPin(pin){if(!confirm('Supprimer ?'))return;savePinsAbonnes(getPinsAbonnes().filter(p=>p.pin!==pin));afficherPins();}
 
 // Init au chargement
+
+/* ============================================================
+   renderConfig() — Génère tout depuis CONFIG automatiquement
+   ============================================================ */
+function renderConfig() {
+  const C = CONFIG;
+  const chevaux = C.sel.split('-').map(x => x.trim());
+  const c1 = C.c1 || parseInt(chevaux[0]);
+  const c2 = C.c2 || parseInt(chevaux[1]);
+
+  // --- Formule top5 fréquence historique ---
+  function calcTopFreq(sel) {
+    const data = typeof INIT !== 'undefined' ? INIT : [];
+    const freq = {};
+    sel.forEach(n => freq[n] = {t1:0, t3:0, t5:0});
+    data.forEach(r => {
+      if(!r.arr) return;
+      const arr = r.arr.split('-').map(x=>parseInt(x.trim())).filter(n=>!isNaN(n));
+      arr.slice(0,5).forEach((n,i) => {
+        if(freq[n]===undefined) return;
+        freq[n].t5++;
+        if(i<3) freq[n].t3++;
+        if(i<1) freq[n].t1++;
+      });
+    });
+    return [...sel].sort((a,b)=>{
+      const sa=freq[a]||{t1:0,t3:0,t5:0}, sb=freq[b]||{t1:0,t3:0,t5:0};
+      return (sb.t1*5+sb.t3*3+sb.t5)-(sa.t1*5+sa.t3*3+sa.t5);
+    });
+  }
+
+  const selNums   = chevaux.map(Number).filter(Boolean);
+  const ranked    = calcTopFreq(selNums);
+  const selBas    = selNums.slice(3);
+  const rankedBcl = calcTopFreq(selBas).filter(n=>n!==ranked[0]);
+
+  const hasTck = arr => Array.isArray(arr) && arr.length > 0;
+
+  // Ticket A = sécurité : top 4/5 fréquence globale
+  const qa  = hasTck(C.quarteA) ? C.quarteA : [ranked[0],ranked[1],ranked[2],ranked[3]];
+  const q5a = hasTck(C.quinteA) ? C.quinteA : [ranked[0],ranked[1],ranked[2],ranked[3],ranked[4]];
+
+  // Ticket B = value : C1 + chevaux HORS Ticket A (couverture surprise)
+  const horsA4 = ranked.filter(n => !qa.includes(n));
+  const horsA5 = ranked.filter(n => !q5a.includes(n));
+  const qb  = hasTck(C.quarteB) ? C.quarteB : [ranked[0],horsA4[0],horsA4[1],horsA4[2]].filter(Boolean);
+  const q5b = hasTck(C.quinteB) ? C.quinteB : [ranked[0],horsA5[0],horsA5[1],horsA5[2],horsA5[3]].filter(Boolean);
+
+  const chip  = n  => `<span class="chip" style="font-weight:700;color:#ff6b35">N°${n}</span>`;
+  const chipG = n  => `<span class="chip">N°${n}</span>`;
+  const fmtT  = arr => arr.filter(Boolean).map(chip).join(' ');
+  const fmtS  = arr => arr.map(chipG).join(' ');
+
+  const set = (id, html, isHTML=true) => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    isHTML ? el.innerHTML = html : el.textContent = html;
+  };
+
+  // Onglet Aujourd'hui
+  set('cfg-date',      `${C.hippo} · ${C.disc} · ${C.course}`, false);
+  set('cfg-course',    `${C.date} · ${C.hippo}`, false);
+  set('cfg-sel',       fmtS(selNums));
+  set('cfg-outsiders', `<span style="color:#f5a623;font-weight:700">${C.outsiders}</span>`);
+  set('cfg-cdj',       C.cdj.num ? `<span style="color:#f5a623;font-weight:700">${C.cdj.course} · N°${C.cdj.num} · ${C.cdj.mise}€</span>` : '<span style="color:#555">—</span>');
+  set('cfg-dm',        C.dm.num  ? `<span style="color:#00c896;font-weight:700">${C.dm.course} · N°${C.dm.num} · ${C.dm.mise}€</span>` : '<span style="color:#555">Pas de DM</span>');
+  set('cfg-c1',        `<span style="color:#ff6b35;font-weight:900;font-size:18px">N°${c1}</span>`);
+  set('cfg-c2',        `<span style="color:#ff6b35;font-weight:700">N°${c2}</span>`);
+
+  // Onglet Tickets
+  set('tck-date',  `${C.date} · ${C.hippo} · ${C.disc}`, false);
+  set('tck-sel',   fmtS(selNums));
+  set('tck-out',   `<span style="color:#f5a623">${C.outsiders}</span>`);
+  set('tck-cdj',   C.cdj.num ? `<b style="color:#f5a623">${C.cdj.course} N°${C.cdj.num}</b> · ${C.cdj.mise}€` : '—');
+  set('tck-c1',    `<span style="color:#ff6b35;font-weight:900">N°${c1}</span>`);
+  set('tck-c2',    `<span style="color:#ff6b35;font-weight:700">N°${c2}</span>`);
+  set('tck-qa',    fmtT(qa));
+  set('tck-qb',    fmtT(qb));
+  set('tck-q5a',   fmtT(q5a));
+  set('tck-q5b',   fmtT(q5b));
+
+  // Titre onglet Tickets
+  const tckTitle = document.querySelector('#tab-tickets .stitle');
+  if(tckTitle) tckTitle.textContent = `🎟️ Pronostics · ${C.date} · ${C.hippo}`;
+
+  // Bouton onglet date
+  const todayBtn = document.querySelector('.tab-btn.active[onclick*="aujourdhui"]');
+  if(todayBtn) todayBtn.textContent = `🎯 ${C.date.substring(0,5)}`;
+
+  console.log('[renderConfig] ✅', C.date, C.hippo, '| QA:', qa, '| Q5A:', q5a);
+}
+
 document.addEventListener('DOMContentLoaded',()=>{
+  renderConfig();
   checkMagicLinkUrl();
   updateClock();
   setInterval(updateClock, 1000);
