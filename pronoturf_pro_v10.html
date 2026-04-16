@@ -861,27 +861,25 @@ tr:hover td{background:#1a1a2e55;}
 // CONFIG COURSE DU JOUR — Modifier ici pour chaque nouvelle course
 // ═══════════════════════════════════════════════════════════
 const CONFIG = {
-  date:   '17/04/2026',
-  hippo:  'Vincennes',
-  disc:   'Trot Attelé',
-  course: 'R1C8',
+  date:   '17/04/2026',      // ← DATE
+  hippo:  'Vincennes',        // ← HIPPODROME
+  disc:   'Trot Attelé',      // ← DISCIPLINE
+  course: 'R1C8',             // ← COURSE
 
-  sel:       '16-2-12-6-13-4-11-7',
-  outsiders: 'N°1 · N°15',
+  sel:       '16-2-12-6-13-4-11-7',  // ← 8 CHEVAUX
+  outsiders: 'N°1 · N°15',           // ← OUTSIDERS
 
-  cdj: { course: 'R1', num: 409, mise: 20 },
-  dm:  { course: '',   num: '',  mise: 0  },
+  cdj: { course: 'R1', num: 409, mise: 20 },  // ← CHEVAL DU JOUR
+  dm:  { course: '',   num: '',  mise: 0  },   // ← DM (vide = aucun)
 
-  c1: 16, c2: 7,
+  c1: 16, c2: 7,   // ← BASES (0 = calcul auto)
 
-  // Tickets par score de POSITION historique (20 courses)
-  // P1=90% · P8=50% · P7=45% · P2=50% · P3=40% · P4=40% · P6=50% · P5=15%
-  quarteA: [16, 7, 11, 2],   // top 4 positions → sécurité
-  quarteB: [16, 12, 6, 4],   // C1 + positions hors A → value
-  quinteA: [16, 7, 11, 2, 12],  // top 5 positions
-  quinteB: [16, 12, 6, 4, 13],  // C1 + positions hors A
+  quarteA: [16, 7, 11, 2],       // ← TICKETS ([] = formule auto)
+  quarteB: [16, 12, 6, 4],
+  quinteA: [16, 7, 11, 2, 12],
+  quinteB: [16, 12, 6, 4, 13],
 
-  depart: { h: 20, m: 15 },
+  depart: { h: 20, m: 15 },   // ← HEURE DÉPART
 };
 // ═══════════════════════════════════════════════════════════
 const KEY='pnturf_v170';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
