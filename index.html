@@ -2,6 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#ff6b35">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PRONOTURF PRO · Pronostics Quinté+ Premium</title>
 <meta name="description" content="PRONOTURF PRO — Les meilleurs pronostics Quinté+. 78.9% de réussite CDJ, +101€ de P&L sur 18 courses. Abonnement 5€99/mois.">
@@ -180,13 +182,13 @@ footer a{color:#666;text-decoration:none;}
 <div class="section" style="padding-top:0">
   <div class="sec-title">📊 Performance · 18 courses</div>
   <div class="proof-bar">
-    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#888;">Taux CDJ</span><span style="color:#00c896;font-weight:700;">77.8%</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#888;">Taux CDJ</span><span style="color:#00c896;font-weight:700;" id="idx-cdj">75.0%</span></div>
     <div class="score-bar"><div class="score-fill sf-green" style="width:78.9%"></div></div>
     <div style="height:10px"></div>
-    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#888;">Top5 couverts</span><span style="color:#00c896;font-weight:700;">83.3%</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#888;">Top5 couverts</span><span style="color:#00c896;font-weight:700;" id="idx-top5">79.0%</span></div>
     <div class="score-bar"><div class="score-fill sf-green" style="width:83.3%"></div></div>
     <div style="height:10px"></div>
-    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#888;">ROI</span><span style="color:#f5a623;font-weight:700;">51.9%</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#888;">ROI</span><span style="color:#f5a623;font-weight:700;" id="idx-roi">38.5%</span></div>
     <div class="score-bar"><div class="score-fill sf-orange" style="width:52%"></div></div>
   </div>
 
@@ -336,5 +338,42 @@ function shareWA(){
       });
     }
   </script>
+
+<script>
+// Mise à jour KPIs depuis prono_v90.json
+fetch('/prono_v90.json')
+  .then(r => r.json())
+  .then(data => {
+    const total = data.length;
+    if(!total) return;
+    const wins = data.filter(r => r.cdj_res === 'WIN').length;
+    const top5vals = data.map(r => {
+      if(!r.top5) return null;
+      const [n,d] = r.top5.split('/');
+      return parseInt(n)/parseInt(d);
+    }).filter(v => v !== null);
+    const top5pct = top5vals.length ? (top5vals.reduce((a,b)=>a+b,0)/top5vals.length*100).toFixed(1) : 0;
+    const cdjpct  = (wins/total*100).toFixed(1);
+    const pl      = data.reduce((s,r)=>s+(parseFloat(r.retour)||0)-(parseFloat(r.mise)||0),0).toFixed(1);
+    const mise    = data.reduce((s,r)=>s+(parseFloat(r.mise)||0),0);
+    const roi     = mise ? ((pl/mise)*100).toFixed(1) : 0;
+    const nb      = total;
+
+    const set = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
+    set('idx-top5', top5pct + '%');
+    set('idx-cdj',  cdjpct  + '%');
+    set('idx-roi',  (roi>=0?'+':'') + roi + '%');
+
+    // Barres de progression
+    const setBar = (id, pct) => {
+      const el = document.getElementById(id);
+      if(el) el.style.width = Math.min(pct,100) + '%';
+    };
+    setBar('bar-top5', top5pct);
+    setBar('bar-cdj',  cdjpct);
+    setBar('bar-roi',  Math.abs(roi));
+  })
+  .catch(() => console.log('[index] prono_v90.json non accessible'));
+</script>
 </body>
 </html>
