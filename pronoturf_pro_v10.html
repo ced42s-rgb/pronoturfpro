@@ -230,32 +230,38 @@ tr:hover td{background:#1a1a2e55;}
   <div class="today-card" style="border-color:#ff6b35;margin-bottom:14px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
       <span style="color:#ff6b35;font-weight:700;">📋 Sélection Publique</span>
-      <span style="color:#888;font-size:11px;">15/04 · Attelé</span>
+      <span style="color:#888;font-size:11px;" id="tck-badge">17/04 · Trot Attelé</span>
     </div>
     <div class="trow"><span class="lb">🐴 Sélection</span><span class="vl" style="color:#4fc3f7" id="tck-sel">16·2·12·6·13·4·11·7</span></div>
     <div class="trow"><span class="lb">🎲 Outsiders</span><span class="vl" style="color:#f5a623" id="tck-out">N°1 · N°15</span></div>
     <div class="trow"><span class="lb">🎯 CDJ</span><span class="vl" style="color:#f5a623" id="tck-cdj">R1 · N°409</span></div>
-    <div class="trow"><span class="lb">🎟️ Tickets VIP</span><span class="vl" style="color:#4fc3f7">🔒 Accès VIP</span></div>
+    <div class="trow"><span class="lb">🎟️ Tickets</span><span class="vl" style="color:#4fc3f7" id="tck-preview">N°16 · N°7 · N°11 · N°2</span></div>
   </div>
 
-  
-  <!-- TICKETS — générés par renderConfig() -->
-  <div class="ibox" style="margin-top:12px;">
-    <div class="stitle" style="font-size:13px;margin-bottom:10px;">🎯 Bases du jour</div>
-    <div class="trow"><span class="lb">🥇 C1 — Base absolue</span><span class="vl" id="tck-c1"><b style="color:#ff6b35">N°2</b></span></div>
-    <div class="trow"><span class="lb">🥈 C2 — Base 2</span><span class="vl" id="tck-c2"><span style="color:#ff6b35">N°7</span></span></div>
+
+  <!-- TICKETS VIP — cachés si non connecté -->
+  <div id="tck-vip-locked" style="margin-top:12px;">
+    <div style="background:linear-gradient(135deg,#4fc3f711,#1a1a2e);border:2px solid #4fc3f7;border-radius:14px;padding:20px;text-align:center;">
+      <div style="font-size:36px;margin-bottom:8px;">🔒</div>
+      <div style="font-size:14px;font-weight:700;color:#4fc3f7;margin-bottom:4px;">Tickets réservés VIP</div>
+      <div style="font-size:12px;color:#888;margin-bottom:14px;">C1 · C2 · Quarté A/B · Quinté A/B</div>
+      <div style="font-size:11px;color:#555;margin-bottom:12px;">5€99/mois · 3 jours offerts</div>
+      <button class="btn bl" style="max-width:220px;margin:0 auto;" onclick="sw('vip',document.querySelectorAll('.tab-btn')[5])">🔓 Accéder au VIP</button>
+    </div>
   </div>
-  <div class="ibox" style="margin-top:10px;">
-    <div class="stitle" style="font-size:13px;margin-bottom:10px;">🎟️ Tickets générés (formule top5)</div>
-    <div class="trow"><span class="lb">Quarté A — sécurité</span><span class="vl" id="tck-qa" style="color:#4fc3f7">N°2 · N°16 · N°4 · N°11</span></div>
-    <div class="trow"><span class="lb">Quarté B — value P4-P8</span><span class="vl" id="tck-qb" style="color:#4fc3f7">N°2 · N°7 · N°6 · N°13</span></div>
-    <div class="trow"><span class="lb">Quinté A — sécurité</span><span class="vl" id="tck-q5a" style="color:#00c896">N°2 · N°7 · N°6 · N°13 · N°16</span></div>
-    <div class="trow"><span class="lb">Quinté B — value P4-P8</span><span class="vl" id="tck-q5b" style="color:#00c896">N°2 · N°16 · N°4 · N°11 · N°12</span></div>
-  </div>
-  <div style="background:linear-gradient(135deg,#4fc3f711,#1a1a2e);border:2px solid #4fc3f7;border-radius:14px;padding:16px;text-align:center;margin-top:12px;">
-    <div style="font-size:13px;font-weight:700;color:#4fc3f7;margin-bottom:6px;">💎 Accès VIP — Tickets complets</div>
-    <div style="font-size:11px;color:#555;margin-bottom:12px;">5€99/mois · 3 jours offerts</div>
-    <button class="btn bl" style="max-width:220px;margin:0 auto;" onclick="sw('vip',document.querySelectorAll('.tab-btn')[5])">🔓 Accéder au VIP</button>
+  <div id="tck-vip-content" style="display:none;margin-top:12px;">
+    <div class="ibox">
+      <div class="stitle" style="font-size:13px;margin-bottom:10px;">🎯 Bases du jour</div>
+      <div class="trow"><span class="lb">🥇 C1 — Base absolue</span><span class="vl" id="tck-c1"><b style="color:#ff6b35">N°16</b></span></div>
+      <div class="trow"><span class="lb">🥈 C2 — Base 2</span><span class="vl" id="tck-c2"><span style="color:#ff6b35">N°7</span></span></div>
+    </div>
+    <div class="ibox" style="margin-top:10px;">
+      <div class="stitle" style="font-size:13px;margin-bottom:10px;">🎟️ Tickets générés</div>
+      <div class="trow"><span class="lb">🎲 Quarté A — sécurité</span><span class="vl" id="tck-qa" style="color:#b39ddb">—</span></div>
+      <div class="trow"><span class="lb">🎲 Quarté B — value</span><span class="vl" id="tck-qb" style="color:#b39ddb">—</span></div>
+      <div class="trow"><span class="lb">🏆 Quinté A — sécurité</span><span class="vl" id="tck-q5a" style="color:#7c3aed">—</span></div>
+      <div class="trow"><span class="lb">🏆 Quinté B — value</span><span class="vl" id="tck-q5b" style="color:#7c3aed">—</span></div>
+    </div>
   </div>
 
 </div>
@@ -333,22 +339,22 @@ tr:hover td{background:#1a1a2e55;}
       <button onclick="logout()" style="background:none;border:none;color:#4fc3f7;cursor:pointer;font-size:12px;float:right;">Déco.</button>
     </div>
 
-    <div class="stitle">💎 VIP · 15/04 · Cordemais</div>
+    <div class="stitle" id="vip-date-title">💎 VIP · <span id="vip-date">17/04 · Vincennes</span></div>
     <div class="today-card" style="border-color:#4fc3f7;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
         <span style="color:#4fc3f7;font-weight:700;font-size:15px;">💎 VIP EXCLUSIF</span>
-        <span style="color:#f5a623;font-size:12px;">15/04/2026</span>
+        <span style="color:#f5a623;font-size:12px;" id="vip-date2">17/04/2026</span>
       </div>
-      <div class="trow"><span class="lb">🐴 C1 ⭐</span><span class="vl" style="color:#4fc3f7;">N°9 · 20€</span></div>
-      <div class="trow"><span class="lb">🐴 C2</span><span class="vl" style="color:#4fc3f7;">N°3 · 10€</span></div>
-      <div class="trow"><span class="lb">🔗 D1 Couplé</span><span class="vl" style="color:#4fc3f7;">N°9+N°3 · 10€</span></div>
-      <div class="trow"><span class="lb">🎲 Quarté A</span><span class="vl" style="color:#b39ddb;">N°9·3·12·14 · P1·P2·P3·P8</span></div>
-      <div class="trow"><span class="lb">🎲 Quarté B ⭐</span><span class="vl" style="color:#b39ddb;">N°9·12·8·14 · P1·P3·P7·P8</span></div>
-      <div class="trow"><span class="lb">🏆 Quinté A</span><span class="vl" style="color:#7c3aed;">N°9·3·12·8·14</span></div>
-      <div class="trow"><span class="lb">🏆 Quinté B</span><span class="vl" style="color:#7c3aed;">N°9·12·5·6·14</span></div>
-      <div class="trow"><span class="lb">🎯 CDJ</span><span class="vl" style="color:#f5a623;">R1 · N°504 · 20€</span></div>
-      <div class="trow"><span class="lb">🏟️ Hippodrome</span><span class="vl;">Cordemais · R1 · Attelé</span></div>
-      <div class="trow"><span class="lb">💰 Budget total</span><span class="vl or;">80€</span></div>
+      <div class="trow"><span class="lb">🐴 C1 ⭐</span><span class="vl" style="color:#ff6b35;font-weight:900;" id="vip-c1">N°16 · 20€</span></div>
+      <div class="trow"><span class="lb">🐴 C2</span><span class="vl" style="color:#ff6b35;" id="vip-c2">N°7 · 10€</span></div>
+      <div class="trow"><span class="lb">🔗 D1 Couplé</span><span class="vl" style="color:#4fc3f7;" id="vip-d1">N°16+N°7 · 10€</span></div>
+      <div class="trow"><span class="lb">🎲 Quarté A</span><span class="vl" style="color:#b39ddb;" id="vip-qa">N°16·7·11·2</span></div>
+      <div class="trow"><span class="lb">🎲 Quarté B ⭐</span><span class="vl" style="color:#b39ddb;" id="vip-qb">N°16·12·6·4</span></div>
+      <div class="trow"><span class="lb">🏆 Quinté A</span><span class="vl" style="color:#7c3aed;" id="vip-q5a">N°16·7·11·2·12</span></div>
+      <div class="trow"><span class="lb">🏆 Quinté B</span><span class="vl" style="color:#7c3aed;" id="vip-q5b">N°16·12·6·4·13</span></div>
+      <div class="trow"><span class="lb">🎯 CDJ</span><span class="vl" style="color:#f5a623;" id="vip-cdj">R1 · N°409 · 20€</span></div>
+      <div class="trow"><span class="lb">🏟️ Hippodrome</span><span class="vl" id="vip-hippo">Vincennes · R1C8 · Attelé</span></div>
+      <div class="trow"><span class="lb">⏰ Départ</span><span class="vl" style="color:#00c896;" id="vip-depart">20h15</span></div>
     </div>
 
     <div class="stitle" style="font-size:13px;">🎟️ Tickets détaillés · 15/04</div>
@@ -861,25 +867,27 @@ tr:hover td{background:#1a1a2e55;}
 // CONFIG COURSE DU JOUR — Modifier ici pour chaque nouvelle course
 // ═══════════════════════════════════════════════════════════
 const CONFIG = {
-  date:   '17/04/2026',      // ← DATE
-  hippo:  'Vincennes',        // ← HIPPODROME
-  disc:   'Trot Attelé',      // ← DISCIPLINE
-  course: 'R1C8',             // ← COURSE
+  date:   '17/04/2026',
+  hippo:  'Vincennes',
+  disc:   'Trot Attelé',
+  course: 'R1C8',
 
-  sel:       '16-2-12-6-13-4-11-7',  // ← 8 CHEVAUX
-  outsiders: 'N°1 · N°15',           // ← OUTSIDERS
+  sel:       '16-2-12-6-13-4-11-7',
+  outsiders: 'N°1 · N°15',
 
-  cdj: { course: 'R1', num: 409, mise: 20 },  // ← CHEVAL DU JOUR
-  dm:  { course: '',   num: '',  mise: 0  },   // ← DM (vide = aucun)
+  cdj: { course: 'R1', num: 409, mise: 20 },
+  dm:  { course: '',   num: '',  mise: 0  },
 
-  c1: 16, c2: 7,   // ← BASES (0 = calcul auto)
+  c1: 16, c2: 7,
 
-  quarteA: [16, 7, 11, 2],       // ← TICKETS ([] = formule auto)
-  quarteB: [16, 12, 6, 4],
-  quinteA: [16, 7, 11, 2, 12],
-  quinteB: [16, 12, 6, 4, 13],
+  // Tickets par score de POSITION historique (20 courses)
+  // P1=90% · P8=50% · P7=45% · P2=50% · P3=40% · P4=40% · P6=50% · P5=15%
+  quarteA: [16, 7, 11, 2],   // top 4 positions → sécurité
+  quarteB: [16, 12, 6, 4],   // C1 + positions hors A → value
+  quinteA: [16, 7, 11, 2, 12],  // top 5 positions
+  quinteB: [16, 12, 6, 4, 13],  // C1 + positions hors A
 
-  depart: { h: 20, m: 15 },   // ← HEURE DÉPART
+  depart: { h: 20, m: 15 },
 };
 // ═══════════════════════════════════════════════════════════
 const KEY='pnturf_v170';const PINS_KEY='pnturf_pin_vip';const ADMIN_PIN='15081972';
@@ -927,12 +935,17 @@ function renderAll(){
   const setVip = document.getElementById('set-vip');
   if(setVip) setVip.value = getPin();
   // Auto-restore VIP session
-  if(localStorage.getItem('is_vip')){
-    const vl = document.getElementById('vip-locked');
-    const vc = document.getElementById('vip-content');
-    if(vl) vl.style.display = 'none';
-    if(vc) vc.style.display = 'block';
-  }
+  const isVip = localStorage.getItem('is_vip');
+  // Onglet VIP
+  const vl = document.getElementById('vip-locked');
+  const vc = document.getElementById('vip-content');
+  if(vl) vl.style.display = isVip ? 'none' : 'block';
+  if(vc) vc.style.display = isVip ? 'block' : 'none';
+  // Onglet Tickets — tickets cachés si non VIP
+  const tl = document.getElementById('tck-vip-locked');
+  const tc = document.getElementById('tck-vip-content');
+  if(tl) tl.style.display = isVip ? 'none' : 'block';
+  if(tc) tc.style.display = isVip ? 'block' : 'none';
 }
 
 const BK_INIT=1000;
@@ -1517,6 +1530,23 @@ function renderConfig() {
 
   // Onglet Tickets
   set('tck-date',  `${C.date} · ${C.hippo} · ${C.disc}`, false);
+  set('tck-badge', `${C.date.substring(0,5)} · ${C.disc}`, false);
+  // Aperçu QuartéA dans la carte publique
+  set('tck-preview', qa.map(n=>`N°${n}`).join(' · '));
+
+  // Onglet VIP
+  set('vip-date',   `${C.date} · ${C.hippo}`, false);
+  set('vip-date2',  C.date, false);
+  set('vip-hippo',  `${C.hippo} · ${C.course} · ${C.disc}`, false);
+  set('vip-depart', `${C.depart.h}h${String(C.depart.m).padStart(2,'0')}`, false);
+  set('vip-c1',  `N°${C.c1} · ${C.cdj.mise}€`);
+  set('vip-c2',  `N°${C.c2} · ${Math.round(C.cdj.mise/2)}€`);
+  set('vip-d1',  `N°${C.c1}+N°${C.c2} · ${Math.round(C.cdj.mise/2)}€`);
+  set('vip-cdj', C.cdj.num ? `${C.cdj.course} · N°${C.cdj.num} · ${C.cdj.mise}€` : '—');
+  set('vip-qa',  qa.map(n=>`N°${n}`).join('·'));
+  set('vip-qb',  qb.map(n=>`N°${n}`).join('·'));
+  set('vip-q5a', q5a.map(n=>`N°${n}`).join('·'));
+  set('vip-q5b', q5b.map(n=>`N°${n}`).join('·'));
   set('tck-sel',   fmtS(selNums));
   set('tck-out',   `<span style="color:#f5a623">${C.outsiders}</span>`);
   set('tck-cdj',   C.cdj.num ? `<b style="color:#f5a623">${C.cdj.course} N°${C.cdj.num}</b> · ${C.cdj.mise}€` : '—');
@@ -1540,6 +1570,7 @@ function renderConfig() {
 
 document.addEventListener('DOMContentLoaded',()=>{
   renderConfig();
+  renderAll();
   checkMagicLinkUrl();
   updateClock();
   setInterval(updateClock, 1000);
