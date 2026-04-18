@@ -422,7 +422,7 @@ tr:hover td{background:#1a1a2e55;}
   <div class="stitle">📤 Partage · 15/04</div>
   <div class="share-card">
     <div style="text-align:center;margin-bottom:12px;">
-      <div style="font-size:11px;color:#aaa;">🏇 PRONOTURF PRO · 17/04/2026{"date":"2026-04-16","hippo":"Longchamp","disc":"Plat","sel":"7-10-4-8-2-13-9-1","cdj":"R4 N°303","dm":"","mise":12.0,"arr":"10-14-8-2-13","top5":"4/5","top3":"2/3","cdjres":"WIN","cdjpos":"Gagnant","dmres":"","tck":"CDJ WIN","bilan":"CDJ +14EUR","retour":34.004/2026'</div>
+      <div style="font-size:11px;color:#aaa;">🏇 PRONOTURF PRO · 15/04/2026</div>
       <div style="font-size:16px;font-weight:700;color:#ff6b35;">🏆 Attelé · Cordemais · R1</div>
     </div>
     <div class="share-row"><span class="slb">🐴 Sélection</span><span class="svl">9-3-12-5-7-6-8-14</span></div>
@@ -917,8 +917,7 @@ const INIT=[
   {"date":"2026-04-09","hippo":"Prix Oiseleur","disc":"Haies","sel":"3-11-8-13-10-14-15-5","cdj":"210","dm":"602","mise":12.0,"arr":"2-14-1-3-15","top5":"3/5","top3":"2/3","cdj_res":"WIN","cdj_pos":"4e ✅","dm_res":"LOSS","tck":"CDJ Placé","bilan":"CDJ ✅ · P7 N°15 ✅ 5e","retour":1.7}
 ,
   {"date":"2026-04-10","hippo":"Vincennes","disc":"Attelé","sel":"10-9-13-15-11-12-14-4","cdj":"206","dm":"111","mise":12,"arr":"15-6-14-7-10","top5":"3/5","top3":"2/3","cdj_res":"LOSS","cdj_pos":"—","bilan":"CDJ ❌ DM ❌","retour":0},
-  "date":"2026-04-15","hippo":"Cordemais","disc":"Attelé","sel":"9-3-12-5-7-6-8-14","cdj":"504"},
-{"date":"2026-04-16","hippo":"Longchamp","disc":"Plat","sel":"7-10-4-8-2-13-9-1","cdj":"R4 N°303","dm":"","mise":12.0,"arr":"10-14-8-2-13","top5":"4/5","top3":"2/3","cdjres":"WIN","cdjpos":"Gagnant","dmres":"","tck":"CDJ WIN","bilan":"CDJ +14EUR","retour":34.004/2026',"dm":"","mise":20,"arr":"15-9-14-3-6","top5":"4/5","top3":"3/3","cdj_res":"LOSS","cdj_pos":"—","bilan":"CDJ ❌ · 4/5","retour":0}
+  {"date":"2026-04-15","hippo":"Cordemais","disc":"Attelé","sel":"9-3-12-5-7-6-8-14","cdj":"504","dm":"","mise":20,"arr":"15-9-14-3-6","top5":"4/5","top3":"3/3","cdj_res":"LOSS","cdj_pos":"—","bilan":"CDJ ❌ · 4/5","retour":0}
 ];
 
 function gd(){
@@ -1055,22 +1054,22 @@ function logoutAdmin(){document.getElementById('admin-locked-screen').style.disp
 function savePins(){localStorage.setItem(PINS_KEY,document.getElementById('set-vip').value||'15081972');alert('✅ PIN VIP sauvegardé !');}
 
 const TEXTS={
-    free: `🎯 PRONOTURF PRO · 17/04/2026`,
+  free:`🏇 PRONOTURF PRO · 15/04/2026
 ━━━━━━━━━━━━━━━
-Résultats · Trot Attelé · Vincennes
-  Arrivée : 16-2-12-6-13-4-11-7
-  Top5 : 5/5 ✅ N°16 ✅ N°2 ✅ N°12 ✅ N°6 ✅ N°13 ✅
-  CDJ N°409 : ✅ WIN retour 48€
-  Cumulé : +95€ · 73.9% CDJ · 23 courses
+🏁 Résultats · Attelé · Cordemais
+Arrivée : 15-9-14-3-6
+📊 Top5 : 4/5 · N°9 ✅ N°14 ✅ N°3 ✅ N°6 ✅
+🎯 CDJ N°504 : ❌
+📈 Cumulé : +47€ · 69.6% CDJ · 23 courses
 ━━━━━━━━━━━━━━━
-  Sélection 17/04 demain
+📅 Sélection 16/04 demain
 👉 pronoturfpro.fr · 5€99/mois`,
-    vip:`💎 VIP · 17/04 · Résultats
-  16-2-12-6-13 · 5/5
-  N°16 ✅ 1er · N°2 ✅ 2e · N°12 ✅ 3e · N°6 ✅ 4e · N°13 ✅ 5e
-  Quarté A : 4/4 ⭐ · Quinté B : 5/5 ⭐
-  CDJ ✅ · P&L : +48€
-  Cumulé : +95€ · 73.9% CDJ
+  vip:`💎 VIP · 15/04 · Résultats
+🏁 15-9-14-3-6 · 4/5
+N°9 ✅ 2e · N°14 ✅ 3e · N°3 ✅ 4e · N°6 ✅ 5e
+Quarté A : 3/4 ⭐ · Quinté B : 3/5 ⭐
+🎯 CDJ ❌ · P&L : -20€
+📈 Cumulé : +47€ · 69.6% CDJ
 👉 pronoturfpro.fr`
 };
 function shareWA(t){window.open('https://wa.me/?text='+encodeURIComponent(TEXTS[t]));}
