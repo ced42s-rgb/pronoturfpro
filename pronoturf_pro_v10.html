@@ -134,6 +134,7 @@ tr:hover td{background:#1a1a2e55;}
   <button class="tab-btn" onclick="sw('partage',this)">📤 Partage</button>
   <button class="tab-btn" onclick="sw('historique',this)">📋 Courses</button>
   <button class="tab-btn" onclick="sw('admin',this)">⚙️ Admin</button>
+  <button class="tab-btn" onclick="sw('corde',this)">🧵 Corde</button>
 </div>
 
 <!-- 15/04 LIVE -->
@@ -1642,6 +1643,206 @@ function vCalcROI(){
     <div class="c-res-row"><span>Niveau</span><span class="c-res-val" style="font-size:13px;">${lvl}</span></div>
   </div>`;
 }
+</script>
+
+
+<!-- MODULE CORDE -->
+<div id="tab-corde" class="tab-content">
+  <div class="stitle">🧵 Suivi Corde — Sélection 8 Chevaux</div>
+  <div style="font-size:12px;color:#9ca3af;margin:-6px 0 16px;">Analyse par course · Top 5 couvert · Historique cumulé</div>
+
+  <!-- FORMULAIRE AJOUT COURSE -->
+  <div style="background:linear-gradient(135deg,#12122a,#1a1a2e);border:1px solid #ff6b3555;border-radius:14px;padding:16px;margin-bottom:14px;">
+    <div style="font-size:13px;font-weight:800;color:#ff6b35;margin-bottom:12px;">➕ Nouvelle course</div>
+    <div class="form-group"><label>Date</label><input type="date" id="cd-date"></div>
+    <div class="form-group"><label>Hippodrome</label><input type="text" id="cd-hippo" placeholder="ex: Toulouse"></div>
+    <div class="form-group"><label>Discipline</label>
+      <select id="cd-disc">
+        <option>Plat</option><option>Attelé</option><option>Trot</option>
+        <option>Haies</option><option>Steeple</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Sélection (8 chevaux séparés par -)</label><input type="text" id="cd-sel" placeholder="ex: 13-10-6-3-9-4-11-1"></div>
+    <div class="form-group"><label>Non-Partants (séparés par - ou vide)</label><input type="text" id="cd-np" placeholder="ex: 7"></div>
+    <div class="form-group"><label>Arrivée officielle Top 5</label><input type="text" id="cd-arr" placeholder="ex: 3-1-6-10-4"></div>
+    <button class="btn" onclick="addCordeCourse()">✅ Enregistrer</button>
+  </div>
+
+  <!-- KPI GLOBAL -->
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:14px;">
+    <div class="kpi-card green"><div class="val" id="ck-courses">0</div><div class="lbl">Courses</div></div>
+    <div class="kpi-card orange"><div class="val" id="ck-avg">0.0</div><div class="lbl">Moy/5</div></div>
+    <div class="kpi-card blue"><div class="val" id="ck-pct">0%</div><div class="lbl">Taux ≥4/5</div></div>
+  </div>
+
+  <!-- HISTORIQUE COURSES -->
+  <div class="stitle" style="font-size:13px;">📋 Historique</div>
+  <div class="table-wrap">
+    <table style="min-width:480px;">
+      <thead><tr>
+        <th>Date</th><th>Hippo</th><th>Disc.</th>
+        <th>Sélection</th><th>NP</th><th>Arrivée</th>
+        <th>Top5</th><th>Score</th><th></th>
+      </tr></thead>
+      <tbody id="corde-hist-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+#tab-corde .badge-score{
+  display:inline-block;padding:3px 10px;border-radius:12px;
+  font-size:12px;font-weight:800;
+}
+#tab-corde .badge-score.s5{background:#14532d;color:#bbf7d0;}
+#tab-corde .badge-score.s4{background:#1e3a5f;color:#93c5fd;}
+#tab-corde .badge-score.s3{background:#3f2d0e;color:#fde68a;}
+#tab-corde .badge-score.s2{background:#3f1d1d;color:#fecaca;}
+#tab-corde .badge-score.s0{background:#1f2937;color:#6b7280;}
+#tab-corde .hit-chips{display:flex;flex-wrap:wrap;gap:4px;}
+#tab-corde .chip-h{
+  display:inline-block;padding:2px 7px;border-radius:20px;
+  font-size:11px;font-weight:700;
+}
+#tab-corde .chip-h.ok{background:#14532d;color:#bbf7d0;}
+#tab-corde .chip-h.ko{background:#3f1d1d;color:#fca5a5;}
+#tab-corde .chip-h.np{background:#3b2f0e;color:#fde68a;}
+#tab-corde .del-btn{
+  background:none;border:1px solid #ef444455;color:#ef4444;
+  border-radius:8px;padding:3px 8px;font-size:11px;cursor:pointer;
+}
+</style>
+
+<script>
+// ==================== MODULE CORDE ====================
+let CORDE_DATA = JSON.parse(localStorage.getItem('cordeData') || '[]');
+
+function parseNums(str){
+  if(!str||!str.trim()) return [];
+  return str.split('-').map(v=>parseInt(v.trim(),10)).filter(v=>!isNaN(v));
+}
+
+function saveCorde(){
+  localStorage.setItem('cordeData', JSON.stringify(CORDE_DATA));
+}
+
+function addCordeCourse(){
+  const date = document.getElementById('cd-date').value;
+  const hippo = document.getElementById('cd-hippo').value.trim();
+  const disc  = document.getElementById('cd-disc').value;
+  const sel   = document.getElementById('cd-sel').value.trim();
+  const np    = document.getElementById('cd-np').value.trim();
+  const arr   = document.getElementById('cd-arr').value.trim();
+
+  if(!date||!hippo||!sel||!arr){
+    alert('Remplis au moins: Date, Hippodrome, Sélection, Arrivée');
+    return;
+  }
+
+  const selNums  = parseNums(sel);
+  const npNums   = parseNums(np.replace(/\s+/g,'-'));
+  const arrNums  = parseNums(arr);
+  const top5     = arrNums.slice(0,5);
+  const active   = selNums.filter(n=>!npNums.includes(n));
+  const hits     = active.filter(n=>top5.includes(n));
+
+  CORDE_DATA.unshift({
+    id: Date.now(),
+    date, hippo, disc,
+    sel: selNums, np: npNums, arr: arrNums,
+    top5, active, hits,
+    score: hits.length
+  });
+
+  saveCorde();
+  renderCordeHist();
+  // Reset
+  ['cd-sel','cd-np','cd-arr','cd-hippo'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+}
+
+function deleteCordeCourse(id){
+  CORDE_DATA = CORDE_DATA.filter(r=>r.id!==id);
+  saveCorde();
+  renderCordeHist();
+}
+
+function renderCordeHist(){
+  const tbody = document.getElementById('corde-hist-body');
+  if(!tbody) return;
+
+  if(!CORDE_DATA.length){
+    tbody.innerHTML='<tr><td colspan="9" style="text-align:center;color:#555;padding:20px;">Aucune course enregistrée</td></tr>';
+    document.getElementById('ck-courses').textContent='0';
+    document.getElementById('ck-avg').textContent='0.0';
+    document.getElementById('ck-pct').textContent='0%';
+    return;
+  }
+
+  // KPI
+  const total = CORDE_DATA.length;
+  const avg   = (CORDE_DATA.reduce((s,r)=>s+r.score,0)/total).toFixed(1);
+  const pct   = Math.round((CORDE_DATA.filter(r=>r.score>=4).length/total)*100);
+
+  document.getElementById('ck-courses').textContent = total;
+  document.getElementById('ck-avg').textContent = avg;
+  document.getElementById('ck-pct').textContent = pct+'%';
+
+  // Tableau
+  tbody.innerHTML = CORDE_DATA.map(r=>{
+    const cls = r.score===5?'s5':r.score===4?'s4':r.score===3?'s3':r.score<=2?'s2':'s0';
+    const chips = r.sel.map(n=>{
+      if(r.np.includes(n)) return `<span class="chip-h np">N°${n} NP</span>`;
+      if(r.hits.includes(n)) return `<span class="chip-h ok">N°${n} ✅</span>`;
+      return `<span class="chip-h ko">N°${n}</span>`;
+    }).join('');
+
+    const d = r.date ? r.date.split('-').reverse().slice(0,2).join('/') : '-';
+    return `<tr>
+      <td><b>${d}</b></td>
+      <td>${r.hippo}</td>
+      <td>${r.disc}</td>
+      <td style="font-size:11px;">${r.sel.join('-')}</td>
+      <td style="color:#fde68a;font-size:11px;">${r.np.length?r.np.join('-'):'-'}</td>
+      <td style="font-size:11px;color:#93c5fd;">${r.top5.join('-')}</td>
+      <td><div class="hit-chips">${chips}</div></td>
+      <td><span class="badge-score ${cls}">${r.score}/5</span></td>
+      <td><button class="del-btn" onclick="deleteCordeCourse(${r.id})">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// Pré-charger la course du 19/04
+(function prefillToday(){
+  const alreadyExists = CORDE_DATA.find(r=>r.date==='2026-04-19');
+  if(!alreadyExists){
+    // Course 1 — sélection principale
+    const r1 = {
+      id: Date.now(),
+      date:'2026-04-19', hippo:'Toulouse', disc:'Plat',
+      sel:[13,10,6,3,9,4,11,1],
+      np:[7], arr:[3,1,6,10,4],
+      top5:[3,1,6,10,4],
+      active:[13,10,6,3,9,4,11,1].filter(n=>![7].includes(n)),
+      hits:[], score:0
+    };
+    r1.active = r1.sel.filter(n=>!r1.np.includes(n));
+    r1.hits   = r1.active.filter(n=>r1.top5.includes(n));
+    r1.score  = r1.hits.length;
+    CORDE_DATA.push(r1);
+    saveCorde();
+  }
+})();
+
+document.addEventListener('DOMContentLoaded', renderCordeHist);
+// Re-render quand on clique sur l'onglet Corde
+document.addEventListener('click', e=>{
+  if(e.target.matches('.tab-btn') && e.target.textContent.includes('Corde')){
+    setTimeout(renderCordeHist, 50);
+  }
+});
+// ==================== FIN MODULE CORDE ====================
 </script>
 
 </body>
