@@ -433,5 +433,19 @@
     "tck": "",
     "bilan": "WIN",
     "retour": 7.4
+  },
+  {
+    "date": "2026-04-19",
+    "hippo": "TOULOUSE",
+    "disc": "Plat",
+    "cdj": "408",
+    "mise": 12,
+    "arr": "2-4-1-14-12-10-3-8",
+    "top5": "4/5",
+    "cdj_res": "WIN",
+    "cdj_pos": "7",
+    "tck": "4/5",
+    "bilan": "4/5",
+    "retour": 13.4
   }
 ]
