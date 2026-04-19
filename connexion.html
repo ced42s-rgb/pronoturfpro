@@ -144,8 +144,10 @@ function _connect(code, nom){
 
 gd(0).focus();
 
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+if ('serviceWorker' in navigator 
+    && !location.hostname.includes('claudeusercontent')
+    && location.hostname !== 'localhost') {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 </script>
 </body>

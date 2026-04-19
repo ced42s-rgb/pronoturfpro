@@ -1603,6 +1603,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. Horloge temps réel
   updateClock();
   setInterval(updateClock, 1000);
+
+  // 6. Service Worker — uniquement sur domaine réel
+  if ('serviceWorker' in navigator && location.hostname !== 'localhost' && !location.hostname.includes('claudeusercontent')) {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .then(r => console.log('[SW] OK:', r.scope))
+      .catch(e => console.warn('[SW] Échec:', e));
+  }
 });
 </script>
 </body>
