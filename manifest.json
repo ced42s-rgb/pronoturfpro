@@ -2,7 +2,7 @@
   "name": "PRONOTURF PRO",
   "short_name": "PronoTurf",
   "description": "Pronostics Quinté Premium — Analyse IA, CDJ, Quartés, Quintés",
-  "start_url": "/pronoturf_pro_v11.html",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
