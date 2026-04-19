@@ -118,10 +118,13 @@ footer a{color:#666;text-decoration:none;}
     <div class="trow"><span class="lb">🔎 Outsiders</span><span class="vl" id="cc-out" style="color:#f5a623;">—</span></div>
     <div style="margin-top:10px;font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Sélection complète</div>
     <div class="chips" id="cc-chips"></div>
-    <div style="margin-top:10px;font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Tickets VIP · 💎 Abonnés</div>
-    <div class="chips" id="cc-tck"></div>
+    <!-- Tickets VIP masqués — accès réservé abonnés -->
+    <div style="margin-top:12px;background:linear-gradient(135deg,#4fc3f711,#1a1a2e);border:1px solid #4fc3f755;border-radius:10px;padding:12px;text-align:center;">
+      <div style="font-size:13px;font-weight:700;color:#4fc3f7;margin-bottom:4px;">🔒 Tickets réservés VIP</div>
+      <div style="font-size:11px;color:#888;">C1 · C2 · Quarté A/B · Quinté A/B · CDJ</div>
+    </div>
   </div>
-  <a href="pronoturf_pro_v11.html" class="btn bl">💎 Voir les tickets VIP complets</a>
+  <a href="connexion.html" class="btn bl">💎 S'abonner / Se connecter — 5€99/mois</a>
 </div>
 
 <div class="section" style="padding-top:0;">
@@ -287,24 +290,15 @@ document.getElementById('cc-c2').textContent     = `N°${C.c2}`;
 document.getElementById('cc-cdj').textContent    = C.cdj.num ? `${C.cdj.course} · N°${C.cdj.num} · ${C.cdj.mise}€` : '—';
 document.getElementById('cc-out').textContent    = C.outsiders;
 
+// Chips sélection seulement (pas les tickets VIP)
 const chipsEl = document.getElementById('cc-chips');
 (C.sel||'').split('-').forEach(n => {
   const s = document.createElement('span'); s.className='chip'; s.textContent='N°'+n.trim();
   chipsEl.appendChild(s);
 });
-const tckEl = document.getElementById('cc-tck');
-[
-  {label:'QA: '+C.quarteA.join('.'), cls:'chip b'},
-  {label:'QB: '+C.quarteB.join('.'), cls:'chip b'},
-  {label:'5A: '+C.quinteA.join('.'), cls:'chip p'},
-  {label:'5B: '+C.quinteB.join('.'), cls:'chip p'},
-].forEach(t => {
-  const s = document.createElement('span'); s.className=t.cls; s.textContent=t.label;
-  tckEl.appendChild(s);
-});
 
 // ── Stats depuis DATA
-const conf = DATA.filter(r => r.cdj_res !== '⏳');
+const conf = DATA.filter(r => r.cdj_res !);
 const mt   = conf.reduce((s,r) => s+(r.mise||0), 0);
 const rt   = conf.reduce((s,r) => s+(r.retour||0), 0);
 const pl   = rt - mt;
@@ -330,20 +324,24 @@ document.getElementById('pb-roi-bar').style.width     = Math.min(Math.abs(roi)*3
 // Couleur P&L dynamique
 document.getElementById('stat-pl').style.color = pl >= 0 ? '#00c896' : '#e94560';
 
-// ── Derniers résultats (5 derniers finalisés)
+// ── Derniers résultats (5 derniers incluant ⏳)
 const rl = document.getElementById('results-list');
-[...DATA].reverse().filter(r=>r.cdj_res!=='⏳').slice(0,5).forEach(r => {
-  const cs  = r.cdj_res==='WIN' ? 'badge-win' : 'badge-loss';
+[...DATA].reverse().slice(0, 5).forEach(r => {
+  const isWait = r.cdj_res === '⏳';
+  const isWin  = r.cdj_res === 'WIN';
+  const cs  = isWait ? 'badge-wait' : isWin ? 'badge-win' : 'badge-loss';
   const pl2 = (r.retour||0) - (r.mise||0);
-  const d   = r.date ? r.date.split('-').reverse().slice(0,2).join('/') : r.date;
+  const plTxt = isWait ? '⏳ À jouer' : (pl2>=0?'+':'')+pl2.toFixed(0)+'€';
+  const cdjTxt= isWait ? '⏳' : isWin ? '✅ '+(r.cdj_pos||'') : '❌';
+  const d = r.date ? r.date.split('-').reverse().slice(0,2).join('/') : r.date;
   rl.insertAdjacentHTML('beforeend', `
-    <div class="result-mini" style="border-color:${r.cdj_res==='WIN'?'#00c89633':'#e9456033'}">
+    <div class="result-mini" style="border-color:${isWait?'#f5a62333':isWin?'#00c89633':'#e9456033'}">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
         <span style="font-weight:700;font-size:12px;">${d} · ${r.hippo||''} · ${r.disc||''}</span>
-        <span class="${cs}">${(pl2>=0?'+':'')+pl2.toFixed(0)}€</span>
+        <span class="${cs}">${plTxt}</span>
       </div>
       <div style="font-size:12px;color:#ccc;line-height:1.7;">
-        <div>Top5 : <b>${r.top5||'—'}</b> · CDJ : <span class="${cs}">${r.cdj_res==='WIN'?'✅ '+(r.cdj_pos||''):'❌'}</span></div>
+        <div>Top5 : <b>${r.top5||'—'}</b> · CDJ : <span class="${cs}">${cdjTxt}</span></div>
         ${r.bilan?`<div style="color:#888;">${r.bilan}</div>`:''}
       </div>
     </div>`);
