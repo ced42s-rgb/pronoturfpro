@@ -298,7 +298,7 @@ const chipsEl = document.getElementById('cc-chips');
 });
 
 // ── Stats depuis DATA
-const conf = DATA.filter(r => r.cdj_res !);
+const conf = DATA.filter(r => r.cdj_res !== '⏳');
 const mt   = conf.reduce((s,r) => s+(r.mise||0), 0);
 const rt   = conf.reduce((s,r) => s+(r.retour||0), 0);
 const pl   = rt - mt;
