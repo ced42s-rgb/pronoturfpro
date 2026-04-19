@@ -171,7 +171,7 @@ tr:hover td{background:#1a1a2e55;}
   <button class="tab-btn" data-tab="analyse" id="tab-btn-analyse">🧠 Analyse</button>
   <button class="tab-btn" data-tab="dashboard">📊 Bilan</button>
   <button class="tab-btn" data-tab="perf">⭐ Perf</button>
-  <button class="tab-btn" data-tab="partage">📤 Partage</button>
+  <button class="tab-btn" data-tab="partage">🌐 Réseaux</button>
   <button class="tab-btn" data-tab="historique">📋 Courses</button>
   <button class="tab-btn" data-tab="calc">🧮 Calcul</button>
   <button class="tab-btn" data-tab="vip" id="tab-btn-vip">💎 VIP</button>
@@ -331,32 +331,46 @@ tr:hover td{background:#1a1a2e55;}
   </div>
 </div>
 
-<!-- ══ PARTAGE ══ -->
+<!-- ══ RÉSEAUX SOCIAUX ══ -->
 <div id="tab-partage" class="tab-content">
-  <div class="stitle" id="prt-stitle">📤 Partage · —</div>
-  <div class="share-card">
-    <div style="text-align:center;margin-bottom:12px;">
-      <div style="font-size:11px;color:#aaa;" id="prt-header">—</div>
-      <div id="prt-title" style="font-size:16px;font-weight:700;color:#ff6b35;">—</div>
+  <div class="stitle" id="prt-stitle">🌐 Réseaux Sociaux</div>
+
+  <!-- Module partage — visible Admin uniquement -->
+  <div id="prt-admin-block" style="display:none;">
+    <div class="share-card">
+      <div style="text-align:center;margin-bottom:12px;">
+        <div style="font-size:11px;color:#aaa;" id="prt-header">—</div>
+        <div id="prt-title" style="font-size:16px;font-weight:700;color:#ff6b35;">—</div>
+      </div>
+      <div class="share-row"><span class="slb">🐴 Sélection</span><span id="prt-sel" style="font-weight:700;">—</span></div>
+      <div class="share-row"><span class="slb">🎲 Outsiders</span><span id="prt-out" style="font-weight:700;color:#f5a623;">—</span></div>
+      <div class="share-row"><span class="slb">🎯 CDJ</span><span id="prt-cdj" style="font-weight:700;color:#f5a623;">—</span></div>
+      <div class="share-row"><span class="slb">📈 Bilan</span><span id="prt-bilan" style="font-weight:700;color:#f5a623;">—</span></div>
+      <div style="margin-top:10px;padding:10px;background:#4fc3f711;border-radius:8px;text-align:center;font-size:12px;color:#4fc3f7;">
+        💎 Tickets VIP → pronoturfpro.fr · 5€99/mois
+      </div>
     </div>
-    <div class="share-row"><span class="slb">🐴 Sélection</span><span id="prt-sel" style="font-weight:700;">—</span></div>
-    <div class="share-row"><span class="slb">🎲 Outsiders</span><span id="prt-out" style="font-weight:700;color:#f5a623;">—</span></div>
-    <div class="share-row"><span class="slb">🎯 CDJ</span><span id="prt-cdj" style="font-weight:700;color:#f5a623;">—</span></div>
-    <div class="share-row"><span class="slb">📈 Bilan</span><span id="prt-bilan" style="font-weight:700;color:#f5a623;">—</span></div>
-    <div style="margin-top:10px;padding:10px;background:#4fc3f711;border-radius:8px;text-align:center;font-size:12px;color:#4fc3f7;">
-      💎 Tickets VIP → pronoturfpro.fr · 5€99/mois
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;">
+      <button style="padding:11px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:#25D366;color:#fff;" onclick="shareWA()">📱 WhatsApp</button>
+      <button style="padding:11px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:#2a2a3e;color:#fff;border:1px solid #333;" onclick="copyShare()">📋 Copier</button>
     </div>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
-    <button style="padding:11px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:#25D366;color:#fff;" onclick="shareWA()">📱 WhatsApp</button>
-    <button style="padding:11px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:#2a2a3e;color:#fff;border:1px solid #333;" onclick="copyShare()">📋 Copier</button>
-  </div>
-  <div class="stitle" style="font-size:13px;">🌐 Réseaux</div>
+
+  <!-- Réseaux sociaux — visible tous -->
+  <div class="stitle" style="font-size:13px;">🌐 Nos Réseaux</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-    <a href="https://www.facebook.com/profile.php?id=61582853518286" target="_blank" style="background:#1877F2;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;"><span style="font-size:22px;">📘</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Facebook</div></div></a>
-    <a href="https://chat.whatsapp.com/GOx17Gz6ybO26x70bdnX4t" target="_blank" style="background:#25D366;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;"><span style="font-size:22px;">💬</span><div><div style="color:#fff;font-weight:700;font-size:12px;">WhatsApp VIP</div></div></a>
-    <a href="https://t.me/+Y1GWodzG4zJmNTM0" target="_blank" style="background:#0088cc;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;"><span style="font-size:22px;">✈️</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Telegram</div></div></a>
-    <a href="https://www.instagram.com/zoneparionsport" target="_blank" style="background:linear-gradient(135deg,#f09433,#dc2743,#bc1888);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;"><span style="font-size:22px;">📸</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Instagram</div></div></a>
+    <a href="https://www.facebook.com/profile.php?id=61582853518286" target="_blank" style="background:#1877F2;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">📘</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Facebook</div></div>
+    </a>
+    <a href="https://chat.whatsapp.com/HiQCmQG2vaTAfFXxlH8m4A" target="_blank" style="background:#25D366;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">💬</span><div><div style="color:#fff;font-weight:700;font-size:12px;">WhatsApp</div></div>
+    </a>
+    <a href="https://t.me/+Y1GWodzG4zJmNTM0" target="_blank" style="background:#0088cc;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">✈️</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Telegram</div></div>
+    </a>
+    <a href="https://www.instagram.com/zoneparionsport" target="_blank" style="background:linear-gradient(135deg,#f09433,#dc2743,#bc1888);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">📸</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Instagram</div></div>
+    </a>
   </div>
 </div>
 
@@ -1082,12 +1096,18 @@ function renderPartage(C,D) {
   const pl=conf.reduce((s,r)=>s+(r.retour||0)-(r.mise||0),0);
   const cw=conf.filter(r=>r.cdj_res==='WIN').length;
   const pct=conf.length?Math.round(cw/conf.length*100):0;
-  setTxt('prt-stitle',`📤 Partage · ${C.date}`);
-  setTxt('prt-header',`🏇 PRONOTURF PRO · ${C.date}`);
-  setTxt('prt-title', `🏆 ${C.disc} · ${C.hippo} · ${C.course}`);
-  setTxt('prt-sel',   C.sel); setTxt('prt-out',C.outsiders);
-  setTxt('prt-cdj',   C.cdj.num?`${C.cdj.course} · N°${C.cdj.num}`:'—');
-  setHTML('prt-bilan',`${pl>=0?'+':''}${pl.toFixed(0)}€ · ${pct}% CDJ · ${D.length} courses`);
+
+  // Module partage — Admin uniquement
+  const adminBlock = el('prt-admin-block');
+  if(adminBlock) adminBlock.style.display = State.level===LEVELS.ADMIN ? 'block' : 'none';
+
+  setTxt('prt-stitle', '🌐 Réseaux Sociaux');
+  setTxt('prt-header', `🏇 PRONOTURF PRO · ${C.date}`);
+  setTxt('prt-title',  `🏆 ${C.disc} · ${C.hippo} · ${C.course}`);
+  setTxt('prt-sel',    C.sel);
+  setTxt('prt-out',    C.outsiders);
+  setTxt('prt-cdj',    C.cdj.num?`${C.cdj.course} · N°${C.cdj.num}`:'—');
+  setHTML('prt-bilan', `${pl>=0?'+':''}${pl.toFixed(0)}€ · ${pct}% CDJ · ${D.length} courses`);
 }
 
 /* ── VIP Tab ── */
