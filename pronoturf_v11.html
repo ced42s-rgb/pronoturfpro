@@ -1606,7 +1606,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 6. Service Worker — uniquement sur domaine réel
   if ('serviceWorker' in navigator && location.hostname !== 'localhost' && !location.hostname.includes('claudeusercontent')) {
-    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+    navigator.serviceWorker.register('sw.js', { scope: './' })
       .then(r => console.log('[SW] OK:', r.scope))
       .catch(e => console.warn('[SW] Échec:', e));
   }

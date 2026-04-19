@@ -10,9 +10,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PRONOTURF PRO">
-<link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/icons/icon-192.svg">
-<link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.svg">
+<link rel="icon" type="image/svg+xml" href="icons/icon-192.svg">
 <meta property="og:title" content="PRONOTURF PRO V11 · Quinté+ Premium">
 <meta property="og:description" content="Analyse IA · CDJ · Quartés · Quintés · 5€99/mois · 3 jours offerts">
 <meta property="og:type" content="website">
@@ -331,10 +331,10 @@ const rl=document.getElementById('results-list');
 });
 
 // ── Service Worker
-if ('serviceWorker' in navigator 
-    && !location.hostname.includes('claudeusercontent')
-    && location.hostname !== 'localhost') {
-  navigator.serviceWorker.register('/sw.js').catch(() => {});
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js').catch(e=>console.warn('[SW]',e));
+  });
 }
 </script>
 </body>

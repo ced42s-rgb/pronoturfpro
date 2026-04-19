@@ -7,15 +7,17 @@
 const CACHE_NAME   = 'pronoturf-v11';
 const CACHE_STATIC = 'pronoturf-v11-static';
 
-// Fichiers mis en cache au premier chargement
+// Détection automatique du base path (GitHub Pages = /repo-name/)
+const BASE = self.registration.scope;
+
 const PRECACHE = [
-  '/',
-  '/index.html',
-  '/connexion.html',
-  '/pronoturf_pro_v11.html',
-  '/manifest.json',
-  '/icons/icon-192.svg',
-  '/icons/icon-512.svg',
+  BASE,
+  BASE + 'index.html',
+  BASE + 'connexion.html',
+  BASE + 'pronoturf_pro_v11.html',
+  BASE + 'manifest.json',
+  BASE + 'icons/icon-192.svg',
+  BASE + 'icons/icon-512.svg',
 ];
 
 // ── Install : précache des assets critiques
@@ -47,7 +49,7 @@ self.addEventListener('fetch', event => {
 
   // Ignorer les requêtes non-GET et externes (Stripe, cdnjs…)
   if (request.method !== 'GET') return;
-  if (url.origin !== location.origin) return;
+  if (!url.href.startsWith(BASE)) return;
 
   // Pages HTML → Network-first (toujours fraîches si online)
   if (request.headers.get('accept')?.includes('text/html')) {

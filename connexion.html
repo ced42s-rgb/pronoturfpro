@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>PRONOTURF VIP · Connexion</title>
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ff6b35">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -144,10 +144,8 @@ function _connect(code, nom){
 
 gd(0).focus();
 
-if ('serviceWorker' in navigator 
-    && !location.hostname.includes('claudeusercontent')
-    && location.hostname !== 'localhost') {
-  navigator.serviceWorker.register('/sw.js').catch(() => {});
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
 }
 </script>
 </body>
