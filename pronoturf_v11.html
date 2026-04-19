@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRONOTURF PRO V11.0</title>
+<style>
+/* ── RESET & BASE ── */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0d0d0d;color:#f0f0f0;font-family:'Segoe UI',sans-serif;font-size:14px;overflow-x:hidden;}
+
+/* ── HEADER ── */
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:14px 16px;text-align:center;border-bottom:2px solid #ff6b35;position:sticky;top:0;z-index:100;}
+header h1{font-size:20px;color:#ff6b35;letter-spacing:2px;font-weight:900;}
+header p{color:#aaa;font-size:11px;margin-top:3px;}
+.hdr-row{display:flex;justify-content:center;gap:10px;margin-top:8px;flex-wrap:wrap;}
+.hdr-chip{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;padding:4px 12px;font-size:12px;}
+
+/* ── TABS ── */
+.tabs{display:flex;background:#111;border-bottom:1px solid #333;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{flex:0 0 auto;padding:10px 12px;background:none;border:none;color:#666;cursor:pointer;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;transition:all .2s;border-bottom:2px solid transparent;}
+.tab-btn.active{color:#ff6b35;border-bottom-color:#ff6b35;background:#1a0a0f;}
+.tab-content{display:none;padding:16px;}
+.tab-content.active{display:block;}
+
+/* ── TYPOGRAPHY ── */
+.stitle{font-size:15px;font-weight:700;color:#ff6b35;margin-bottom:14px;border-bottom:1px solid #2a2a2a;padding-bottom:8px;}
+.ibox{background:#1a1a2e;border:1px solid #ff6b3533;border-radius:10px;padding:13px;margin-bottom:14px;font-size:13px;line-height:1.8;color:#ccc;}
+
+/* ── KPI ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+.kpi-card{background:#1a1a2e;border:1px solid #333;border-radius:10px;padding:14px;text-align:center;}
+.kpi-card .val{font-size:26px;font-weight:700;}
+.kpi-card .lbl{font-size:10px;color:#888;margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
+.kpi-card.green .val{color:#00c896;}
+.kpi-card.orange .val{color:#f5a623;}
+.kpi-card.blue .val{color:#4fc3f7;}
+.kpi-card.fire .val{color:#ff6b35;}
+.kpi-card.purple .val{color:#b39ddb;}
+
+/* ── CARDS ── */
+.today-card{background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #ff6b35;border-radius:14px;padding:16px;margin-bottom:14px;}
+.today-card.vip{border-color:#4fc3f7;}
+.trow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2a2a3e;font-size:13px;align-items:center;}
+.trow:last-child{border-bottom:none;}
+.trow .lb{color:#888;}
+.trow .vl{font-weight:700;text-align:right;}
+
+/* ── CHIPS ── */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.chip{background:#ff6b3522;border:1px solid #ff6b35;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;color:#ff6b35;}
+.chip.g{background:#00c89622;border-color:#00c896;color:#00c896;}
+.chip.b{background:#4fc3f722;border-color:#4fc3f7;color:#4fc3f7;}
+.chip.p{background:#b39ddb22;border-color:#b39ddb;color:#b39ddb;}
+.chip.v{background:#7c3aed22;border-color:#7c3aed;color:#b39ddb;}
+.chip.o{background:#f5a62322;border-color:#f5a623;color:#f5a623;}
+
+/* ── BADGES ── */
+.badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
+.badge.win{background:#00c89622;color:#00c896;border:1px solid #00c896;}
+.badge.loss{background:#e9456022;color:#e94560;border:1px solid #e94560;}
+.badge.wait{background:#f5a62322;color:#f5a623;border:1px solid #f5a623;}
+
+/* ── BUTTONS ── */
+.btn{width:100%;padding:12px;background:linear-gradient(135deg,#ff6b35,#e94560);border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;display:block;text-align:center;text-decoration:none;}
+.btn:hover{opacity:.88;}
+.btn.bl{background:linear-gradient(135deg,#4fc3f7,#0288d1);}
+.btn.gr{background:linear-gradient(135deg,#2a2a3e,#1a1a2e);border:1px solid #333;}
+.btn.gn{background:linear-gradient(135deg,#00c896,#0288d1);}
+
+/* ── ANALYSE ── */
+.analyse-box{background:linear-gradient(135deg,#12122a,#1a1a2e);border:1px solid #7c3aed44;border-radius:12px;padding:14px;margin-bottom:14px;}
+.a-title{color:#b39ddb;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.a-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #2a2a3e;font-size:12px;}
+.a-row:last-child{border:none;}
+.a-lbl{color:#888;}
+.a-val{font-weight:700;}
+.score-bar{height:6px;border-radius:3px;background:#2a2a3e;margin-top:3px;overflow:hidden;}
+.score-fill{height:100%;border-radius:3px;}
+.sf-hi{background:linear-gradient(90deg,#00c896,#0288d1);}
+.sf-md{background:linear-gradient(90deg,#f5a623,#ff6b35);}
+.sf-lo{background:linear-gradient(90deg,#e94560,#b00020);}
+
+/* ── TICKETS ── */
+.tk-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.tk{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:12px;padding:13px;position:relative;}
+.tk.star{border-color:#00c896;}
+.tk.span2{grid-column:span 2;}
+.tc{font-size:16px;font-weight:700;color:#ff6b35;margin-bottom:3px;}
+.tt{font-size:10px;color:#888;margin-bottom:5px;}
+.thorse{font-size:14px;font-weight:700;color:#fff;margin:5px 0;}
+.tmise{font-size:18px;font-weight:700;color:#f5a623;}
+
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:11px;min-width:440px;}
+th{background:#1a1a2e;color:#ff6b35;padding:7px 5px;text-align:left;border-bottom:1px solid #333;white-space:nowrap;}
+td{padding:6px 5px;border-bottom:1px solid #1a1a1a;vertical-align:middle;}
+tr:hover td{background:#1a1a2e55;}
+
+/* ── FORMS ── */
+.form-group{margin-bottom:12px;}
+.form-group label{display:block;color:#888;font-size:11px;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px 12px;font-size:14px;outline:none;font-family:inherit;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#ff6b35;}
+
+/* ── LOCK ── */
+.lock-screen{background:#0d0d0d;min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 20px;}
+.pin-row{display:flex;gap:8px;max-width:220px;margin:0 auto 14px;}
+.pin-row input{flex:1;background:#1a1a2e;border:2px solid #2a2a3e;border-radius:10px;color:#fff;padding:12px;font-size:16px;text-align:center;letter-spacing:4px;outline:none;}
+.pin-row input:focus{border-color:#ff6b35;}
+
+/* ── BANKROLL BAR ── */
+.bk-bar-wrap{background:#0d0d0d;border-radius:8px;height:10px;overflow:hidden;margin:10px 0;}
+.bk-bar-fill{height:100%;border-radius:8px;transition:width .6s ease;}
+
+/* ── PERF BARS ── */
+.proof-bar{background:linear-gradient(135deg,#1a1a2e,#12122a);border:1px solid #ff6b3533;border-radius:12px;padding:14px;margin-bottom:14px;}
+.pbar{height:8px;border-radius:4px;background:#2a2a3e;margin-top:4px;overflow:hidden;}
+.pbar-fill{height:100%;border-radius:4px;}
+
+/* ── SHARE ── */
+.share-card{background:linear-gradient(135deg,#1a1a2e,#12122a);border:2px solid #ff6b35;border-radius:16px;padding:18px;margin-bottom:16px;position:relative;}
+.share-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #2a2a3e;font-size:13px;}
+.share-row:last-child{border:none;}
+.share-row .slb{color:#888;font-size:11px;}
+
+/* ── TRANCHE GRID ── */
+.tranche-card{background:#1a1a2e;border:1px solid #333;border-radius:10px;padding:10px;text-align:center;}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#00c896;color:#000;padding:10px 24px;border-radius:20px;font-weight:700;font-size:13px;display:none;z-index:9999;pointer-events:none;}
+
+/* ── FAB ── */
+.fab{position:fixed;bottom:20px;right:16px;background:linear-gradient(135deg,#ff6b35,#e94560);border:none;border-radius:50px;padding:12px 20px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px #ff6b3555;z-index:200;text-decoration:none;}
+
+/* ── CALC TABS ── */
+.ctab{background:#1a1a2e;border:1px solid #333;border-radius:20px;color:#888;padding:6px 14px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px;}
+.ctab.active{background:#ff6b3522;border-color:#ff6b35;color:#ff6b35;}
+.cc-panel{display:none;}
+.cc-panel.active{display:block;}
+.c-res-box{background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid #ff6b3555;border-radius:12px;padding:14px;margin-top:10px;}
+.c-res-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #2a2a3e;font-size:13px;}
+.c-res-row:last-child{border:none;}
+.c-res-val{font-weight:700;font-size:15px;color:#ff6b35;}
+
+/* ── CORDE ── */
+.badge-score{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:800;}
+.badge-score.s5{background:#14532d;color:#bbf7d0;}
+.badge-score.s4{background:#1e3a5f;color:#93c5fd;}
+.badge-score.s3{background:#3f2d0e;color:#fde68a;}
+.badge-score.s2,.badge-score.s1,.badge-score.s0{background:#3f1d1d;color:#fecaca;}
+.chip-h{display:inline-block;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:700;margin:2px;}
+.chip-h.ok{background:#14532d;color:#bbf7d0;}
+.chip-h.ko{background:#3f1d1d;color:#fca5a5;}
+.chip-h.np{background:#3b2f0e;color:#fde68a;}
+.del-btn{background:none;border:1px solid #ef444455;color:#ef4444;border-radius:8px;padding:3px 8px;font-size:11px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════════════════ -->
+<header>
+  <h1>🏇 PRONOTURF PRO <span id="hdr-badge" style="background:#00c896;color:#000;font-size:10px;font-weight:900;padding:2px 8px;border-radius:10px;margin-left:6px;letter-spacing:1px;">LIVE</span></h1>
+  <p id="hdr-sub">V11.0 · Chargement…</p>
+  <div class="hdr-row">
+    <div class="hdr-chip">🕐 <span id="live-clock" style="color:#f5a623;font-weight:700;">--:--:--</span></div>
+    <div class="hdr-chip">🏁 <span id="live-countdown" style="color:#4fc3f7;font-weight:700;">--:--</span></div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════
+     NAVIGATION TABS
+════════════════════════════════════════════════════════ -->
+<div class="tabs" id="main-tabs">
+  <button class="tab-btn active" data-tab="aujourdhui">🎯 Aujourd'hui</button>
+  <button class="tab-btn" data-tab="tickets">🎟️ Tickets</button>
+  <button class="tab-btn" data-tab="vip">💎 VIP</button>
+  <button class="tab-btn" data-tab="analyse">🧠 Analyse</button>
+  <button class="tab-btn" data-tab="dashboard">📊 Bilan</button>
+  <button class="tab-btn" data-tab="perf">⭐ Perf</button>
+  <button class="tab-btn" data-tab="partage">📤 Partage</button>
+  <button class="tab-btn" data-tab="historique">📋 Courses</button>
+  <button class="tab-btn" data-tab="calc">🧮 Calcul</button>
+  <button class="tab-btn" data-tab="admin">⚙️ Admin</button>
+  <button class="tab-btn" data-tab="corde">🧵 Corde</button>
+</div>
+
+<!-- ════════════════════════════════════════
+  TAB : AUJOURD'HUI
+════════════════════════════════════════ -->
+<div id="tab-aujourdhui" class="tab-content active">
+  <!-- Course banner -->
+  <div style="background:linear-gradient(135deg,#ff6b3511,#1a1a2e);border:1px solid #ff6b3555;border-radius:12px;padding:14px;margin-bottom:12px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span id="tdj-course-label" style="color:#4fc3f7;font-weight:700;font-size:13px;">—</span>
+      <span id="tdj-disc-badge" style="background:#4fc3f722;color:#4fc3f7;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;">—</span>
+    </div>
+    <div style="font-size:12px;color:#ccc;line-height:2;">
+      <div>🏇 <b>Sélection :</b> <span id="tdj-sel">—</span></div>
+      <div>⚡ <b>Outsiders :</b> <span id="tdj-out" style="color:#f5a623;">—</span></div>
+      <div>🎯 <b>CDJ :</b> <span id="tdj-cdj" style="color:#f5a623;">—</span></div>
+      <div>⏰ <b>Départ :</b> <span id="tdj-depart" style="color:#4fc3f7;">—</span></div>
+    </div>
+  </div>
+
+  <!-- KPI quick -->
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="kpi-card green"><div class="val" id="q-pl">—</div><div class="lbl">P&L</div></div>
+    <div class="kpi-card orange"><div class="val" id="q-cdj">—</div><div class="lbl">CDJ %</div></div>
+    <div class="kpi-card fire"><div class="val" id="q-nb">—</div><div class="lbl">Courses</div></div>
+  </div>
+
+  <button class="btn bl" onclick="showTab('analyse')">🧠 Voir l'Analyse</button>
+  <button class="btn gr" style="margin-top:8px;" onclick="showTab('partage')">📤 Partager</button>
+</div>
+
+<!-- ════════════════════════════════════════
+  TAB : TICKETS
+════════════════════════════════════════ -->
+<div id="tab-tickets" class="tab-content">
+  <div class="stitle" id="tck-stitle">🎟️ Pronostics</div>
+
+  <!-- Carte publique -->
+  <div class="today-card" style="margin-bottom:14px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span style="color:#ff6b35;font-weight:700;">📋 Sélection Publique</span>
+      <span id="tck-badge" style="color:#888;font-size:11px;">—</span>
+    </div>
+    <div class="trow"><span class="lb">🐴 Sélection</span><span class="vl" id="tck-sel" style="color:#4fc3f7;">—</span></div>
+    <div class="trow"><span class="lb">🎲 Outsiders</span><span class="vl" id="tck-out" style="color:#f5a623;">—</span></div>
+    <div class="trow"><span class="lb">🎯 CDJ</span><span class="vl" id="tck-cdj" style="color:#f5a623;">—</span></div>
+    <div class="trow"><span class="lb">⏰ Départ</span><span class="vl" id="tck-depart">—</span></div>
+    <div style="margin-top:10px;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;">Aperçu Quarté A</div>
+    <div class="chips" id="tck-qa-preview"></div>
+  </div>
+
+  <!-- VIP lock / content -->
+  <div id="tck-locked">
+    <div style="background:linear-gradient(135deg,#4fc3f711,#1a1a2e);border:2px solid #4fc3f7;border-radius:14px;padding:20px;text-align:center;">
+      <div style="font-size:36px;margin-bottom:8px;">🔒</div>
+      <div style="font-size:14px;font-weight:700;color:#4fc3f7;margin-bottom:4px;">Tickets réservés VIP</div>
+      <div style="font-size:12px;color:#888;margin-bottom:14px;">C1 · C2 · Couplé · Quarté A/B · Quinté A/B · CDJ</div>
+      <button class="btn bl" style="max-width:220px;margin:0 auto;" onclick="showTab('vip')">🔓 Accéder au VIP</button>
+    </div>
+  </div>
+
+  <div id="tck-content" style="display:none;">
+    <div class="stitle" style="font-size:13px;">🎯 Bases du jour</div>
+    <div class="ibox" style="padding:12px;">
+      <div class="trow"><span class="lb">🥇 C1 — Base absolue</span><span class="vl" id="tck-c1" style="color:#ff6b35;">—</span></div>
+      <div class="trow"><span class="lb">🥈 C2 — Base 2</span><span class="vl" id="tck-c2" style="color:#ff6b35;">—</span></div>
+      <div class="trow"><span class="lb">🔗 D1 Couplé</span><span class="vl" id="tck-d1" style="color:#4fc3f7;">—</span></div>
+    </div>
+    <div class="stitle" style="font-size:13px;">🎟️ Tickets Générés</div>
+    <div class="tk-grid" id="tck-tk-grid"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  TAB : VIP
+════════════════════════════════════════ -->
+<div id="tab-vip" class="tab-content">
+  <div id="vip-locked">
+    <div class="lock-screen">
+      <div style="font-size:50px;margin-bottom:12px;">💎</div>
+      <h2 style="color:#4fc3f7;font-size:22px;margin-bottom:8px;">Espace VIP</h2>
+      <p style="color:#888;font-size:13px;margin-bottom:4px;">Accès réservé aux abonnés</p>
+      <p style="color:#ff6b35;font-size:22px;font-weight:900;margin-bottom:20px;">5€99/mois</p>
+      <div class="pin-row">
+        <input type="password" id="pin-in" maxlength="8" placeholder="••••••••" inputmode="numeric"
+               onkeyup="if(event.key==='Enter')checkPin()">
+      </div>
+      <button class="btn bl" style="max-width:220px;margin:0 auto;" onclick="checkPin()">🔓 Accéder</button>
+      <div id="pin-err" style="color:#e94560;font-size:12px;margin-top:10px;min-height:16px;"></div>
+      <div style="margin-top:20px;font-size:11px;color:#555;">✅ 3 jours offerts · Annulable à tout moment</div>
+    </div>
+  </div>
+
+  <div id="vip-content" style="display:none;">
+    <div style="background:#4fc3f711;border:1px solid #4fc3f7;border-radius:10px;padding:10px;margin-bottom:14px;font-size:13px;color:#4fc3f7;display:flex;justify-content:space-between;align-items:center;">
+      <span>✅ <b>VIP connecté</b></span>
+      <button onclick="logout()" style="background:none;border:none;color:#4fc3f7;cursor:pointer;font-size:12px;">Déco.</button>
+    </div>
+
+    <div class="stitle" id="vip-stitle">💎 VIP · —</div>
+    <div class="today-card vip">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span style="color:#4fc3f7;font-weight:700;font-size:15px;">💎 EXCLUSIF VIP</span>
+        <span id="vip-date2" style="color:#f5a623;font-size:12px;">—</span>
+      </div>
+      <div class="trow"><span class="lb">🥇 C1 ⭐</span><span class="vl" id="vip-c1" style="color:#ff6b35;font-weight:900;">—</span></div>
+      <div class="trow"><span class="lb">🥈 C2</span><span class="vl" id="vip-c2" style="color:#ff6b35;">—</span></div>
+      <div class="trow"><span class="lb">🔗 D1 Couplé</span><span class="vl" id="vip-d1" style="color:#4fc3f7;">—</span></div>
+      <div class="trow"><span class="lb">🎲 Quarté A</span><span class="vl" id="vip-qa" style="color:#b39ddb;">—</span></div>
+      <div class="trow"><span class="lb">🎲 Quarté B ⭐</span><span class="vl" id="vip-qb" style="color:#b39ddb;">—</span></div>
+      <div class="trow"><span class="lb">🏆 Quinté A</span><span class="vl" id="vip-q5a" style="color:#7c3aed;">—</span></div>
+      <div class="trow"><span class="lb">🏆 Quinté B</span><span class="vl" id="vip-q5b" style="color:#7c3aed;">—</span></div>
+      <div class="trow"><span class="lb">🎯 CDJ</span><span class="vl" id="vip-cdj" style="color:#f5a623;">—</span></div>
+      <div class="trow"><span class="lb">⚡ DM</span><span class="vl" id="vip-dm" style="color:#00c896;">—</span></div>
+      <div class="trow"><span class="lb">🏟️ Hippodrome</span><span class="vl" id="vip-hippo">—</span></div>
+      <div class="trow"><span class="lb">⏰ Départ</span><span class="vl" id="vip-depart" style="color:#00c896;">—</span></div>
+    </div>
+
+    <div class="stitle" style="font-size:13px;">🎟️ Tickets détaillés</div>
+    <div class="tk-grid" id="vip-tk-grid"></div>
+
+    <div class="stitle" style="font-size:13px;margin-top:14px;">🧮 Kelly Rapide VIP</div>
+    <div style="background:#1a1a2e;border:1px solid #7c3aed55;border-radius:12px;padding:14px;margin-bottom:14px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <div><div style="font-size:10px;color:#888;margin-bottom:4px;">Cote</div>
+          <input type="number" id="vk-cote" value="3.5" step="0.1" style="width:100%;background:#0d0d0d;border:1px solid #333;border-radius:6px;color:#fff;padding:8px;font-size:13px;outline:none;" oninput="calcVipKelly()"></div>
+        <div><div style="font-size:10px;color:#888;margin-bottom:4px;">Prob. %</div>
+          <input type="number" id="vk-prob" value="35" step="1" style="width:100%;background:#0d0d0d;border:1px solid #333;border-radius:6px;color:#fff;padding:8px;font-size:13px;outline:none;" oninput="calcVipKelly()"></div>
+        <div><div style="font-size:10px;color:#888;margin-bottom:4px;">Bankroll €</div>
+          <input type="number" id="vk-bk" value="1000" style="width:100%;background:#0d0d0d;border:1px solid #333;border-radius:6px;color:#fff;padding:8px;font-size:13px;outline:none;" oninput="calcVipKelly()"></div>
+        <div style="display:flex;align-items:flex-end;">
+          <button class="btn bl" style="margin:0;padding:8px;font-size:12px;width:100%;" onclick="calcVipKelly()">💎 Calc</button>
+        </div>
+      </div>
+      <div id="vk-result" style="font-size:13px;color:#f5a623;font-weight:700;text-align:center;min-height:20px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  TAB : ANALYSE
+════════════════════════════════════════ -->
+<div id="tab-analyse" class="tab-content">
+  <div class="stitle" id="ana-stitle">🧠 Analyse · —</div>
+
+  <div class="analyse-box" id="ana-ctx"></div>
+  <div class="analyse-box" id="ana-hier"></div>
+  <div class="analyse-box" id="ana-out"></div>
+  <div class="analyse-box" id="ana-cdj"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+  TAB : DASHBOARD
+════════════════════════════════════════ -->
+<div id="tab-dashboard" class="tab-content">
+  <div class="kpi-grid">
+    <div class="kpi-card green"><div class="val" id="k-total">—</div><div class="lbl">Courses</div></div>
+    <div class="kpi-card orange"><div class="val" id="k-roi">—</div><div class="lbl">ROI</div></div>
+    <div class="kpi-card blue"><div class="val" id="k-cdj">—</div><div class="lbl">CDJ %</div></div>
+    <div class="kpi-card purple"><div class="val" id="k-pl">—</div><div class="lbl">P&L €</div></div>
+    <div class="kpi-card green"><div class="val" id="k-top5">—</div><div class="lbl">Top5 %</div></div>
+    <div class="kpi-card fire"><div class="val" id="k-serie">—</div><div class="lbl">Série CDJ</div></div>
+  </div>
+
+  <div class="stitle">💰 Bankroll</div>
+  <div style="background:#1a1a2e;border:1px solid #ff6b3555;border-radius:12px;padding:14px;margin-bottom:14px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <span style="color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Capital de départ</span>
+      <span style="color:#f5a623;font-weight:700;font-size:15px;">1 000€</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <span style="color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Bankroll actuelle</span>
+      <span id="bk-current" style="font-weight:700;font-size:18px;color:#00c896;">—</span>
+    </div>
+    <div class="bk-bar-wrap"><div id="bk-bar" class="bk-bar-fill" style="width:100%;"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:#555;margin-bottom:10px;"><span>0€</span><span>500€</span><span>1 000€</span></div>
+    <div id="bk-detail" style="font-size:12px;color:#aaa;border-top:1px solid #2a2a3e;padding-top:10px;">—</div>
+  </div>
+
+  <div class="stitle">🎟️ Tranches par 10€</div>
+  <div id="tranche-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+  TAB : PERF
+════════════════════════════════════════ -->
+<div id="tab-perf" class="tab-content">
+  <div class="stitle" id="perf-stitle">⭐ Bilan Performance</div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card green"><div class="val" id="p-cdjw">—</div><div class="lbl">CDJ Wins</div></div>
+    <div class="kpi-card fire"><div class="val" id="p-cdjpct">—</div><div class="lbl">Taux CDJ</div></div>
+    <div class="kpi-card blue"><div class="val" id="p-top5c">—</div><div class="lbl">Top5 couverts</div></div>
+    <div class="kpi-card orange"><div class="val" id="p-quarte">—</div><div class="lbl">Quartés 🎉</div></div>
+  </div>
+
+  <div class="proof-bar">
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+      <span style="color:#888;">Taux CDJ</span>
+      <span id="pb-cdj-lbl" style="color:#00c896;font-weight:700;">—</span>
+    </div>
+    <div class="pbar"><div id="pb-cdj" class="pbar-fill" style="background:linear-gradient(90deg,#00c896,#0288d1);"></div></div>
+    <div style="height:10px;"></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+      <span style="color:#888;">Top5 couverts</span>
+      <span id="pb-top5-lbl" style="color:#00c896;font-weight:700;">—</span>
+    </div>
+    <div class="pbar"><div id="pb-top5" class="pbar-fill" style="background:linear-gradient(90deg,#4fc3f7,#0288d1);"></div></div>
+    <div style="height:10px;"></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+      <span style="color:#888;">ROI</span>
+      <span id="pb-roi-lbl" style="color:#f5a623;font-weight:700;">—</span>
+    </div>
+    <div class="pbar"><div id="pb-roi" class="pbar-fill" style="background:linear-gradient(90deg,#f5a623,#ff6b35);"></div></div>
+  </div>
+
+  <div class="stitle" style="font-size:13px;">📋 Tableau détaillé</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Hippo</th><th>Disc.</th><th>Top5</th><th>CDJ</th><th>Retour</th><th>P&L</th></tr></thead>
+      <tbody id="perf-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  TAB : PARTAGE
+════════════════════════════════════════ -->
+<div id="tab-partage" class="tab-content">
+  <div class="stitle" id="prt-stitle">📤 Partage · —</div>
+
+  <div class="share-card">
+    <div style="text-align:center;margin-bottom:12px;">
+      <div style="font-size:11px;color:#aaa;" id="prt-header">—</div>
+      <div id="prt-title" style="font-size:16px;font-weight:700;color:#ff6b35;">—</div>
+    </div>
+    <div class="share-row"><span class="slb">🐴 Sélection</span><span id="prt-sel" style="font-weight:700;">—</span></div>
+    <div class="share-row"><span class="slb">🎲 Outsiders</span><span id="prt-out" style="font-weight:700;color:#f5a623;">—</span></div>
+    <div class="share-row"><span class="slb">🎯 CDJ</span><span id="prt-cdj" style="font-weight:700;color:#f5a623;">—</span></div>
+    <div class="share-row"><span class="slb">📈 Bilan</span><span id="prt-bilan" style="font-weight:700;color:#f5a623;">—</span></div>
+    <div style="margin-top:10px;padding:10px;background:#4fc3f711;border-radius:8px;text-align:center;font-size:12px;color:#4fc3f7;">
+      💎 Tickets VIP → pronoturfpro.fr · 5€99/mois
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;">
+    <button style="padding:11px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:#25D366;color:#fff;" onclick="shareWA()">📱 WhatsApp</button>
+    <button style="padding:11px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:#2a2a3e;color:#fff;border:1px solid #333;" onclick="copyShare()">📋 Copier</button>
+  </div>
+
+  <div class="stitle" style="font-size:13px;">🌐 Réseaux</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <a href="https://www.facebook.com/profile.php?id=61582853518286" target="_blank" style="background:#1877F2;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">📘</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Facebook</div></div>
+    </a>
+    <a href="https://chat.whatsapp.com/GOx17Gz6ybO26x70bdnX4t" target="_blank" style="background:#25D366;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">💬</span><div><div style="color:#fff;font-weight:700;font-size:12px;">WhatsApp VIP</div></div>
+    </a>
+    <a href="https://t.me/+Y1GWodzG4zJmNTM0" target="_blank" style="background:#0088cc;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">✈️</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Telegram</div></div>
+    </a>
+    <a href="https://www.instagram.com/zoneparionsport" target="_blank" style="background:linear-gradient(135deg,#f09433,#dc2743,#bc1888);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <span style="font-size:22px;">📸</span><div><div style="color:#fff;font-weight:700;font-size:12px;">Instagram</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  TAB : HISTORIQUE
+════════════════════════════════════════ -->
+<div id="tab-historique" class="tab-content">
+  <div class="stitle">📋 Historique des Courses</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Hippo</th><th>Disc.</th><th>CDJ</th><th>Pos.</th><th>Top5</th><th>Bilan</th></tr></thead>
+      <tbody id="hist-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  TAB : CALCUL
+════════════════════════════════════════ -->
+<div id="tab-calc" class="tab-content">
+  <div class="stitle">🧮 Calculateur Pro</div>
+  <div style="display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;">
+    <button class="ctab active" onclick="swCalc('kelly',this)">💎 Kelly</button>
+    <button class="ctab" onclick="swCalc('roi',this)">📈 ROI</button>
+    <button class="ctab" onclick="swCalc('comb',this)">🎲 Combinaisons</button>
+  </div>
+
+  <!-- Kelly -->
+  <div id="cc-kelly" class="cc-panel active">
+    <div class="form-group"><label>Cote proposée</label><input type="number" id="k-cote" step="0.1" value="3.5" min="1.01" oninput="calcKelly()"></div>
+    <div class="form-group"><label>Probabilité estimée %</label><input type="number" id="k-prob" step="0.1" value="35" min="1" max="99" oninput="calcKelly()"></div>
+    <div class="form-group"><label>Bankroll totale €</label><input type="number" id="k-bk" value="1000" min="1" oninput="calcKelly()"></div>
+    <div class="form-group"><label>Fraction Kelly</label>
+      <select id="k-frac" onchange="calcKelly()">
+        <option value="1">Kelly Plein</option>
+        <option value="0.5">Kelly ½</option>
+        <option value="0.25" selected>Kelly ¼ (recommandé)</option>
+        <option value="0.1">Kelly 1/10</option>
+      </select>
+    </div>
+    <button class="btn" onclick="calcKelly()">💎 Calculer</button>
+    <div id="c-result-kelly" style="margin-top:14px;"></div>
+  </div>
+
+  <!-- ROI -->
+  <div id="cc-roi" class="cc-panel">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label>Total misé €</label><input type="number" id="roi-mise" value="290" oninput="calcROI()"></div>
+      <div class="form-group"><label>Total gains €</label><input type="number" id="roi-gains" value="317" oninput="calcROI()"></div>
+    </div>
+    <div class="form-group"><label>Nombre de courses</label><input type="number" id="roi-nb" value="20" oninput="calcROI()"></div>
+    <button class="btn" onclick="calcROI()">📊 Calculer ROI</button>
+    <div id="c-result-roi" style="margin-top:14px;"></div>
+  </div>
+
+  <!-- Combinaisons -->
+  <div id="cc-comb" class="cc-panel">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label>Type</label>
+        <select id="cb-type" onchange="calcComb()">
+          <option value="3">Tiercé (3)</option>
+          <option value="4">Quarté (4)</option>
+          <option value="5" selected>Quinté (5)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Nb chevaux</label><input type="number" id="cb-nb" min="3" max="20" value="8" oninput="calcComb()"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label>Mise unitaire €</label><input type="number" id="cb-mise" min="0.1" step="0.1" value="1.5" oninput="calcComb()"></div>
+      <div class="form-group"><label>Ordre</label>
+        <select id="cb-ordre" onchange="calcComb()">
+          <option value="desordre" selected>Désordre</option>
+          <option value="ordre">Ordre</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" onclick="calcComb()">🔢 Calculer</button>
+    <div id="c-result-comb" style="margin-top:14px;"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  TAB : ADMIN
+════════════════════════════════════════ -->
+<div id="tab-admin" class="tab-content">
+  <div id="admin-locked-screen">
+    <div class="lock-screen">
+      <div style="font-size:40px;margin-bottom:10px;">⚙️</div>
+      <h2 style="color:#ff6b35;">Zone Admin</h2>
+      <p style="color:#888;font-size:12px;margin-bottom:16px;">PIN administrateur 8 chiffres</p>
+      <div class="pin-row">
+        <input type="password" id="admin-pin-in" maxlength="8" placeholder="••••••••" inputmode="numeric"
+               onkeyup="if(event.key==='Enter')checkAdminPin()">
+      </div>
+      <button class="btn" style="max-width:200px;margin:0 auto;" onclick="checkAdminPin()">🔓 Accéder</button>
+      <div id="admin-pin-err" style="color:#e94560;font-size:12px;margin-top:8px;text-align:center;"></div>
+    </div>
+  </div>
+
+  <div id="admin-content" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div class="stitle" style="margin:0;">⚙️ Administration</div>
+      <button onclick="logoutAdmin()" style="background:none;border:1px solid #ff6b35;color:#ff6b35;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:11px;">Déco.</button>
+    </div>
+
+    <!-- ── CONFIG ÉDITEUR ── -->
+    <div class="stitle" style="font-size:13px;">🏇 CONFIG Course Active</div>
+    <div class="ibox" style="font-size:12px;color:#aaa;margin-bottom:12px;">
+      💡 Modifie les champs ci-dessous puis clique <b>Sauvegarder CONFIG</b> — tout l'app se met à jour automatiquement.
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label>Date (JJ/MM/AAAA)</label><input type="text" id="cfg-date" placeholder="19/04/2026"></div>
+      <div class="form-group"><label>Hippodrome</label><input type="text" id="cfg-hippo" placeholder="Toulouse"></div>
+      <div class="form-group"><label>Discipline</label>
+        <select id="cfg-disc">
+          <option>Plat</option><option>Attelé</option><option>Trot</option>
+          <option>Haies</option><option>Steeple</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Course (R1C1…)</label><input type="text" id="cfg-course" placeholder="R1C1"></div>
+    </div>
+    <div class="form-group"><label>Sélection 8 chevaux (ex: 2-4-1-14-12-10-3-8)</label><input type="text" id="cfg-sel" placeholder="2-4-1-14-12-10-3-8"></div>
+    <div class="form-group"><label>Outsiders (ex: N°7 · N°5)</label><input type="text" id="cfg-out" placeholder="N°7 · N°5"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+      <div class="form-group"><label>C1 (numéro)</label><input type="number" id="cfg-c1" placeholder="2"></div>
+      <div class="form-group"><label>C2 (numéro)</label><input type="number" id="cfg-c2" placeholder="4"></div>
+      <div class="form-group"><label>Départ heure (HH:MM)</label><input type="text" id="cfg-dep" placeholder="16:10"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div class="form-group"><label>CDJ course (R4…)</label><input type="text" id="cfg-cdj-c" placeholder="R4"></div>
+      <div class="form-group"><label>CDJ n° cheval</label><input type="number" id="cfg-cdj-n" placeholder="408"></div>
+      <div class="form-group"><label>CDJ mise €</label><input type="number" id="cfg-cdj-m" placeholder="20"></div>
+      <div class="form-group"><label>DM n° cheval (vide=—)</label><input type="number" id="cfg-dm-n" placeholder=""></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div class="form-group"><label>Quarté A (ex: 2-4-1-14)</label><input type="text" id="cfg-qa" placeholder="2-4-1-14"></div>
+      <div class="form-group"><label>Quarté B (ex: 2-4-12-10)</label><input type="text" id="cfg-qb" placeholder="2-4-12-10"></div>
+      <div class="form-group"><label>Quinté A (5 ch.)</label><input type="text" id="cfg-q5a" placeholder="2-4-1-14-12"></div>
+      <div class="form-group"><label>Quinté B (5 ch.)</label><input type="text" id="cfg-q5b" placeholder="2-4-3-8-10"></div>
+    </div>
+    <button class="btn gn" onclick="saveCONFIG()">💾 Sauvegarder CONFIG & Appliquer</button>
+    <button class="btn gr" style="margin-top:8px;" onclick="resetCONFIG()">↩️ Restaurer défaut</button>
+
+    <div style="height:20px;"></div>
+
+    <!-- ── SAISIE RÉSULTATS ── -->
+    <div class="stitle" style="font-size:13px;">➕ Saisir Résultats</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label>Date</label><input type="date" id="f-date"></div>
+      <div class="form-group"><label>Hippodrome</label><input type="text" id="f-hippo"></div>
+      <div class="form-group"><label>Discipline</label>
+        <select id="f-disc">
+          <option>Attelé</option><option>Haies</option><option>Trot</option>
+          <option>Plat</option><option>Steeple</option>
+        </select>
+      </div>
+      <div class="form-group"><label>CDJ n°</label><input type="text" id="f-cdj"></div>
+      <div class="form-group"><label>DM</label><input type="text" id="f-dm"></div>
+      <div class="form-group"><label>Mise €</label><input type="number" id="f-mise" value="20"></div>
+      <div class="form-group"><label>Arrivée</label><input type="text" id="f-arr" placeholder="3-1-6-10-4"></div>
+      <div class="form-group"><label>Top5 (ex: 4/5)</label><input type="text" id="f-top5"></div>
+      <div class="form-group"><label>CDJ Résultat</label>
+        <select id="f-cdj-res">
+          <option value="WIN">✅ WIN</option>
+          <option value="LOSS">❌ LOSS</option>
+          <option value="⏳">⏳ En attente</option>
+        </select>
+      </div>
+      <div class="form-group"><label>DM Résultat</label>
+        <select id="f-dm-res">
+          <option value="—">—</option>
+          <option value="WIN">✅ WIN</option>
+          <option value="LOSS">❌ LOSS</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Tickets gagnés</label><input type="text" id="f-tck"></div>
+      <div class="form-group"><label>Retour €</label><input type="number" id="f-retour" step="0.1" value="0"></div>
+    </div>
+    <div class="form-group"><label>CDJ Position</label><input type="text" id="f-cdjpos" placeholder="ex: 1er 🥇"></div>
+    <button class="btn" onclick="addCourse()">💾 Enregistrer Course</button>
+    <button class="btn gr" style="margin-top:6px;" onclick="exportJSON()">📥 Exporter JSON</button>
+
+    <!-- ── GESTION PIN ABONNÉS ── -->
+    <div style="height:20px;"></div>
+    <div class="stitle" style="font-size:13px;">🔑 PIN VIP</div>
+    <div class="ibox" style="padding:12px;">
+      <div class="form-group" style="margin:0;"><label>PIN maître (8 chiffres)</label>
+        <input type="text" id="set-vip" maxlength="8" placeholder="15081972">
+      </div>
+      <button class="btn bl" style="margin-top:10px;" onclick="saveMasterPin()">💾 Sauvegarder PIN</button>
+    </div>
+
+    <div class="stitle" style="font-size:13px;margin-top:14px;">👥 Abonnés</div>
+    <div class="ibox" style="padding:12px;">
+      <div class="form-group"><label>Email abonné</label>
+        <input type="email" id="ab-email" placeholder="email@exemple.fr">
+      </div>
+      <button class="btn bl" onclick="genererPinAbonne()">🎲 Générer PIN</button>
+      <div id="ab-result" style="margin-top:8px;font-size:12px;min-height:16px;"></div>
+      <div style="border-top:1px solid #2a2a3e;margin-top:12px;padding-top:10px;">
+        <div style="font-size:11px;color:#888;margin-bottom:6px;">PINs actifs :</div>
+        <div id="ab-list"></div>
+        <button class="btn gr" style="margin-top:6px;font-size:11px;padding:6px;" onclick="renderAbList()">🔄 Actualiser</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  TAB : CORDE (INTACT — NE PAS MODIFIER)
+════════════════════════════════════════ -->
+<div id="tab-corde" class="tab-content">
+  <div class="stitle">🧵 Suivi Corde — Sélection 8 Chevaux</div>
+  <div style="font-size:12px;color:#9ca3af;margin:-6px 0 16px;">Analyse par course · Top5 couvert · Historique cumulé</div>
+  <div style="background:linear-gradient(135deg,#12122a,#1a1a2e);border:1px solid #ff6b3555;border-radius:14px;padding:16px;margin-bottom:14px;">
+    <div style="font-size:13px;font-weight:800;color:#ff6b35;margin-bottom:12px;">➕ Nouvelle course</div>
+    <div class="form-group"><label>Date</label><input type="date" id="cd-date"></div>
+    <div class="form-group"><label>Hippodrome</label><input type="text" id="cd-hippo" placeholder="ex: Toulouse"></div>
+    <div class="form-group"><label>Discipline</label>
+      <select id="cd-disc">
+        <option>Plat</option><option>Attelé</option><option>Trot</option><option>Haies</option><option>Steeple</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Sélection (8 chevaux séparés par -)</label><input type="text" id="cd-sel" placeholder="ex: 13-10-6-3-9-4-11-5"></div>
+    <div class="form-group"><label>Non-Partants (séparés par - ou vide)</label><input type="text" id="cd-np" placeholder="ex: 1 ou 1-7"></div>
+    <div class="form-group"><label>Arrivée officielle Top 5</label><input type="text" id="cd-arr" placeholder="ex: 3-1-6-10-4"></div>
+    <button class="btn" onclick="addCordeCourse()">✅ Enregistrer</button>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:14px;">
+    <div class="kpi-card green"><div class="val" id="ck-courses">0</div><div class="lbl">Courses</div></div>
+    <div class="kpi-card orange"><div class="val" id="ck-avg">0.0</div><div class="lbl">Moy/5</div></div>
+    <div class="kpi-card blue"><div class="val" id="ck-pct">0%</div><div class="lbl">Taux ≥4/5</div></div>
+  </div>
+  <div class="stitle" style="font-size:13px;">📋 Historique</div>
+  <div class="table-wrap">
+    <table style="min-width:480px;">
+      <thead><tr><th>Date</th><th>Hippo</th><th>Disc.</th><th>Sélection</th><th>NP</th><th>Arrivée</th><th>Top5</th><th>Score</th><th></th></tr></thead>
+      <tbody id="corde-hist-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- FAB -->
+<a href="#" class="fab" onclick="showTab('tickets');return false;">🎯 Tickets</a>
+
+<!-- ════════════════════════════════════════════════════════
+     JAVASCRIPT — ARCHITECTURE CENTRALE
+════════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ══════════════════════════════════════════════════════════
+   1. CONFIG — SEUL ENDROIT À MODIFIER POUR CHAQUE COURSE
+══════════════════════════════════════════════════════════ */
+const CONFIG_DEFAULT = {
+  date:   '19/04/2026',
+  hippo:  'Toulouse',
+  disc:   'Plat',
+  course: 'R1C1',
+  sel:    '2-4-1-14-12-10-3-8',
+  outsiders: 'N°7 · N°5',
+  c1: 2,
+  c2: 4,
+  depart: '16:10',
+  cdj: { course: 'R4', num: 408, mise: 20 },
+  dm:  { course: '', num: '', mise: 0 },
+  quarteA: [2, 4, 1, 14],
+  quarteB: [2, 4, 12, 10],
+  quinteA: [2, 4, 1, 14, 12],
+  quinteB: [2, 4, 3, 8, 10],
+};
+
+/* ══════════════════════════════════════════════════════════
+   2. STORAGE — Couche d'abstraction localStorage
+══════════════════════════════════════════════════════════ */
+const Store = {
+  _prefix: 'pnturf_v11_',
+  get(key, fallback = null) {
+    try { const v = localStorage.getItem(this._prefix + key); return v ? JSON.parse(v) : fallback; }
+    catch { return fallback; }
+  },
+  set(key, val) {
+    try { localStorage.setItem(this._prefix + key, JSON.stringify(val)); return true; }
+    catch { return false; }
+  },
+  del(key) { localStorage.removeItem(this._prefix + key); },
+};
+
+/* ══════════════════════════════════════════════════════════
+   3. DATA — Historique courses
+══════════════════════════════════════════════════════════ */
+const INIT_DATA = [
+  {"date":"2026-03-19","hippo":"Vincennes","disc":"Trot","cdj":"11","dm":"—","mise":12,"arr":"16-11-1-9-10","top5":"3/5","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":18.5},
+  {"date":"2026-03-20","hippo":"Vincennes","disc":"Trot","cdj":"1","dm":"—","mise":12,"arr":"5-8-7-3-2","top5":"5/5","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"—","tck":"Quarté Plein","bilan":"5/5 ✅ QUARTÉ PLEIN 🎉","retour":42},
+  {"date":"2026-03-21","hippo":"Cagnes","disc":"Trot","cdj":"5","dm":"—","mise":12,"arr":"5-8-2-13-6","top5":"5/5","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"5/5 ✅ CDJ 1er","retour":28},
+  {"date":"2026-03-23","hippo":"Vincennes","disc":"Trot","cdj":"8","dm":"—","mise":12,"arr":"5-1-8-15-14","top5":"4/5","cdj_res":"WIN","cdj_pos":"3e 🥉","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 3e","retour":14},
+  {"date":"2026-03-25","hippo":"Vincennes","disc":"Trot","cdj":"7","dm":"—","mise":12,"arr":"7-15-13-9-2","top5":"4/5","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":56},
+  {"date":"2026-03-26","hippo":"Lyon","disc":"Plat","cdj":"3","dm":"—","mise":12,"arr":"3-11-6-4-14","top5":"3/5","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":16},
+  {"date":"2026-03-27","hippo":"Vincennes","disc":"Trot","cdj":"13","dm":"—","mise":12,"arr":"13-5-9-14-10","top5":"4/5","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":22},
+  {"date":"2026-03-28","hippo":"Deauville","disc":"Plat","cdj":"8","dm":"—","mise":12,"arr":"8-2-14-13-7","top5":"4/5","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":19},
+  {"date":"2026-03-29","hippo":"Saint-Cloud","disc":"Plat","cdj":"2","dm":"—","mise":12,"arr":"2-5-9-3-14","top5":"4/5","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":13},
+  {"date":"2026-03-30","hippo":"Chantilly","disc":"Plat","cdj":"1","dm":"—","mise":12,"arr":"1-16-10-6-7","top5":"4/5","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"CDJ Gagnant","bilan":"CDJ 1er ✅","retour":15.5},
+  {"date":"2026-03-31","hippo":"Fontainebleau","disc":"Plat","cdj":"2","dm":"—","mise":12,"arr":"6-2-14-8-9","top5":"4/5","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"—","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":16},
+  {"date":"2026-04-01","hippo":"Angers","disc":"Attelé","cdj":"9","dm":"—","mise":12,"arr":"1-5-9-3-2","top5":"5/5","cdj_res":"WIN","cdj_pos":"3e 🥉","dm_res":"—","tck":"CDJ Placé","bilan":"5/5 ✅ CDJ ✅","retour":15},
+  {"date":"2026-04-02","hippo":"Vincennes","disc":"Attelé","cdj":"—","dm":"—","mise":12,"arr":"—","top5":"4/5","cdj_res":"LOSS","cdj_pos":"—","dm_res":"—","tck":"—","bilan":"CDJ ❌","retour":0},
+  {"date":"2026-04-03","hippo":"Lyon-Parilly","disc":"Attelé","cdj":"—","dm":"—","mise":15,"arr":"—","top5":"3/5","cdj_res":"LOSS","cdj_pos":"—","dm_res":"—","tck":"—","bilan":"CDJ ❌","retour":0},
+  {"date":"2026-04-04","hippo":"Vincennes","disc":"Trot","cdj":"106","dm":"503","mise":12,"arr":"10-8-7-3-12","top5":"5/5","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"LOSS","tck":"Quarté Ordre","bilan":"5/5 ✅ Quarté Ordre 🎉","retour":45},
+  {"date":"2026-04-05","hippo":"Longchamp","disc":"Plat","cdj":"1","dm":"—","mise":12,"arr":"3-1-7-5-12","top5":"3/5","cdj_res":"LOSS","cdj_pos":"Hors Top","dm_res":"—","tck":"—","bilan":"❌ CDJ hors top","retour":9},
+  {"date":"2026-04-06","hippo":"Compiègne","disc":"Steeple","cdj":"107","dm":"707","mise":12,"arr":"10-2-1-6-7","top5":"4/5","cdj_res":"WIN","cdj_pos":"3e 🥉","dm_res":"WIN","tck":"CDJ+DM","bilan":"CDJ ✅ DM ✅","retour":7.3},
+  {"date":"2026-04-07","hippo":"Plat R1C1","disc":"Plat","cdj":"102","dm":"506","mise":12,"arr":"8-2-6-12-7","top5":"4/5","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"LOSS","tck":"CDJ Placé","bilan":"CDJ ✅ 2e","retour":2.5},
+  {"date":"2026-04-08","hippo":"Lyon-Parilly","disc":"Attelé","cdj":"607","dm":"714","mise":12,"arr":"4-14-3-9-16","top5":"4/5","cdj_res":"WIN","cdj_pos":"2e 🥈","dm_res":"WIN","tck":"CDJ+DM","bilan":"CDJ ✅ DM ✅","retour":3.1},
+  {"date":"2026-04-09","hippo":"Oiseleur","disc":"Haies","cdj":"210","dm":"602","mise":12,"arr":"2-14-1-3-15","top5":"3/5","cdj_res":"WIN","cdj_pos":"4e ✅","dm_res":"LOSS","tck":"CDJ Placé","bilan":"CDJ ✅","retour":1.7},
+  {"date":"2026-04-10","hippo":"Vincennes","disc":"Attelé","cdj":"206","dm":"111","mise":12,"arr":"15-6-14-7-10","top5":"3/5","cdj_res":"LOSS","cdj_pos":"—","dm_res":"LOSS","tck":"—","bilan":"CDJ ❌ DM ❌","retour":0},
+  {"date":"2026-04-11","hippo":"Vincennes","disc":"Attelé","cdj":"—","dm":"—","mise":12,"arr":"—","top5":"5/5","cdj_res":"WIN","cdj_pos":"✅","dm_res":"—","tck":"Quarté Plein 🏆","bilan":"5/5 ✅ Quarté Plein 🎉","retour":1.6},
+  {"date":"2026-04-12","hippo":"Longchamp","disc":"Plat","cdj":"—","dm":"—","mise":12,"arr":"—","top5":"3/5","cdj_res":"LOSS","cdj_pos":"—","dm_res":"—","tck":"—","bilan":"CDJ ❌ ⛔NP","retour":0},
+  {"date":"2026-04-13","hippo":"Auteuil","disc":"Haies","cdj":"—","dm":"—","mise":12,"arr":"—","top5":"5/5","cdj_res":"WIN","cdj_pos":"✅","dm_res":"—","tck":"Quarté Plein 🏆","bilan":"5/5 ✅ Quarté Plein 🎉","retour":2.2},
+  {"date":"2026-04-14","hippo":"Chantilly","disc":"Plat","cdj":"—","dm":"—","mise":12,"arr":"—","top5":"3/5","cdj_res":"LOSS","cdj_pos":"—","dm_res":"—","tck":"—","bilan":"CDJ ❌","retour":0},
+  {"date":"2026-04-15","hippo":"Cordemais","disc":"Attelé","cdj":"504","dm":"","mise":20,"arr":"15-9-14-3-6","top5":"4/5","cdj_res":"LOSS","cdj_pos":"—","dm_res":"—","tck":"—","bilan":"CDJ ❌ · 4/5","retour":0},
+  {"date":"2026-04-16","hippo":"Fontainebleau","disc":"Plat","cdj":"504","dm":"","mise":20,"arr":"9-3-12-5-14","top5":"5/5","cdj_res":"WIN","cdj_pos":"1er 🥇","dm_res":"—","tck":"Quarté A Plein 🏆","bilan":"5/5 ✅ Quarté A Plein 🎉","retour":45},
+  {"date":"2026-04-17","hippo":"Vincennes","disc":"Attelé","cdj":"409","dm":"","mise":20,"arr":"4-2-11-10-1","top5":"3/5","cdj_res":"LOSS","cdj_pos":"—","dm_res":"—","tck":"—","bilan":"CDJ ❌ · 3/5","retour":0},
+  {"date":"2026-04-18","hippo":"Enghien","disc":"Attelé","cdj":"510","dm":"","mise":20,"arr":"","top5":"","cdj_res":"⏳","cdj_pos":"","dm_res":"—","tck":"","bilan":"⏳ À jouer","retour":0},
+];
+
+/* ══════════════════════════════════════════════════════════
+   4. STATE — Données réactives centralisées
+══════════════════════════════════════════════════════════ */
+const State = {
+  config:  null,   // CONFIG active (Store ou DEFAULT)
+  data:    [],     // Historique courses
+  isVip:   false,
+  isAdmin: false,
+
+  init() {
+    this.config = Store.get('config', CONFIG_DEFAULT);
+    const stored = Store.get('bets');
+    this.data = (stored && stored.length) ? stored : INIT_DATA;
+    this.isVip   = !!localStorage.getItem('pnturf_vip');
+    this.isAdmin = !!localStorage.getItem('pnturf_admin');
+  },
+
+  saveData() { Store.set('bets', this.data); },
+  saveConfig() { Store.set('config', this.config); },
+};
+
+const BK_INIT = 1000;
+const ADMIN_PIN_DEFAULT = '15081972';
+const PINS_KEY = 'pnturf_v11_abonnes';
+
+/* ══════════════════════════════════════════════════════════
+   5. UTILS
+══════════════════════════════════════════════════════════ */
+function el(id) { return document.getElementById(id); }
+function setHTML(id, html) { const e = el(id); if(e) e.innerHTML = html; }
+function setTxt(id, txt)  { const e = el(id); if(e) e.textContent = txt; }
+function pad(n) { return String(n).padStart(2,'0'); }
+function parseNums(s) { return (s||'').split('-').map(v=>parseInt(v.trim(),10)).filter(v=>!isNaN(v)); }
+function fmtDate(iso) {
+  const d = new Date(iso);
+  return isNaN(d) ? iso : pad(d.getDate())+'/'+pad(d.getMonth()+1);
+}
+function toast(msg, dur=2200) {
+  const t = el('toast'); t.textContent = msg; t.style.display='block';
+  setTimeout(()=>t.style.display='none', dur);
+}
+
+/* ══════════════════════════════════════════════════════════
+   6. NAVIGATION — Système de tabs centralisé
+══════════════════════════════════════════════════════════ */
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(e => e.classList.remove('active'));
+  const tab = el('tab-' + name);
+  if(tab) tab.classList.add('active');
+  const btn = document.querySelector(`.tab-btn[data-tab="${name}"]`);
+  if(btn) btn.classList.add('active');
+}
+
+document.getElementById('main-tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if(!btn) return;
+  showTab(btn.dataset.tab);
+});
+
+/* ══════════════════════════════════════════════════════════
+   7. RENDER ENGINE — Rendu auto depuis CONFIG + Data
+══════════════════════════════════════════════════════════ */
+function renderAll() {
+  const C = State.config;
+  const D = State.data;
+
+  renderHeader(C);
+  renderAujourdhui(C, D);
+  renderTickets(C);
+  renderVIP(C);
+  renderAnalyse(C);
+  renderDashboard(D);
+  renderPerf(D);
+  renderHistorique(D);
+  renderPartage(C, D);
+  renderVIPState();
+}
+
+/* ── Header ── */
+function renderHeader(C) {
+  setTxt('hdr-sub', `V11.0 · ${C.date} · ${C.hippo} · ${C.disc}`);
+  // Bouton tab aujourd'hui
+  const btn = document.querySelector('.tab-btn[data-tab="aujourdhui"]');
+  if(btn) btn.textContent = `🎯 ${C.date.substring(0,5)}`;
+}
+
+/* ── Aujourd'hui ── */
+function renderAujourdhui(C, D) {
+  const conf = D.filter(r => r.cdj_res !== '⏳');
+  const mt   = conf.reduce((s,r)=>s+(r.mise||0), 0);
+  const rt   = conf.reduce((s,r)=>s+(r.retour||0), 0);
+  const pl   = rt - mt;
+  const cw   = conf.filter(r=>r.cdj_res==='WIN').length;
+  const pct  = conf.length ? Math.round(cw/conf.length*100) : 0;
+
+  setTxt('tdj-course-label', `📋 ${C.date} · ${C.hippo} · ${C.disc} · ${C.course}`);
+  setTxt('tdj-disc-badge', C.disc);
+  setHTML('tdj-sel', `<b>${C.sel}</b>`);
+  setHTML('tdj-out', C.outsiders);
+  setHTML('tdj-cdj', C.cdj.num
+    ? `<b>${C.cdj.course} · N°${C.cdj.num} · ${C.cdj.mise}€</b>`
+    : '<span style="color:#555;">—</span>');
+  setTxt('tdj-depart', C.depart);
+
+  const plColor = pl >= 0 ? '#00c896' : '#e94560';
+  setHTML('q-pl', `<span style="color:${plColor}">${pl>=0?'+':''}${pl.toFixed(0)}€</span>`);
+  setTxt('q-cdj', pct + '%');
+  setTxt('q-nb', D.length);
+}
+
+/* ── Tickets ── */
+function renderTickets(C) {
+  const d = C.date.substring(0,5);
+  setTxt('tck-stitle', `🎟️ Pronostics · ${C.date} · ${C.hippo}`);
+  setTxt('tck-badge', `${d} · ${C.disc}`);
+  setHTML('tck-sel', `<b style="color:#4fc3f7;">${C.sel}</b>`);
+  setHTML('tck-out', `<span style="color:#f5a623;">${C.outsiders}</span>`);
+  setHTML('tck-cdj', C.cdj.num
+    ? `<b style="color:#f5a623;">${C.cdj.course} N°${C.cdj.num}</b> · ${C.cdj.mise}€`
+    : '<span style="color:#555;">—</span>');
+  setTxt('tck-depart', C.depart);
+
+  // Quarté A preview chips
+  const qaEl = el('tck-qa-preview');
+  if(qaEl) qaEl.innerHTML = C.quarteA.map(n=>`<span class="chip">N°${n}</span>`).join('');
+
+  // VIP content
+  setHTML('tck-c1', `<b style="color:#ff6b35;font-size:18px;">N°${C.c1}</b> · ${C.cdj.mise}€`);
+  setHTML('tck-c2', `<b style="color:#ff6b35;">N°${C.c2}</b> · ${Math.round(C.cdj.mise/2)}€`);
+  setHTML('tck-d1', `N°${C.c1} + N°${C.c2} · ${Math.round(C.cdj.mise/2)}€`);
+
+  // Tickets grid
+  const tkGrid = el('tck-tk-grid');
+  if(tkGrid) tkGrid.innerHTML = buildTkGrid(C);
+}
+
+function buildTkGrid(C) {
+  const mise = C.cdj.mise || 20;
+  const tickets = [
+    { label: 'C1 ⭐', desc: 'Simple Placé', chevaux: `N°${C.c1}`, mise: `${mise}€`, border: '#4fc3f7', col: '#4fc3f7', span: false },
+    { label: 'C2',   desc: 'Simple Placé', chevaux: `N°${C.c2}`, mise: `${Math.round(mise/2)}€`, border: '#4fc3f7', col: '#4fc3f7', span: false },
+    { label: 'D1 Couplé', desc: 'Placé désordre', chevaux: `N°${C.c1} + N°${C.c2}`, mise: `${Math.round(mise/2)}€`, border: '#2a2a3e', col: '#ff6b35', span: true },
+    { label: 'Quarté A', desc: 'Désordre', chevaux: C.quarteA.map(n=>`N°${n}`).join(' · '), mise: '15€', border: '#b39ddb', col: '#b39ddb', span: true },
+    { label: 'Quarté B ⭐', desc: 'Désordre', chevaux: C.quarteB.map(n=>`N°${n}`).join(' · '), mise: '15€', border: '#b39ddb', col: '#b39ddb', span: true },
+    { label: 'Quinté A', desc: 'Désordre', chevaux: C.quinteA.map(n=>`N°${n}`).join(' · '), mise: 'Inclus A', border: '#7c3aed', col: '#b39ddb', span: true },
+    { label: 'Quinté B', desc: 'Désordre', chevaux: C.quinteB.map(n=>`N°${n}`).join(' · '), mise: 'Inclus B', border: '#7c3aed', col: '#b39ddb', span: true },
+    { label: '🎯 CDJ', desc: 'Simple Gagnant',
+      chevaux: C.cdj.num ? `${C.cdj.course} · N°${C.cdj.num}` : '—',
+      mise: `${C.cdj.mise}€`, border: '#f5a623', col: '#f5a623', span: true },
+  ];
+  if(C.dm.num) {
+    tickets.push({ label: '⚡ DM', desc: 'Simple Placé', chevaux: `N°${C.dm.num}`, mise: '10€', border: '#00c896', col: '#00c896', span: true });
+  }
+  return tickets.map(t => `
+    <div class="tk${t.span?' span2':''}" style="border-color:${t.border};">
+      <div class="tc" style="color:${t.col};">${t.label}</div>
+      <div class="tt">${t.desc}</div>
+      <div class="thorse">🐴 ${t.chevaux}</div>
+      <div class="tmise" style="color:${t.col};">${t.mise}</div>
+    </div>`).join('');
+}
+
+/* ── VIP ── */
+function renderVIP(C) {
+  setTxt('vip-stitle', `💎 VIP · ${C.date} · ${C.hippo}`);
+  setTxt('vip-date2', C.date);
+  setHTML('vip-c1', `N°${C.c1} · ${C.cdj.mise}€`);
+  setHTML('vip-c2', `N°${C.c2} · ${Math.round(C.cdj.mise/2)}€`);
+  setHTML('vip-d1', `N°${C.c1}+N°${C.c2} · ${Math.round(C.cdj.mise/2)}€`);
+  setTxt('vip-qa',  C.quarteA.map(n=>`N°${n}`).join('·'));
+  setTxt('vip-qb',  C.quarteB.map(n=>`N°${n}`).join('·'));
+  setTxt('vip-q5a', C.quinteA.map(n=>`N°${n}`).join('·'));
+  setTxt('vip-q5b', C.quinteB.map(n=>`N°${n}`).join('·'));
+  setHTML('vip-cdj', C.cdj.num ? `${C.cdj.course} · N°${C.cdj.num} · ${C.cdj.mise}€` : '—');
+  setHTML('vip-dm',  C.dm.num  ? `N°${C.dm.num}` : '<span style="color:#555;">Pas de DM</span>');
+  setTxt('vip-hippo',  `${C.hippo} · ${C.course} · ${C.disc}`);
+  setTxt('vip-depart', C.depart);
+  // Tickets VIP grid
+  const g = el('vip-tk-grid');
+  if(g) g.innerHTML = buildTkGrid(C);
+}
+
+/* ── Analyse ── */
+function renderAnalyse(C) {
+  setTxt('ana-stitle', `🧠 Analyse · ${C.disc} · ${C.date}`);
+  const selNums = parseNums(C.sel.replace(/-/g,'-'));
+
+  setHTML('ana-ctx', `
+    <div class="a-title">📍 Contexte · ${C.hippo}</div>
+    <div class="a-row"><span class="a-lbl">Date</span><span class="a-val">${C.date}</span></div>
+    <div class="a-row"><span class="a-lbl">Hippodrome</span><span class="a-val">${C.hippo}</span></div>
+    <div class="a-row"><span class="a-lbl">Discipline</span><span class="a-val" style="color:#4fc3f7;">${C.disc}</span></div>
+    <div class="a-row"><span class="a-lbl">Course</span><span class="a-val">${C.course}</span></div>
+    <div class="a-row"><span class="a-lbl">Variance</span><span class="a-val" style="color:#f5a623;">↔ ${C.disc==='Plat'?'Modérée':'Haute'}</span></div>
+    <div class="a-row"><span class="a-lbl">Kelly recommandé</span><span class="a-val">× ${C.disc==='Steeple'||C.disc==='Haies'?'0.15':'0.25'}</span></div>
+  `);
+
+  // Hiérarchie — calcul fréquences historiques
+  const freq = {};
+  selNums.forEach(n => freq[n] = {t1:0,t3:0,t5:0,nb:0});
+  State.data.forEach(r => {
+    if(!r.arr) return;
+    const arr = r.arr.split('-').map(v=>parseInt(v.trim(),10)).filter(v=>!isNaN(v));
+    arr.slice(0,5).forEach((n,i) => {
+      if(!freq[n]) return;
+      freq[n].nb++;
+      freq[n].t5++;
+      if(i<3) freq[n].t3++;
+      if(i<1) freq[n].t1++;
+    });
+  });
+  const total = State.data.length || 1;
+  const ranked = [...selNums].sort((a,b) => {
+    const sa=freq[a]||{t1:0,t3:0,t5:0}, sb=freq[b]||{t1:0,t3:0,t5:0};
+    return (sb.t1*5+sb.t3*3+sb.t5) - (sa.t1*5+sa.t3*3+sa.t5);
+  });
+
+  const hierRows = ranked.slice(0,5).map((n,i) => {
+    const f = freq[n]||{t1:0,t3:0,t5:0};
+    const pct = Math.round((f.t5/total)*100);
+    const col = n===C.c1 ? '#ff6b35' : n===C.c2 ? '#00c896' : '#f5a623';
+    const star = n===C.c1 ? ' ⭐ C1' : n===C.c2 ? ' C2' : '';
+    return `
+      <div class="a-row">
+        <span class="a-lbl">P${i+1} · N°${n}${star}</span>
+        <span class="a-val" style="color:${col};">${pct}% top5 hist.</span>
+      </div>
+      <div class="score-bar"><div class="score-fill ${pct>=60?'sf-hi':pct>=40?'sf-md':'sf-lo'}" style="width:${Math.min(pct,100)}%;"></div></div>
+      <div style="height:6px;"></div>`;
+  }).join('');
+
+  setHTML('ana-hier', `<div class="a-title">🐴 Hiérarchie · Sélection ${C.date.substring(0,5)}</div>${hierRows}`);
+
+  setHTML('ana-out', `
+    <div class="a-title">🎲 Outsiders</div>
+    <div style="margin-bottom:8px;">${C.outsiders.split('·').map(s=>s.trim()).filter(Boolean).map(s=>`<span class="chip o" style="margin:2px;">${s}</span>`).join('')}</div>
+    <div style="font-size:11px;color:#888;">💡 ${C.disc} ${C.hippo} · Inclure en couverture bonus.</div>
+  `);
+
+  setHTML('ana-cdj', `
+    <div class="a-title">🎯 CDJ · ${C.cdj.course || '—'}</div>
+    <div class="a-row"><span class="a-lbl">Course</span><span class="a-val">${C.cdj.course || '—'}</span></div>
+    <div class="a-row"><span class="a-lbl">Numéro</span><span class="a-val" style="color:#f5a623;">${C.cdj.num ? `N°${C.cdj.num}` : '—'}</span></div>
+    <div class="a-row"><span class="a-lbl">Mise</span><span class="a-val">${C.cdj.mise}€ Simple Gagnant</span></div>
+    <div class="a-row"><span class="a-lbl">DM</span><span class="a-val" style="color:${C.dm.num?'#00c896':'#555'};">${C.dm.num ? `N°${C.dm.num}` : 'Pas de DM aujourd\'hui'}</span></div>
+  `);
+}
+
+/* ── Dashboard ── */
+function renderDashboard(D) {
+  const conf = D.filter(r => r.cdj_res !== '⏳');
+  const n   = conf.length;
+  const mt  = conf.reduce((s,r)=>s+(r.mise||0), 0);
+  const rt  = conf.reduce((s,r)=>s+(r.retour||0), 0);
+  const pl  = rt - mt;
+  const roi = mt ? (pl/mt*100) : 0;
+  const cw  = conf.filter(r=>r.cdj_res==='WIN').length;
+  const top5vals = conf.map(r=>{
+    if(!r.top5) return null;
+    const [a,b] = r.top5.split('/').map(Number);
+    return b ? a/b : null;
+  }).filter(v=>v!==null);
+  const top5avg = top5vals.length ? (top5vals.reduce((s,v)=>s+v,0)/top5vals.length*100) : 0;
+
+  let serie = 0;
+  for(let i=conf.length-1;i>=0;i--){ if(conf[i].cdj_res==='WIN') serie++; else break; }
+
+  setTxt('k-total', D.length);
+  setHTML('k-roi', `<span style="color:${roi>=0?'#00c896':'#e94560'}">${roi>=0?'+':''}${roi.toFixed(1)}%</span>`);
+  setTxt('k-cdj', n ? Math.round(cw/n*100)+'%' : '—');
+  setHTML('k-pl', `<span style="color:${pl>=0?'#b39ddb':'#e94560'}">${pl>=0?'+':''}${pl.toFixed(0)}€</span>`);
+  setHTML('k-top5', top5avg.toFixed(0)+'%');
+  setTxt('k-serie', serie > 0 ? '🔥'+serie : '0');
+
+  // Bankroll
+  const bk = BK_INIT + pl;
+  const pct = Math.max(0, Math.min(100, (bk/BK_INIT)*100));
+  const bkCol = bk>=BK_INIT ? '#00c896' : bk>=BK_INIT*0.7 ? '#f5a623' : '#e94560';
+  setHTML('bk-current', `<span style="color:${bkCol};font-weight:700;font-size:18px;">${bk.toFixed(2)}€</span>`);
+  const bar = el('bk-bar');
+  if(bar){ bar.style.width=pct+'%'; bar.style.background = bk>=BK_INIT?'linear-gradient(90deg,#00c896,#4fc3f7)':bk>=BK_INIT*0.7?'linear-gradient(90deg,#f5a623,#ff6b35)':'linear-gradient(90deg,#e94560,#b00020)'; }
+  setHTML('bk-detail', `Mises: <b>${mt.toFixed(0)}€</b> · Retours: <b>${rt.toFixed(0)}€</b> · P&L: <b style="color:${pl>=0?'#00c896':'#e94560'}">${pl>=0?'+':''}${pl.toFixed(2)}€</b>`);
+
+  // Tranches
+  const grid = el('tranche-grid');
+  if(!grid) return;
+  const bkR = Math.max(0, bk);
+  grid.innerHTML = Array.from({length:100}).map((_,i) => {
+    const val = (i+1)*10, full = bkR>=val, cur = !full&&bkR>i*10;
+    const pct2 = cur ? Math.round(((bkR-i*10)/10)*100) : 0;
+    const col   = full?'#00c896':cur?'#f5a623':'#555';
+    const bord  = full?'#00c896':cur?'#f5a623':'#333';
+    const icon  = full?'✅':cur?'⏳':'·';
+    return `<div class="tranche-card" style="border-color:${bord};">
+      <div style="font-size:10px;color:#888;margin-bottom:3px;">Tranche ${i+1}</div>
+      <div style="font-size:12px;font-weight:700;color:${col};">${icon} ${i*10}–${val}€</div>
+      <div style="background:#0d0d0d;border-radius:4px;height:4px;margin-top:5px;overflow:hidden;">
+        <div style="width:${full?100:pct2}%;height:100%;background:${full?'#00c896':cur?'#f5a623':'transparent'};border-radius:4px;"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Perf ── */
+function renderPerf(D) {
+  const conf = D.filter(r => r.cdj_res !== '⏳');
+  const n   = conf.length;
+  const mt  = conf.reduce((s,r)=>s+(r.mise||0), 0);
+  const rt  = conf.reduce((s,r)=>s+(r.retour||0), 0);
+  const pl  = rt - mt;
+  const roi = mt ? (pl/mt*100).toFixed(1) : '0.0';
+  const cw  = conf.filter(r=>r.cdj_res==='WIN').length;
+  const top5ok = conf.filter(r=>r.top5&&parseInt(r.top5)>=4).length;
+  const quarte = conf.filter(r=>r.tck&&(r.tck.includes('Quarté')||r.tck.includes('Plein')||r.tck.includes('Ordre'))).length;
+  const top5vals = conf.map(r=>{
+    if(!r.top5) return null;
+    const [a,b] = r.top5.split('/').map(Number);
+    return b ? a/b : null;
+  }).filter(v=>v!==null);
+  const top5avg = top5vals.length ? (top5vals.reduce((s,v)=>s+v,0)/top5vals.length*100) : 0;
+
+  setTxt('perf-stitle', `⭐ Bilan · ${D.length} courses (${n} finalisées)`);
+  setTxt('p-cdjw',  `${cw}/${n}`);
+  setTxt('p-cdjpct', n ? Math.round(cw/n*100)+'%' : '—');
+  setTxt('p-top5c', `${top5ok}/${n}`);
+  setTxt('p-quarte', quarte + ' 🎉');
+
+  const cdjPct = n ? Math.round(cw/n*100) : 0;
+  const roiAbs = Math.abs(parseFloat(roi));
+
+  setTxt('pb-cdj-lbl',  cdjPct+'%'); setWidth('pb-cdj',  cdjPct);
+  setTxt('pb-top5-lbl', top5avg.toFixed(0)+'%'); setWidth('pb-top5', top5avg);
+  setTxt('pb-roi-lbl',  (parseFloat(roi)>=0?'+':'')+roi+'%'); setWidth('pb-roi', Math.min(roiAbs*5,100));
+
+  // Table
+  const tbody = el('perf-body');
+  if(!tbody) return;
+  tbody.innerHTML = [...D].reverse().map(r => {
+    const cs  = r.cdj_res==='WIN'?'win':r.cdj_res==='LOSS'?'loss':'wait';
+    const icon= r.cdj_res==='WIN'?'✅':r.cdj_res==='LOSS'?'❌':'⏳';
+    const pl2 = (r.retour||0) - (r.mise||0);
+    const dc  = r.disc==='Plat'?'#aaa':r.disc==='Attelé'||r.disc==='Trot'?'#4fc3f7':'#b39ddb';
+    return `<tr>
+      <td><b>${fmtDate(r.date)}</b></td>
+      <td style="font-size:10px;">${r.hippo||'—'}</td>
+      <td style="color:${dc};font-size:10px;">${r.disc}</td>
+      <td>${r.top5||'—'}</td>
+      <td><span class="badge ${cs}">${icon}</span> ${r.cdj_pos||''}</td>
+      <td>${(r.retour||0).toFixed(0)}€</td>
+      <td style="color:${pl2>=0?'#00c896':'#e94560'};font-weight:700;">${pl2>=0?'+':''}${pl2.toFixed(0)}€</td>
+    </tr>`;
+  }).join('');
+}
+
+function setWidth(id, pct) {
+  const e = el(id); if(e) e.style.width = Math.min(Math.max(pct,0),100)+'%';
+}
+
+/* ── Historique ── */
+function renderHistorique(D) {
+  const tbody = el('hist-body');
+  if(!tbody) return;
+  tbody.innerHTML = [...D].reverse().map(r => {
+    const cs  = r.cdj_res==='WIN'?'win':r.cdj_res==='LOSS'?'loss':'wait';
+    const icon= r.cdj_res==='WIN'?'✅':r.cdj_res==='LOSS'?'❌':'⏳';
+    const dc  = r.disc==='Plat'?'#aaa':r.disc==='Attelé'||r.disc==='Trot'?'#4fc3f7':'#b39ddb';
+    const bil = (r.bilan||'—').substring(0,20);
+    return `<tr>
+      <td><b>${fmtDate(r.date)}</b></td>
+      <td style="font-size:10px;">${r.hippo||'—'}</td>
+      <td style="color:${dc};font-size:10px;">${r.disc}</td>
+      <td>N°${r.cdj} <span class="badge ${cs}">${icon}</span></td>
+      <td style="font-size:10px;">${r.cdj_pos||'—'}</td>
+      <td>${r.top5||'—'}</td>
+      <td style="font-size:10px;color:#aaa;">${bil}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── Partage ── */
+function renderPartage(C, D) {
+  const conf = D.filter(r=>r.cdj_res!=='⏳');
+  const mt   = conf.reduce((s,r)=>s+(r.mise||0),0);
+  const rt   = conf.reduce((s,r)=>s+(r.retour||0),0);
+  const pl   = rt-mt;
+  const cw   = conf.filter(r=>r.cdj_res==='WIN').length;
+  const pct  = conf.length ? Math.round(cw/conf.length*100) : 0;
+
+  setTxt('prt-stitle', `📤 Partage · ${C.date}`);
+  setTxt('prt-header', `🏇 PRONOTURF PRO · ${C.date}`);
+  setTxt('prt-title',  `🏆 ${C.disc} · ${C.hippo} · ${C.course}`);
+  setTxt('prt-sel',    C.sel);
+  setTxt('prt-out',    C.outsiders);
+  setTxt('prt-cdj',    C.cdj.num ? `${C.cdj.course} · N°${C.cdj.num}` : '—');
+  setHTML('prt-bilan', `${pl>=0?'+':''}${pl.toFixed(0)}€ · ${pct}% CDJ · ${D.length} courses`);
+}
+
+/* ── État VIP ── */
+function renderVIPState() {
+  const vip = State.isVip;
+  // Onglet VIP
+  if(el('vip-locked'))  el('vip-locked').style.display  = vip ? 'none'  : 'block';
+  if(el('vip-content')) el('vip-content').style.display = vip ? 'block' : 'none';
+  // Onglet Tickets
+  if(el('tck-locked'))  el('tck-locked').style.display  = vip ? 'none'  : 'block';
+  if(el('tck-content')) el('tck-content').style.display = vip ? 'block' : 'none';
+}
+
+/* ══════════════════════════════════════════════════════════
+   8. HORLOGE & COUNTDOWN
+══════════════════════════════════════════════════════════ */
+function updateClock() {
+  const now = new Date();
+  setTxt('live-clock', pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds()));
+
+  const cd = el('live-countdown');
+  if(!cd) return;
+  const C = State.config;
+  const [hh, mm] = (C.depart||'20:00').split(':').map(Number);
+  const dep = new Date();
+  dep.setHours(hh, mm, 0, 0);
+  const diff = dep - now;
+
+  if(diff > 0) {
+    const dh = Math.floor(diff/3600000), dm = Math.floor((diff%3600000)/60000), ds = Math.floor((diff%60000)/1000);
+    cd.textContent = dh > 0 ? `${dh}h${pad(dm)}` : `${dm}m${pad(ds)}s`;
+    cd.style.color = '#4fc3f7';
+  } else if(diff > -5400000) {
+    cd.textContent = '🏇 En course !'; cd.style.color = '#ff6b35';
+  } else {
+    cd.textContent = '✅ Terminée'; cd.style.color = '#00c896';
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   9. AUTH — VIP & Admin
+══════════════════════════════════════════════════════════ */
+function getMasterPin() { return Store.get('master_pin') || ADMIN_PIN_DEFAULT; }
+function getAbonnes()   { try { return JSON.parse(localStorage.getItem(PINS_KEY)) || []; } catch { return []; } }
+function saveAbonnes(a) { localStorage.setItem(PINS_KEY, JSON.stringify(a)); }
+
+function checkPin() {
+  const pin = (el('pin-in').value || '').trim();
+  const errEl = el('pin-err');
+  errEl.textContent = '';
+  if(pin.length !== 8) { errEl.textContent = '❌ PIN à 8 chiffres requis.'; return; }
+  if(pin === getMasterPin() || getAbonnes().some(a => a.pin===pin && a.actif!==false)) {
+    State.isVip = true;
+    localStorage.setItem('pnturf_vip', '1');
+    el('pin-in').value = '';
+    renderVIPState();
+    toast('✅ Accès VIP activé !');
+    showTab('vip');
+  } else {
+    errEl.textContent = '❌ PIN incorrect.';
+  }
+}
+
+function logout() {
+  State.isVip = false;
+  localStorage.removeItem('pnturf_vip');
+  renderVIPState();
+  toast('👋 Déconnecté');
+}
+
+function checkAdminPin() {
+  const pin = (el('admin-pin-in').value || '').trim();
+  if(pin === getMasterPin() || pin === ADMIN_PIN_DEFAULT) {
+    State.isAdmin = true;
+    localStorage.setItem('pnturf_admin', '1');
+    el('admin-locked-screen').style.display = 'none';
+    el('admin-content').style.display = 'block';
+    // Pré-remplir formulaire config
+    loadConfigForm();
+    renderAbList();
+    setTxt('set-vip', getMasterPin());
+  } else {
+    el('admin-pin-err').textContent = '❌ PIN incorrect.';
+  }
+}
+
+function logoutAdmin() {
+  State.isAdmin = false;
+  localStorage.removeItem('pnturf_admin');
+  el('admin-locked-screen').style.display = 'block';
+  el('admin-content').style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════════════════
+   10. CONFIG ÉDITEUR — Admin peut modifier CONFIG en live
+══════════════════════════════════════════════════════════ */
+function loadConfigForm() {
+  const C = State.config;
+  const fields = {
+    'cfg-date':  C.date,
+    'cfg-hippo': C.hippo,
+    'cfg-course':C.course,
+    'cfg-sel':   C.sel,
+    'cfg-out':   C.outsiders,
+    'cfg-c1':    C.c1,
+    'cfg-c2':    C.c2,
+    'cfg-dep':   C.depart,
+    'cfg-cdj-c': C.cdj.course,
+    'cfg-cdj-n': C.cdj.num,
+    'cfg-cdj-m': C.cdj.mise,
+    'cfg-dm-n':  C.dm.num || '',
+    'cfg-qa':    C.quarteA.join('-'),
+    'cfg-qb':    C.quarteB.join('-'),
+    'cfg-q5a':   C.quinteA.join('-'),
+    'cfg-q5b':   C.quinteB.join('-'),
+  };
+  Object.entries(fields).forEach(([id, val]) => { const e=el(id); if(e) e.value=val; });
+  // Disc select
+  const ds = el('cfg-disc');
+  if(ds) ds.value = C.disc;
+}
+
+function saveCONFIG() {
+  const dep = (el('cfg-dep').value || '20:00').trim();
+  const [hh, mm] = dep.split(':').map(Number);
+  const newCfg = {
+    date:     el('cfg-date').value.trim()  || State.config.date,
+    hippo:    el('cfg-hippo').value.trim() || State.config.hippo,
+    disc:     el('cfg-disc').value,
+    course:   el('cfg-course').value.trim(),
+    sel:      el('cfg-sel').value.trim(),
+    outsiders:el('cfg-out').value.trim(),
+    c1:       parseInt(el('cfg-c1').value) || State.config.c1,
+    c2:       parseInt(el('cfg-c2').value) || State.config.c2,
+    depart:   dep,
+    cdj: {
+      course: el('cfg-cdj-c').value.trim(),
+      num:    parseInt(el('cfg-cdj-n').value) || '',
+      mise:   parseFloat(el('cfg-cdj-m').value) || 20,
+    },
+    dm: {
+      course: '',
+      num:    parseInt(el('cfg-dm-n').value) || '',
+      mise:   el('cfg-dm-n').value ? 10 : 0,
+    },
+    quarteA: parseNums(el('cfg-qa').value),
+    quarteB: parseNums(el('cfg-qb').value),
+    quinteA: parseNums(el('cfg-q5a').value),
+    quinteB: parseNums(el('cfg-q5b').value),
+  };
+  State.config = newCfg;
+  State.saveConfig();
+  renderAll();
+  toast('✅ CONFIG sauvegardée — App mise à jour !');
+}
+
+function resetCONFIG() {
+  if(!confirm('Restaurer la CONFIG par défaut ?')) return;
+  State.config = {...CONFIG_DEFAULT};
+  State.saveConfig();
+  loadConfigForm();
+  renderAll();
+  toast('↩️ CONFIG restaurée');
+}
+
+/* ══════════════════════════════════════════════════════════
+   11. SAISIE COURSES
+══════════════════════════════════════════════════════════ */
+function addCourse() {
+  const r = {
+    date:    el('f-date').value,
+    hippo:   el('f-hippo').value.trim(),
+    disc:    el('f-disc').value,
+    cdj:     el('f-cdj').value.trim(),
+    dm:      el('f-dm').value.trim() || '—',
+    mise:    parseFloat(el('f-mise').value) || 20,
+    arr:     el('f-arr').value.trim(),
+    top5:    el('f-top5').value.trim(),
+    cdj_res: el('f-cdj-res').value,
+    cdj_pos: el('f-cdjpos').value.trim(),
+    dm_res:  el('f-dm-res').value,
+    tck:     el('f-tck').value.trim(),
+    bilan:   el('f-tck').value.trim() || el('f-cdj-res').value,
+    retour:  parseFloat(el('f-retour').value) || 0,
+  };
+  if(!r.date) { toast('❌ Date requise'); return; }
+  const idx = State.data.findIndex(x => x.date === r.date);
+  if(idx >= 0) State.data[idx] = {...State.data[idx], ...r};
+  else State.data.push(r);
+  State.saveData();
+  renderAll();
+  toast('✅ Course enregistrée !');
+  // Reset form
+  ['f-date','f-hippo','f-cdj','f-dm','f-arr','f-top5','f-tck','f-cdjpos'].forEach(id => { const e=el(id); if(e) e.value=''; });
+  el('f-retour').value = '0';
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(State.data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'prono_v90.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+/* ══════════════════════════════════════════════════════════
+   12. GESTION PIN ABONNÉS
+══════════════════════════════════════════════════════════ */
+function saveMasterPin() {
+  const pin = (el('set-vip').value || '').trim();
+  if(pin.length !== 8) { toast('❌ PIN à 8 chiffres'); return; }
+  Store.set('master_pin', pin);
+  toast('✅ PIN maître sauvegardé');
+}
+
+function genererPinAbonne() {
+  const email = (el('ab-email').value || '').trim().toLowerCase();
+  const res   = el('ab-result');
+  if(!email || !email.includes('@')) { res.style.color='#e94560'; res.textContent='❌ Email invalide'; return; }
+  const abonnes = getAbonnes();
+  const existing = abonnes.find(a => a.email === email);
+  if(existing) {
+    res.style.color='#f5a623';
+    res.innerHTML = `⚠️ Existant · PIN : <b style="color:#ff6b35;font-size:16px;letter-spacing:2px;">${existing.pin}</b>`;
+    return;
+  }
+  const used = new Set(abonnes.map(a=>a.pin));
+  let pin;
+  do { pin = String(Math.floor(10000000+Math.random()*90000000)); } while(used.has(pin));
+  abonnes.push({email, pin, date: new Date().toISOString().split('T')[0], actif:true});
+  saveAbonnes(abonnes);
+  res.style.color='#00c896';
+  res.innerHTML = `✅ PIN : <b style="color:#ff6b35;font-size:18px;letter-spacing:3px;">${pin}</b><br><small style="color:#888;">→ ${email}</small>`;
+  renderAbList();
+}
+
+function renderAbList() {
+  const list = el('ab-list');
+  if(!list) return;
+  const abonnes = getAbonnes();
+  if(!abonnes.length) { list.innerHTML='<span style="color:#555;">Aucun abonné</span>'; return; }
+  list.innerHTML = abonnes.map(a => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #2a2a3e;">
+      <span style="color:#aaa;font-size:11px;">${a.email}</span>
+      <span style="color:#ff6b35;font-weight:700;letter-spacing:2px;">${a.pin}</span>
+      <button class="del-btn" onclick="delAbonne('${a.pin}')">✕</button>
+    </div>`).join('');
+}
+
+function delAbonne(pin) {
+  if(!confirm('Supprimer cet abonné ?')) return;
+  saveAbonnes(getAbonnes().filter(a => a.pin !== pin));
+  renderAbList();
+}
+
+/* ══════════════════════════════════════════════════════════
+   13. PARTAGE
+══════════════════════════════════════════════════════════ */
+function buildShareText() {
+  const C = State.config;
+  const D = State.data;
+  const conf = D.filter(r=>r.cdj_res!=='⏳');
+  const pl   = conf.reduce((s,r)=>s+(r.retour||0)-(r.mise||0), 0);
+  const cw   = conf.filter(r=>r.cdj_res==='WIN').length;
+  const pct  = conf.length ? Math.round(cw/conf.length*100) : 0;
+  return `🏇 PRONOTURF PRO · ${C.date}
+━━━━━━━━━━━━━━━
+🏆 ${C.disc} · ${C.hippo} · ${C.course}
+🐴 Sélection : ${C.sel}
+⚡ Outsiders : ${C.outsiders}
+🎯 CDJ : ${C.cdj.num ? `${C.cdj.course} N°${C.cdj.num} · ${C.cdj.mise}€` : '—'}
+⏰ Départ : ${C.depart}
+━━━━━━━━━━━━━━━
+📈 Bilan : ${pl>=0?'+':''}${pl.toFixed(0)}€ · ${pct}% CDJ · ${D.length} courses
+💎 Tickets VIP → pronoturfpro.fr · 5€99/mois`;
+}
+
+function shareWA()   { window.open('https://wa.me/?text='+encodeURIComponent(buildShareText())); }
+function copyShare() { navigator.clipboard.writeText(buildShareText()).then(()=>toast('✅ Copié !')); }
+
+/* ══════════════════════════════════════════════════════════
+   14. CALCULATEURS
+══════════════════════════════════════════════════════════ */
+function swCalc(name, btn) {
+  document.querySelectorAll('.cc-panel').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.ctab').forEach(e=>e.classList.remove('active'));
+  el('cc-'+name).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+function calcKelly() {
+  const cote = parseFloat(el('k-cote').value)||3.5;
+  const prob = parseFloat(el('k-prob').value)/100||0.35;
+  const bk   = parseFloat(el('k-bk').value)||1000;
+  const frac = parseFloat(el('k-frac').value)||0.25;
+  const b=cote-1, q=1-prob;
+  const kelly=(b*prob-q)/b;
+  const mise=Math.max(0,kelly*frac*bk);
+  const edge=(prob*cote-1)*100;
+  const col=kelly>0?'#00c896':'#e94560';
+  setHTML('c-result-kelly',`<div class="c-res-box">
+    <div class="c-res-row"><span>Edge estimé</span><span class="c-res-val" style="color:${edge>0?'#00c896':'#e94560'}">${edge.toFixed(1)}%</span></div>
+    <div class="c-res-row"><span>Kelly plein</span><span class="c-res-val">${(kelly*100).toFixed(2)}%</span></div>
+    <div class="c-res-row"><span>Kelly ×${frac}</span><span class="c-res-val" style="color:#f5a623">${(kelly*frac*100).toFixed(2)}%</span></div>
+    <div class="c-res-row"><span>💰 Mise recommandée</span><span class="c-res-val" style="color:${col};font-size:20px;">${mise.toFixed(2)}€</span></div>
+    ${kelly<=0?'<div style="color:#e94560;font-size:12px;padding-top:6px;">⚠️ Pas d\'edge — ne pas miser.</div>':''}
+    ${kelly>0?`<div style="color:#aaa;font-size:11px;padding-top:6px;">Gain potentiel si victoire : <b style="color:#00c896">${(mise*b).toFixed(2)}€</b></div>`:''}
+  </div>`);
+}
+
+function calcROI() {
+  const m=parseFloat(el('roi-mise').value)||0;
+  const g=parseFloat(el('roi-gains').value)||0;
+  const nb=parseInt(el('roi-nb').value)||1;
+  if(!m){ setTxt('c-result-roi',''); return; }
+  const pl=g-m, roi=(pl/m*100).toFixed(2);
+  const col=pl>=0?'#00c896':'#e94560';
+  const lvl=roi>=20?'⭐ EXPERT':roi>=10?'🟢 Avancé':roi>=0?'🟡 Intermédiaire':'🔴 Débutant';
+  setHTML('c-result-roi',`<div class="c-res-box">
+    <div class="c-res-row"><span>Total misé</span><span class="c-res-val">${m.toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>Total gains</span><span class="c-res-val">${g.toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>P&L</span><span class="c-res-val" style="color:${col}">${pl>=0?'+':''}${pl.toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>ROI</span><span class="c-res-val" style="color:${col};font-size:20px;">${roi>=0?'+':''}${roi}%</span></div>
+    <div class="c-res-row"><span>Moy/course</span><span class="c-res-val">${(pl/nb).toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>Niveau</span><span class="c-res-val">${lvl}</span></div>
+  </div>`);
+}
+
+function calcComb() {
+  const k=parseInt(el('cb-type').value)||5;
+  const n=parseInt(el('cb-nb').value)||8;
+  const mu=parseFloat(el('cb-mise').value)||1.5;
+  const ord=el('cb-ordre').value==='ordre';
+  if(n<k){ setHTML('c-result-comb',`<div class="ibox" style="color:#e94560;">⚠️ Minimum ${k} chevaux.</div>`); return; }
+  function fact(x){ return x<=1?1:x*fact(x-1); }
+  const nc = ord ? fact(n)/fact(n-k) : fact(n)/(fact(k)*fact(n-k));
+  const cout=nc*mu;
+  setHTML('c-result-comb',`<div class="c-res-box">
+    <div class="c-res-row"><span>Combinaisons</span><span class="c-res-val">${nc.toLocaleString('fr-FR')}</span></div>
+    <div class="c-res-row"><span>Mise unitaire</span><span class="c-res-val">${mu.toFixed(2)}€</span></div>
+    <div class="c-res-row"><span>Coût total</span><span class="c-res-val" style="color:#f5a623;">${cout.toFixed(2)}€</span></div>
+  </div>`);
+}
+
+function calcVipKelly() {
+  const cote=parseFloat(el('vk-cote').value)||3.5;
+  const prob=parseFloat(el('vk-prob').value)/100||0.35;
+  const bk=parseFloat(el('vk-bk').value)||1000;
+  const b=cote-1, q=1-prob;
+  const kelly=(b*prob-q)/b;
+  const mise=Math.max(0,kelly*0.25*bk);
+  const edge=(prob*cote-1)*100;
+  const r=el('vk-result');
+  if(!r) return;
+  if(kelly<=0){ r.style.color='#e94560'; r.textContent='⚠️ Pas d\'edge — ne pas miser'; }
+  else { r.style.color='#f5a623'; r.textContent=`💰 Kelly ¼ : ${mise.toFixed(2)}€ (edge ${edge.toFixed(1)}%)`; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   15. MODULE CORDE (INTOUCHÉ)
+══════════════════════════════════════════════════════════ */
+let CORDE_DATA = JSON.parse(localStorage.getItem('cordeData') || '[]');
+function saveCorde(){ localStorage.setItem('cordeData', JSON.stringify(CORDE_DATA)); }
+function addCordeCourse(){
+  const date=el('cd-date').value, hippo=el('cd-hippo').value.trim(), disc=el('cd-disc').value;
+  const selS=el('cd-sel').value.trim(), npS=el('cd-np').value.trim(), arrS=el('cd-arr').value.trim();
+  if(!date||!hippo||!selS||!arrS){ toast('⚠️ Remplis Date, Hippodrome, Sélection, Arrivée'); return; }
+  const selN=parseNums(selS), npN=parseNums(npS.replace(/\s+/g,'-')), arrN=parseNums(arrS);
+  const top5=arrN.slice(0,5), active=selN.filter(n=>!npN.includes(n)), hits=active.filter(n=>top5.includes(n));
+  CORDE_DATA.unshift({id:Date.now(),date,hippo,disc,sel:selN,np:npN,arr:arrN,top5,active,hits,score:hits.length});
+  saveCorde(); renderCordeHist();
+  ['cd-sel','cd-np','cd-arr','cd-hippo'].forEach(id=>{const e=el(id);if(e)e.value='';});
+}
+function deleteCordeCourse(id){ CORDE_DATA=CORDE_DATA.filter(r=>r.id!==id); saveCorde(); renderCordeHist(); }
+function renderCordeHist(){
+  const tbody=el('corde-hist-body'); if(!tbody) return;
+  const total=CORDE_DATA.length;
+  if(!total){
+    tbody.innerHTML='<tr><td colspan="9" style="text-align:center;color:#555;padding:20px;">Aucune course</td></tr>';
+    ['ck-courses','ck-avg','ck-pct'].forEach(id=>setTxt(id,'0'));
+    return;
+  }
+  const avg=(CORDE_DATA.reduce((s,r)=>s+r.score,0)/total).toFixed(1);
+  const pct=Math.round((CORDE_DATA.filter(r=>r.score>=4).length/total)*100);
+  setTxt('ck-courses',total); setTxt('ck-avg',avg); setTxt('ck-pct',pct+'%');
+  tbody.innerHTML=CORDE_DATA.map(r=>{
+    const cls=r.score===5?'s5':r.score===4?'s4':r.score===3?'s3':'s2';
+    const chips=r.sel.map(n=>{
+      if(r.np.includes(n)) return `<span class="chip-h np">N°${n} NP</span>`;
+      if(r.hits.includes(n)) return `<span class="chip-h ok">N°${n} ✅</span>`;
+      return `<span class="chip-h ko">N°${n}</span>`;
+    }).join('');
+    const d=r.date?r.date.split('-').reverse().slice(0,2).join('/'):'—';
+    return `<tr>
+      <td><b>${d}</b></td><td>${r.hippo}</td><td>${r.disc}</td>
+      <td style="font-size:10px;">${r.sel.join('-')}</td>
+      <td style="color:#fde68a;font-size:10px;">${r.np.length?r.np.join('-'):'-'}</td>
+      <td style="font-size:10px;color:#93c5fd;">${r.top5.join('-')}</td>
+      <td><div style="display:flex;flex-wrap:wrap;gap:2px;">${chips}</div></td>
+      <td><span class="badge-score ${cls}">${r.score}/5</span></td>
+      <td><button class="del-btn" onclick="deleteCordeCourse(${r.id})">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════════════
+   16. INIT — Point d'entrée unique
+══════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Initialiser l'état
+  State.init();
+
+  // 2. Restaurer session admin si persistée
+  if(State.isAdmin) {
+    el('admin-locked-screen').style.display = 'none';
+    el('admin-content').style.display = 'block';
+    loadConfigForm();
+    renderAbList();
+    setTxt('set-vip', getMasterPin());
+  }
+
+  // 3. Render complet depuis CONFIG + Data
+  renderAll();
+
+  // 4. Module Corde
+  renderCordeHist();
+
+  // 5. Horloge temps réel
+  updateClock();
+  setInterval(updateClock, 1000);
+});
+</script>
+</body>
+</html>
