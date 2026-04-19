@@ -647,12 +647,20 @@ tr:hover td{background:#1a1a2e55;}
       <div class="form-group"><label>Email abonné</label>
         <input type="email" id="ab-email" placeholder="email@exemple.fr">
       </div>
-      <button class="btn bl" onclick="genererPinAbonne()">🎲 Générer PIN</button>
+      <div class="form-group"><label>Nom (optionnel)</label>
+        <input type="text" id="ab-nom" placeholder="Prénom Nom">
+      </div>
+      <button class="btn bl" onclick="genererPinAbonne()">🎲 Générer PIN + Envoyer Email</button>
       <div id="ab-result" style="margin-top:8px;font-size:12px;min-height:16px;"></div>
       <div style="border-top:1px solid #2a2a3e;margin-top:12px;padding-top:10px;">
-        <div style="font-size:11px;color:#888;margin-bottom:6px;">PINs actifs :</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-size:11px;color:#888;">PINs actifs (<span id="ab-count">0</span>) :</span>
+          <div style="display:flex;gap:6px;">
+            <button class="btn gr" style="margin:0;font-size:10px;padding:4px 8px;" onclick="exportAbonnes()">📥 Export</button>
+            <button class="btn gr" style="margin:0;font-size:10px;padding:4px 8px;" onclick="renderAbList()">🔄</button>
+          </div>
+        </div>
         <div id="ab-list"></div>
-        <button class="btn gr" style="margin-top:6px;font-size:11px;padding:6px;" onclick="renderAbList()">🔄 Actualiser</button>
       </div>
     </div>
   </div>
@@ -1388,38 +1396,125 @@ function saveMasterPin() {
   toast('✅ PIN maître sauvegardé');
 }
 
+// ── EmailJS config (identique à l'ancienne app)
+const _EK = 'q56Lq8ctvgMFpYjTv';
+const _ES = 'service_412jzkn';
+const _ET = 'template_6lvl1rs';
+let _ejsLoaded = false;
+function loadEJS(cb) {
+  if(_ejsLoaded){ cb(); return; }
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+  s.onload = () => { emailjs.init(_EK); _ejsLoaded=true; cb(); };
+  document.head.appendChild(s);
+}
+
 function genererPinAbonne() {
   const email = (el('ab-email').value || '').trim().toLowerCase();
+  const nom   = (el('ab-nom')?.value || '').trim() || 'Abonné';
   const res   = el('ab-result');
   if(!email || !email.includes('@')) { res.style.color='#e94560'; res.textContent='❌ Email invalide'; return; }
+
   const abonnes = getAbonnes();
   const existing = abonnes.find(a => a.email === email);
-  if(existing) {
-    res.style.color='#f5a623';
-    res.innerHTML = `⚠️ Existant · PIN : <b style="color:#ff6b35;font-size:16px;letter-spacing:2px;">${existing.pin}</b>`;
-    return;
-  }
-  const used = new Set(abonnes.map(a=>a.pin));
   let pin;
-  do { pin = String(Math.floor(10000000+Math.random()*90000000)); } while(used.has(pin));
-  abonnes.push({email, pin, date: new Date().toISOString().split('T')[0], actif:true});
-  saveAbonnes(abonnes);
-  res.style.color='#00c896';
-  res.innerHTML = `✅ PIN : <b style="color:#ff6b35;font-size:18px;letter-spacing:3px;">${pin}</b><br><small style="color:#888;">→ ${email}</small>`;
+
+  if(existing) {
+    pin = existing.pin;
+    res.style.color='#f5a623';
+    res.innerHTML = `⚠️ Existant · PIN : <b style="color:#ff6b35;font-size:16px;letter-spacing:2px;">${pin}</b>`;
+  } else {
+    const used = new Set(abonnes.map(a=>a.pin));
+    do { pin = String(Math.floor(10000000+Math.random()*90000000)); } while(used.has(pin));
+    abonnes.push({email, nom, pin, date: new Date().toISOString().split('T')[0], actif:true});
+    saveAbonnes(abonnes);
+    // Sauvegarde aussi dans Store (backup)
+    Store.set('abonnes_backup', abonnes);
+    res.style.color='#00c896';
+    res.innerHTML = `✅ PIN généré : <b style="color:#ff6b35;font-size:18px;letter-spacing:3px;">${pin}</b><br><small style="color:#888;">→ ${email}</small><br><span id="mail-status" style="color:#4fc3f7;font-size:11px;">📧 Envoi email…</span>`;
+  }
+
   renderAbList();
+
+  // ── Envoi email avec EmailJS
+  loadEJS(() => {
+    emailjs.send(_ES, _ET, {
+      to_email:   email,
+      pin:        pin,
+      magic_link: `Ton code VIP PRONOTURF PRO : ${pin}\n\nConnecte-toi sur : https://pronoturfpro.fr/connexion.html`,
+      code:       pin,
+      from_name:  'PRONOTURF PRO',
+      to_name:    nom,
+    })
+    .then(() => {
+      const ms = el('mail-status');
+      if(ms) ms.innerHTML = '✅ Email envoyé avec le PIN !';
+      toast('✅ PIN généré + email envoyé !');
+    })
+    .catch(err => {
+      console.error('EmailJS:', err);
+      const ms = el('mail-status');
+      if(ms){ ms.style.color='#f5a623'; ms.textContent='⚠️ Email non envoyé — PIN à communiquer manuellement'; }
+    });
+  });
 }
 
 function renderAbList() {
   const list = el('ab-list');
+  const count = el('ab-count');
   if(!list) return;
   const abonnes = getAbonnes();
+  if(count) count.textContent = abonnes.length;
   if(!abonnes.length) { list.innerHTML='<span style="color:#555;">Aucun abonné</span>'; return; }
   list.innerHTML = abonnes.map(a => `
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #2a2a3e;">
-      <span style="color:#aaa;font-size:11px;">${a.email}</span>
-      <span style="color:#ff6b35;font-weight:700;letter-spacing:2px;">${a.pin}</span>
-      <button class="del-btn" onclick="delAbonne('${a.pin}')">✕</button>
+    <div style="background:#0d0d0d;border:1px solid #2a2a3e;border-radius:8px;padding:8px 10px;margin-bottom:6px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="color:#f0f0f0;font-size:12px;font-weight:700;">${a.nom||'—'} <span style="color:#888;font-size:10px;">${a.email}</span></div>
+          <div style="color:#ff6b35;font-weight:700;letter-spacing:3px;font-size:15px;">${a.pin}</div>
+          <div style="color:#555;font-size:10px;">${a.date||''} · ${a.actif!==false?'<span style="color:#00c896;">Actif</span>':'<span style="color:#e94560;">Inactif</span>'}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <button onclick="renvoyerPin('${a.email}','${a.pin}','${a.nom||''}')" style="background:#4fc3f722;border:1px solid #4fc3f7;color:#4fc3f7;border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;">📧</button>
+          <button onclick="toggleAbonne('${a.pin}')" style="background:${a.actif!==false?'#e9456022':'#00c89622'};border:1px solid ${a.actif!==false?'#e94560':'#00c896'};color:${a.actif!==false?'#e94560':'#00c896'};border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;">${a.actif!==false?'🔒':'🔓'}</button>
+          <button onclick="delAbonne('${a.pin}')" class="del-btn" style="font-size:10px;padding:3px 6px;">🗑</button>
+        </div>
+      </div>
     </div>`).join('');
+}
+
+function renvoyerPin(email, pin, nom) {
+  loadEJS(() => {
+    emailjs.send(_ES, _ET, {
+      to_email:   email,
+      pin:        pin,
+      magic_link: `Ton code VIP PRONOTURF PRO : ${pin}\n\nConnecte-toi sur : https://pronoturfpro.fr/connexion.html`,
+      code:       pin,
+      from_name:  'PRONOTURF PRO',
+      to_name:    nom || 'Abonné',
+    })
+    .then(() => toast(`✅ Email renvoyé à ${email}`))
+    .catch(() => toast(`⚠️ Échec envoi → PIN: ${pin}`));
+  });
+}
+
+function toggleAbonne(pin) {
+  const ab = getAbonnes().map(a => a.pin===pin ? {...a, actif: a.actif===false} : a);
+  saveAbonnes(ab);
+  Store.set('abonnes_backup', ab);
+  renderAbList();
+}
+
+function exportAbonnes() {
+  const ab = getAbonnes();
+  const csv = 'Email,Nom,PIN,Date,Actif\n' + ab.map(a =>
+    `${a.email},${a.nom||''},${a.pin},${a.date||''},${a.actif!==false?'oui':'non'}`
+  ).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url  = URL.createObjectURL(blob);
+  const a2   = document.createElement('a');
+  a2.href=url; a2.download='abonnes_pronoturf.csv'; a2.click();
+  URL.revokeObjectURL(url);
 }
 
 function delAbonne(pin) {
