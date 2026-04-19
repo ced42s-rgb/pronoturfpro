@@ -22,27 +22,22 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:#0d0d0d;color:#f0f0f0;font-family:'Segoe UI',sans-serif;font-size:14px;overflow-x:hidden;}
-
 header{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:16px;text-align:center;border-bottom:2px solid #ff6b35;position:sticky;top:0;z-index:100;}
 header h1{font-size:22px;color:#ff6b35;letter-spacing:2px;font-weight:900;}
 header p{color:#aaa;font-size:11px;margin-top:3px;}
 .live-badge{display:inline-block;background:#00c896;color:#000;font-size:10px;font-weight:900;padding:2px 8px;border-radius:10px;margin-left:8px;letter-spacing:1px;animation:pulse 1.5s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.6;}}
-
 .hero{background:linear-gradient(135deg,#1a1a2e 0%,#0d0d1a 50%,#1a0a0f 100%);padding:28px 16px;text-align:center;border-bottom:1px solid #2a2a2a;}
 .hero-title{font-size:26px;font-weight:900;color:#ff6b35;line-height:1.2;margin-bottom:8px;}
 .hero-sub{font-size:13px;color:#aaa;margin-bottom:20px;line-height:1.6;}
 .hero-date{background:#ff6b3522;border:1px solid #ff6b35;border-radius:10px;padding:8px 16px;display:inline-block;font-size:13px;color:#ff6b35;font-weight:700;margin-bottom:20px;}
-
 .stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#2a2a2a;border-bottom:2px solid #ff6b35;}
 .stat-box{background:#111;padding:14px 8px;text-align:center;}
 .stat-val{font-size:22px;font-weight:900;}
 .stat-lbl{font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
 .s-green{color:#00c896;}.s-orange{color:#f5a623;}.s-fire{color:#ff6b35;}
-
 .section{padding:20px 16px;}
 .sec-title{font-size:15px;font-weight:700;color:#ff6b35;margin-bottom:14px;border-bottom:1px solid #2a2a2a;padding-bottom:8px;}
-
 .course-card{background:linear-gradient(135deg,#1a1a2e,#12122a);border:2px solid #ff6b35;border-radius:14px;padding:16px;margin-bottom:14px;}
 .trow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #2a2a3e;font-size:13px;}
 .trow:last-child{border:none;}
@@ -51,42 +46,33 @@ header p{color:#aaa;font-size:11px;margin-top:3px;}
 .chip{background:#ff6b3522;border:1px solid #ff6b35;border-radius:20px;padding:5px 13px;font-size:13px;font-weight:700;color:#ff6b35;}
 .chip.b{background:#4fc3f722;border-color:#4fc3f7;color:#4fc3f7;}
 .chip.p{background:#7c3aed22;border-color:#7c3aed;color:#b39ddb;}
-
 .offer-card{background:linear-gradient(135deg,#ff6b35,#e94560);border-radius:16px;padding:20px;text-align:center;margin-bottom:16px;}
 .offer-price{font-size:36px;font-weight:900;color:#fff;margin:8px 0;}
 .offer-features{list-style:none;margin:14px 0;text-align:left;}
 .offer-features li{padding:5px 0;font-size:13px;color:#fff;}
 .offer-features li::before{content:'✅ ';}
-
 .btn{width:100%;padding:14px;background:linear-gradient(135deg,#ff6b35,#e94560);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:block;text-align:center;margin-top:10px;}
 .btn:hover{opacity:.88;}
 .btn.bl{background:linear-gradient(135deg,#4fc3f7,#0288d1);}
 .btn.gr{background:linear-gradient(135deg,#1a1a2e,#2a2a3e);border:1px solid #333;}
-
 .result-mini{background:#1a1a2e;border:1px solid #e9456033;border-radius:10px;padding:12px;margin-bottom:10px;}
 .badge-win{background:#00c89622;color:#00c896;border:1px solid #00c896;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
 .badge-loss{background:#e9456022;color:#e94560;border:1px solid #e94560;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
 .badge-wait{background:#f5a62322;color:#f5a623;border:1px solid #f5a623;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
-
 .socials{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 .social-btn{border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;}
-
 .countdown-box{background:#1a1a2e;border:2px solid #4fc3f7;border-radius:12px;padding:14px;text-align:center;margin-bottom:14px;}
 .countdown-val{font-size:32px;font-weight:900;color:#4fc3f7;font-variant-numeric:tabular-nums;}
 .countdown-lbl{font-size:11px;color:#888;margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
-
 .proof-bar{background:linear-gradient(135deg,#1a1a2e,#12122a);border:1px solid #ff6b3533;border-radius:12px;padding:14px;margin-bottom:14px;}
 .score-bar{height:8px;border-radius:4px;background:#2a2a3e;margin-top:4px;overflow:hidden;}
 .score-fill{height:100%;border-radius:4px;}
 .sf-green{background:linear-gradient(90deg,#00c896,#0288d1);}
 .sf-orange{background:linear-gradient(90deg,#f5a623,#ff6b35);}
-
 .stripe-wrap{padding:16px;background:#1a1a2e;border-radius:14px;margin-bottom:14px;text-align:center;}
-
 footer{background:#080808;border-top:1px solid #1a1a1a;padding:20px 16px;text-align:center;}
 footer p{font-size:10px;color:#444;line-height:1.8;}
 footer a{color:#666;text-decoration:none;}
-
 .fab{position:fixed;bottom:20px;right:16px;background:linear-gradient(135deg,#ff6b35,#e94560);border:none;border-radius:50px;padding:12px 20px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px #ff6b3555;z-index:200;text-decoration:none;}
 </style>
 </head>
@@ -105,9 +91,9 @@ footer a{color:#666;text-decoration:none;}
 </div>
 
 <div class="stats-strip">
-  <div class="stat-box"><div class="stat-val s-green" id="stat-pl">+27€</div><div class="stat-lbl">P&L Total</div></div>
-  <div class="stat-box"><div class="stat-val s-orange" id="stat-cdj">63%</div><div class="stat-lbl">Taux CDJ</div></div>
-  <div class="stat-box"><div class="stat-val s-fire" id="stat-nb">30</div><div class="stat-lbl">Courses</div></div>
+  <div class="stat-box"><div class="stat-val s-green" id="stat-pl">—</div><div class="stat-lbl">P&L Total</div></div>
+  <div class="stat-box"><div class="stat-val s-orange" id="stat-cdj">—</div><div class="stat-lbl">Taux CDJ</div></div>
+  <div class="stat-box"><div class="stat-val s-fire" id="stat-nb">—</div><div class="stat-lbl">Courses</div></div>
 </div>
 
 <div class="section" style="padding-bottom:0;">
@@ -118,15 +104,13 @@ footer a{color:#666;text-decoration:none;}
   </div>
 </div>
 
-<!-- COURSE DU JOUR (chargée depuis CONFIG en localStorage) -->
 <div class="section">
   <div class="sec-title">🎯 Sélection du Jour</div>
-  <div class="course-card" id="course-card">
+  <div class="course-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
       <span id="cc-title" style="color:#ff6b35;font-weight:700;font-size:15px;">🏇 Chargement…</span>
       <span id="cc-course" style="background:#ff6b3522;color:#ff6b35;font-size:11px;padding:3px 10px;border-radius:8px;font-weight:700;">—</span>
     </div>
-    <div class="trow"><span class="lb">📏 Distance</span><span class="vl" id="cc-dist">—</span></div>
     <div class="trow"><span class="lb">⏰ Départ</span><span class="vl" id="cc-dep" style="color:#4fc3f7;">—</span></div>
     <div class="trow"><span class="lb">⭐ C1 (Base 1)</span><span class="vl" id="cc-c1" style="color:#ff6b35;">—</span></div>
     <div class="trow"><span class="lb">C2 (Base 2)</span><span class="vl" id="cc-c2" style="color:#ff6b35;">—</span></div>
@@ -140,9 +124,8 @@ footer a{color:#666;text-decoration:none;}
   <a href="pronoturf_pro_v11.html" class="btn bl">💎 Voir les tickets VIP complets</a>
 </div>
 
-<!-- PERFORMANCE -->
 <div class="section" style="padding-top:0;">
-  <div class="sec-title">📊 Performance · 30 courses</div>
+  <div class="sec-title" id="perf-title">📊 Performance</div>
   <div class="proof-bar">
     <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#888;">Taux CDJ</span><span id="pb-cdj" style="color:#00c896;font-weight:700;">—</span></div>
     <div class="score-bar"><div class="score-fill sf-green" id="pb-cdj-bar" style="width:0%;"></div></div>
@@ -153,14 +136,11 @@ footer a{color:#666;text-decoration:none;}
     <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#888;">ROI</span><span id="pb-roi" style="color:#f5a623;font-weight:700;">—</span></div>
     <div class="score-bar"><div class="score-fill sf-orange" id="pb-roi-bar" style="width:0%;"></div></div>
   </div>
-
-  <!-- Derniers résultats -->
   <div style="font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Derniers résultats</div>
   <div id="results-list"></div>
-  <a href="pronoturf_pro_v11.html#historique" class="btn gr" style="font-size:12px;padding:10px;">📋 Voir tout l'historique</a>
+  <a href="pronoturf_pro_v11.html" class="btn gr" style="font-size:12px;padding:10px;">📋 Voir tout l'historique</a>
 </div>
 
-<!-- OFFRE VIP -->
 <div class="section" style="padding-top:0;">
   <div class="sec-title">💎 Abonnement VIP</div>
   <div class="offer-card">
@@ -189,7 +169,6 @@ footer a{color:#666;text-decoration:none;}
   <a href="pronoturf_pro_v11.html" class="btn bl" style="margin-top:8px;">🎯 Accéder à l'application</a>
 </div>
 
-<!-- RÉSEAUX -->
 <div class="section" style="padding-top:0;">
   <div class="sec-title">🌐 Nos Réseaux</div>
   <div class="socials">
@@ -217,7 +196,6 @@ footer a{color:#666;text-decoration:none;}
 <a href="pronoturf_pro_v11.html" class="fab">🎯 Sélection Live</a>
 
 <script>
-// ── Lire CONFIG depuis localStorage (partagé avec l'app)
 const STORE_PREFIX = 'pnturf_v11_';
 function storeGet(k, fb) {
   try { const v = localStorage.getItem(STORE_PREFIX + k); return v ? JSON.parse(v) : fb; }
@@ -228,54 +206,90 @@ const CFG_DEFAULT = {
   date:'19/04/2026', hippo:'Toulouse', disc:'Plat', course:'R1C1',
   sel:'2-4-1-14-12-10-3-8', outsiders:'N°7 · N°5',
   c1:2, c2:4, depart:'16:10',
-  cdj:{course:'R4',num:408,mise:20},
-  dm:{course:'',num:'',mise:0},
+  cdj:{course:'R4',num:408,mise:20}, dm:{course:'',num:'',mise:0},
   quarteA:[2,4,1,14], quarteB:[2,4,12,10],
   quinteA:[2,4,1,14,12], quinteB:[2,4,3,8,10],
 };
 
-const C   = storeGet('config', CFG_DEFAULT);
-const DATA = storeGet('bets', []);
+// Données fallback embarquées — utilisées si localStorage vide (premier chargement)
+const DATA_FALLBACK = [
+  {date:"2026-03-19",hippo:"Vincennes",disc:"Trot",mise:12,top5:"3/5",cdj_res:"WIN",cdj_pos:"2e 🥈",bilan:"CDJ ✅ 2e",retour:18.5},
+  {date:"2026-03-20",hippo:"Vincennes",disc:"Trot",mise:12,top5:"5/5",cdj_res:"LOSS",cdj_pos:"Hors Top",bilan:"5/5 ✅ QUARTÉ PLEIN 🎉",retour:42},
+  {date:"2026-03-21",hippo:"Cagnes",disc:"Trot",mise:12,top5:"5/5",cdj_res:"WIN",cdj_pos:"1er 🥇",bilan:"5/5 ✅ CDJ 1er",retour:28},
+  {date:"2026-03-23",hippo:"Vincennes",disc:"Trot",mise:12,top5:"4/5",cdj_res:"WIN",cdj_pos:"3e 🥉",bilan:"CDJ ✅ 3e",retour:14},
+  {date:"2026-03-25",hippo:"Vincennes",disc:"Trot",mise:12,top5:"4/5",cdj_res:"WIN",cdj_pos:"1er 🥇",bilan:"CDJ 1er ✅",retour:56},
+  {date:"2026-03-26",hippo:"Lyon",disc:"Plat",mise:12,top5:"3/5",cdj_res:"WIN",cdj_pos:"1er 🥇",bilan:"CDJ 1er ✅",retour:16},
+  {date:"2026-03-27",hippo:"Vincennes",disc:"Trot",mise:12,top5:"4/5",cdj_res:"WIN",cdj_pos:"1er 🥇",bilan:"CDJ 1er ✅",retour:22},
+  {date:"2026-03-28",hippo:"Deauville",disc:"Plat",mise:12,top5:"4/5",cdj_res:"WIN",cdj_pos:"1er 🥇",bilan:"CDJ 1er ✅",retour:19},
+  {date:"2026-03-29",hippo:"Saint-Cloud",disc:"Plat",mise:12,top5:"4/5",cdj_res:"WIN",cdj_pos:"1er 🥇",bilan:"CDJ 1er ✅",retour:13},
+  {date:"2026-03-30",hippo:"Chantilly",disc:"Plat",mise:12,top5:"4/5",cdj_res:"WIN",cdj_pos:"1er 🥇",bilan:"CDJ 1er ✅",retour:15.5},
+  {date:"2026-03-31",hippo:"Fontainebleau",disc:"Plat",mise:12,top5:"4/5",cdj_res:"WIN",cdj_pos:"2e 🥈",bilan:"CDJ ✅ 2e",retour:16},
+  {date:"2026-04-01",hippo:"Angers",disc:"Attelé",mise:12,top5:"5/5",cdj_res:"WIN",cdj_pos:"3e 🥉",bilan:"5/5 ✅ CDJ ✅",retour:15},
+  {date:"2026-04-02",hippo:"Vincennes",disc:"Attelé",mise:12,top5:"4/5",cdj_res:"LOSS",cdj_pos:"—",bilan:"CDJ ❌",retour:0},
+  {date:"2026-04-03",hippo:"Lyon-Parilly",disc:"Attelé",mise:15,top5:"3/5",cdj_res:"LOSS",cdj_pos:"—",bilan:"CDJ ❌",retour:0},
+  {date:"2026-04-04",hippo:"Vincennes",disc:"Trot",mise:12,top5:"5/5",cdj_res:"LOSS",cdj_pos:"Hors Top",bilan:"5/5 ✅ Quarté Ordre 🎉",retour:45},
+  {date:"2026-04-05",hippo:"Longchamp",disc:"Plat",mise:12,top5:"3/5",cdj_res:"LOSS",cdj_pos:"Hors Top",bilan:"❌ CDJ hors top",retour:9},
+  {date:"2026-04-06",hippo:"Compiègne",disc:"Steeple",mise:12,top5:"4/5",cdj_res:"WIN",cdj_pos:"3e 🥉",bilan:"CDJ ✅ DM ✅",retour:7.3},
+  {date:"2026-04-07",hippo:"Plat R1C1",disc:"Plat",mise:12,top5:"4/5",cdj_res:"WIN",cdj_pos:"2e 🥈",bilan:"CDJ ✅ 2e",retour:2.5},
+  {date:"2026-04-08",hippo:"Lyon-Parilly",disc:"Attelé",mise:12,top5:"4/5",cdj_res:"WIN",cdj_pos:"2e 🥈",bilan:"CDJ ✅ DM ✅",retour:3.1},
+  {date:"2026-04-09",hippo:"Oiseleur",disc:"Haies",mise:12,top5:"3/5",cdj_res:"WIN",cdj_pos:"4e ✅",bilan:"CDJ ✅",retour:1.7},
+  {date:"2026-04-10",hippo:"Vincennes",disc:"Attelé",mise:12,top5:"3/5",cdj_res:"LOSS",cdj_pos:"—",bilan:"CDJ ❌ DM ❌",retour:0},
+  {date:"2026-04-11",hippo:"Vincennes",disc:"Attelé",mise:12,top5:"5/5",cdj_res:"WIN",cdj_pos:"✅",bilan:"5/5 ✅ Quarté Plein 🎉",retour:1.6},
+  {date:"2026-04-12",hippo:"Longchamp",disc:"Plat",mise:12,top5:"3/5",cdj_res:"LOSS",cdj_pos:"—",bilan:"CDJ ❌ ⛔NP",retour:0},
+  {date:"2026-04-13",hippo:"Auteuil",disc:"Haies",mise:12,top5:"5/5",cdj_res:"WIN",cdj_pos:"✅",bilan:"5/5 ✅ Quarté Plein 🎉",retour:2.2},
+  {date:"2026-04-14",hippo:"Chantilly",disc:"Plat",mise:12,top5:"3/5",cdj_res:"LOSS",cdj_pos:"—",bilan:"CDJ ❌",retour:0},
+  {date:"2026-04-15",hippo:"Cordemais",disc:"Attelé",mise:20,top5:"4/5",cdj_res:"LOSS",cdj_pos:"—",bilan:"CDJ ❌ · 4/5",retour:0},
+  {date:"2026-04-16",hippo:"Fontainebleau",disc:"Plat",mise:20,top5:"5/5",cdj_res:"WIN",cdj_pos:"1er 🥇",bilan:"5/5 ✅ Quarté A Plein 🎉",retour:45},
+  {date:"2026-04-17",hippo:"Vincennes",disc:"Attelé",mise:20,top5:"3/5",cdj_res:"LOSS",cdj_pos:"—",bilan:"CDJ ❌ · 3/5",retour:0},
+  {date:"2026-04-18",hippo:"Enghien",disc:"Attelé",mise:20,top5:"",cdj_res:"⏳",cdj_pos:"",bilan:"⏳ À jouer",retour:0},
+];
+
+const C    = storeGet('config', CFG_DEFAULT);
+const DATA = (() => {
+  const stored = storeGet('bets', null);
+  // Si données en localStorage → les utiliser, sinon fallback embarqué
+  return (stored && stored.length) ? stored : DATA_FALLBACK;
+})();
 
 // ── Header & hero
-document.getElementById('hdr-date').textContent = `V11.0 · ${C.date} · ${C.hippo} · ${C.disc}`;
+function pad(n){return String(n).padStart(2,'0');}
+document.getElementById('hdr-date').textContent  = `V11.0 · ${C.date} · ${C.hippo} · ${C.disc}`;
 document.getElementById('hero-date').textContent = `🗓️ ${C.date} · ${C.course} · ${C.hippo} · ${C.disc}`;
 
 // ── Countdown
-function pad(n){return String(n).padStart(2,'0');}
-function updateCountdown(){
-  const now=new Date();
-  const [hh,mm]=(C.depart||'20:00').split(':').map(Number);
-  const dep=new Date(); dep.setHours(hh,mm,0,0);
-  const diff=dep-now;
-  const lbl=document.getElementById('cdwn-lbl');
-  if(diff>0){
-    const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
-    document.getElementById('cdwn').textContent=pad(h)+':'+pad(m)+':'+pad(s);
-    if(lbl) lbl.textContent=`${C.course} · ${C.depart}`;
-  } else if(diff>-5400000){
-    document.getElementById('cdwn').textContent='🏇 EN COURSE';
-    if(lbl) lbl.textContent='Course en cours !';
+function updateCountdown() {
+  const now = new Date();
+  const [hh,mm] = (C.depart||'20:00').split(':').map(Number);
+  const dep = new Date(); dep.setHours(hh,mm,0,0);
+  const diff = dep - now;
+  const cdwn = document.getElementById('cdwn');
+  const lbl  = document.getElementById('cdwn-lbl');
+  if (diff > 0) {
+    const h=Math.floor(diff/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
+    cdwn.textContent = pad(h)+':'+pad(m)+':'+pad(s);
+    if(lbl) lbl.textContent = `${C.course} · ${C.depart}`;
+  } else if (diff > -5400000) {
+    cdwn.textContent = '🏇 EN COURSE';
+    if(lbl) lbl.textContent = 'Course en cours !';
   } else {
-    document.getElementById('cdwn').textContent='✅ TERMINÉE';
-    if(lbl) lbl.textContent='Course terminée';
+    cdwn.textContent = '✅ TERMINÉE';
+    if(lbl) lbl.textContent = 'Course terminée';
   }
 }
-setInterval(updateCountdown,1000); updateCountdown();
+setInterval(updateCountdown, 1000); updateCountdown();
 
 // ── Course card
-document.getElementById('cc-title').textContent = `🏇 ${C.disc} · ${C.hippo}`;
+document.getElementById('cc-title').textContent  = `🏇 ${C.disc} · ${C.hippo}`;
 document.getElementById('cc-course').textContent = C.course;
-document.getElementById('cc-dist').textContent = '—';
-document.getElementById('cc-dep').textContent = C.depart;
-document.getElementById('cc-c1').textContent  = `N°${C.c1}`;
-document.getElementById('cc-c2').textContent  = `N°${C.c2}`;
-document.getElementById('cc-cdj').textContent = C.cdj.num ? `${C.cdj.course} · N°${C.cdj.num} · ${C.cdj.mise}€` : '—';
-document.getElementById('cc-out').textContent = C.outsiders;
+document.getElementById('cc-dep').textContent    = C.depart;
+document.getElementById('cc-c1').textContent     = `N°${C.c1}`;
+document.getElementById('cc-c2').textContent     = `N°${C.c2}`;
+document.getElementById('cc-cdj').textContent    = C.cdj.num ? `${C.cdj.course} · N°${C.cdj.num} · ${C.cdj.mise}€` : '—';
+document.getElementById('cc-out').textContent    = C.outsiders;
 
 const chipsEl = document.getElementById('cc-chips');
 (C.sel||'').split('-').forEach(n => {
-  const s=document.createElement('span'); s.className='chip'; s.textContent='N°'+n.trim();
+  const s = document.createElement('span'); s.className='chip'; s.textContent='N°'+n.trim();
   chipsEl.appendChild(s);
 });
 const tckEl = document.getElementById('cc-tck');
@@ -285,56 +299,61 @@ const tckEl = document.getElementById('cc-tck');
   {label:'5A: '+C.quinteA.join('.'), cls:'chip p'},
   {label:'5B: '+C.quinteB.join('.'), cls:'chip p'},
 ].forEach(t => {
-  const s=document.createElement('span'); s.className=t.cls; s.textContent=t.label;
+  const s = document.createElement('span'); s.className=t.cls; s.textContent=t.label;
   tckEl.appendChild(s);
 });
 
 // ── Stats depuis DATA
-const conf = DATA.filter(r=>r.cdj_res!=='⏳');
-const mt=conf.reduce((s,r)=>s+(r.mise||0),0);
-const rt=conf.reduce((s,r)=>s+(r.retour||0),0);
-const pl=rt-mt;
-const cw=conf.filter(r=>r.cdj_res==='WIN').length;
-const pct=conf.length?Math.round(cw/conf.length*100):0;
-const top5vals=conf.map(r=>{if(!r.top5)return null;const[a,b]=r.top5.split('/').map(Number);return b?a/b:null;}).filter(v=>v!==null);
-const t5avg=top5vals.length?(top5vals.reduce((s,v)=>s+v,0)/top5vals.length*100):0;
-const roi=mt?(pl/mt*100):0;
+const conf = DATA.filter(r => r.cdj_res !== '⏳');
+const mt   = conf.reduce((s,r) => s+(r.mise||0), 0);
+const rt   = conf.reduce((s,r) => s+(r.retour||0), 0);
+const pl   = rt - mt;
+const cw   = conf.filter(r => r.cdj_res==='WIN').length;
+const pct  = conf.length ? Math.round(cw/conf.length*100) : 0;
+const t5v  = conf.map(r => { if(!r.top5)return null; const[a,b]=r.top5.split('/').map(Number); return b?a/b:null; }).filter(v=>v!==null);
+const t5avg= t5v.length ? (t5v.reduce((s,v)=>s+v,0)/t5v.length*100) : 0;
+const roi  = mt ? (pl/mt*100) : 0;
 
-document.getElementById('stat-pl').textContent  = (pl>=0?'+':'')+pl.toFixed(0)+'€';
-document.getElementById('stat-cdj').textContent = pct+'%';
-document.getElementById('stat-nb').textContent  = DATA.length;
-document.getElementById('pb-cdj').textContent   = pct+'%';
-document.getElementById('pb-top5').textContent  = t5avg.toFixed(0)+'%';
-document.getElementById('pb-roi').textContent   = (roi>=0?'+':'')+roi.toFixed(1)+'%';
-document.getElementById('pb-cdj-bar').style.width  = Math.min(pct,100)+'%';
-document.getElementById('pb-top5-bar').style.width = Math.min(t5avg,100)+'%';
-document.getElementById('pb-roi-bar').style.width  = Math.min(Math.abs(roi)*3,100)+'%';
+// Titre perf dynamique
+document.getElementById('perf-title').textContent = `📊 Performance · ${DATA.length} courses`;
 
-// ── Derniers résultats (5 derniers)
-const rl=document.getElementById('results-list');
-[...DATA].reverse().slice(0,5).forEach(r=>{
-  const cs=r.cdj_res==='WIN'?'badge-win':r.cdj_res==='LOSS'?'badge-loss':'badge-wait';
-  const ic=r.cdj_res==='WIN'?'+':r.cdj_res==='LOSS'?'−':'⏳';
-  const pl2=(r.retour||0)-(r.mise||0);
-  const d=r.date?r.date.split('-').reverse().slice(0,2).join('/'):r.date;
-  rl.insertAdjacentHTML('beforeend',`
+document.getElementById('stat-pl').textContent        = (pl>=0?'+':'')+pl.toFixed(0)+'€';
+document.getElementById('stat-cdj').textContent       = pct+'%';
+document.getElementById('stat-nb').textContent        = DATA.length;
+document.getElementById('pb-cdj').textContent         = pct+'%';
+document.getElementById('pb-top5').textContent        = t5avg.toFixed(0)+'%';
+document.getElementById('pb-roi').textContent         = (roi>=0?'+':'')+roi.toFixed(1)+'%';
+document.getElementById('pb-cdj-bar').style.width     = Math.min(pct,100)+'%';
+document.getElementById('pb-top5-bar').style.width    = Math.min(t5avg,100)+'%';
+document.getElementById('pb-roi-bar').style.width     = Math.min(Math.abs(roi)*3,100)+'%';
+
+// Couleur P&L dynamique
+document.getElementById('stat-pl').style.color = pl >= 0 ? '#00c896' : '#e94560';
+
+// ── Derniers résultats (5 derniers finalisés)
+const rl = document.getElementById('results-list');
+[...DATA].reverse().filter(r=>r.cdj_res!=='⏳').slice(0,5).forEach(r => {
+  const cs  = r.cdj_res==='WIN' ? 'badge-win' : 'badge-loss';
+  const pl2 = (r.retour||0) - (r.mise||0);
+  const d   = r.date ? r.date.split('-').reverse().slice(0,2).join('/') : r.date;
+  rl.insertAdjacentHTML('beforeend', `
     <div class="result-mini" style="border-color:${r.cdj_res==='WIN'?'#00c89633':'#e9456033'}">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
         <span style="font-weight:700;font-size:12px;">${d} · ${r.hippo||''} · ${r.disc||''}</span>
-        <span class="${cs}">${r.cdj_res==='⏳'?'⏳ À jouer':(pl2>=0?'+':'')+pl2.toFixed(0)+'€'}</span>
+        <span class="${cs}">${(pl2>=0?'+':'')+pl2.toFixed(0)}€</span>
       </div>
       <div style="font-size:12px;color:#ccc;line-height:1.7;">
-        <div>Top5 : <b>${r.top5||'—'}</b> · CDJ : <span class="${cs}">${r.cdj_res==='WIN'?'✅ '+r.cdj_pos:r.cdj_res==='LOSS'?'❌':'⏳'}</span></div>
+        <div>Top5 : <b>${r.top5||'—'}</b> · CDJ : <span class="${cs}">${r.cdj_res==='WIN'?'✅ '+(r.cdj_pos||''):'❌'}</span></div>
         ${r.bilan?`<div style="color:#888;">${r.bilan}</div>`:''}
       </div>
     </div>`);
 });
 
 // ── Service Worker
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('/sw.js').catch(e=>console.warn('[SW]',e));
-  });
+if ('serviceWorker' in navigator
+    && !location.hostname.includes('claudeusercontent')
+    && location.hostname !== 'localhost') {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 </script>
 </body>
