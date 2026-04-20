@@ -671,10 +671,10 @@ const Store = {
    CONFIG DEFAULT
 ══════════════════════════════════════════════════════════ */
 const CONFIG_DEFAULT = {
-  date:'19/04/2026', hippo:'Toulouse', disc:'Plat', course:'R1C1',
-  sel:'2-4-1-14-12-10-3-8', outsiders:'N°7 · N°5', c1:2, c2:4, depart:'16:10',
-  cdj:{course:'R4',num:408,mise:20}, dm:{course:'',num:'',mise:0},
-  quarteA:[2,4,1,14], quarteB:[2,4,12,10], quinteA:[2,4,1,14,12], quinteB:[2,4,3,8,10],
+  date:'20/04/2026', hippo:'À définir', disc:'Plat', course:'R1C1',
+  sel:'', outsiders:'', c1:1, c2:2, depart:'15:00',
+  cdj:{course:'',num:'',mise:20}, dm:{course:'',num:'',mise:0},
+  quarteA:[], quarteB:[], quinteA:[], quinteB:[],
 };
 
 /* ══════════════════════════════════════════════════════════
@@ -709,7 +709,8 @@ const INIT_DATA = [
   {date:"2026-04-15",hippo:"Cordemais",disc:"Attelé",cdj:"504",dm:"",mise:20,arr:"15-9-14-3-6",top5:"4/5",cdj_res:"LOSS",cdj_pos:"—",tck:"—",bilan:"CDJ ❌ · 4/5",retour:0},
   {date:"2026-04-16",hippo:"Fontainebleau",disc:"Plat",cdj:"504",dm:"",mise:20,arr:"9-3-12-5-14",top5:"5/5",cdj_res:"WIN",cdj_pos:"1er 🥇",tck:"Quarté A Plein 🏆",bilan:"5/5 ✅ Quarté A Plein 🎉",retour:45},
   {date:"2026-04-17",hippo:"Vincennes",disc:"Attelé",cdj:"409",dm:"",mise:20,arr:"4-2-11-10-1",top5:"3/5",cdj_res:"LOSS",cdj_pos:"—",tck:"—",bilan:"CDJ ❌ · 3/5",retour:0},
-  {date:"2026-04-18",hippo:"Enghien",disc:"Attelé",cdj:"510",dm:"",mise:20,arr:"",top5:"",cdj_res:"⏳",cdj_pos:"",tck:"",bilan:"⏳ À jouer",retour:0},
+  {date:"2026-04-18",hippo:"Enghien",disc:"Plat",cdj:"510",dm:"",mise:12,arr:"3-4-11-5-10",top5:"4/5",cdj_res:"WIN",cdj_pos:"LOSS",tck:"4/5",bilan:"CDJ ✅ · 4/5",retour:7.4},
+  {date:"2026-04-19",hippo:"Toulouse",disc:"Plat",cdj:"408",dm:"",mise:12,arr:"2-4-1-14-12-10-3-8",top5:"4/5",cdj_res:"WIN",cdj_pos:"7e",tck:"4/5",bilan:"CDJ ✅ · 4/5",retour:13.4},
 ];
 
 /* ══════════════════════════════════════════════════════════
