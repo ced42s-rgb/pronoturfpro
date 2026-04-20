@@ -240,18 +240,24 @@ const DATA_FALLBACK = [
   {date:"2026-04-19",hippo:"Toulouse",disc:"Plat",mise:12,top5:"4/5",cdj_res:"WIN",cdj_pos:"7e",bilan:"CDJ ✅ · 4/5",retour:13.4},
 ];
 
-/* ══ Lecture localStorage avec fallback robuste ══ */
-function pad(n){return String(n).padStart(2,'0');}
-
-const C = (() => {
+/* ══ Lecture config.json (priorité) puis localStorage puis fallback ══ */
+async function loadConfig() {
+  try {
+    const r = await fetch('/config.json?t='+Date.now(), {cache:'no-store'});
+    if(r.ok) { const d=await r.json(); if(d&&d.date&&d.sel) return d; }
+  } catch(e){}
   try { const v=localStorage.getItem('pnturf_v11_config'); if(v){const p=JSON.parse(v);if(p&&p.date&&p.sel)return p;} } catch(e){}
   return CFG_DEFAULT;
-})();
+}
 
-const DATA = (() => {
+async function loadData() {
   try { const v=localStorage.getItem('pnturf_v11_bets'); if(v){const p=JSON.parse(v);if(p&&p.length)return p;} } catch(e){}
   return DATA_FALLBACK;
-})();
+}
+
+(async () => {
+  const C    = await loadConfig();
+  const DATA = await loadData();
 
 /* ══ Header & hero ══ */
 document.getElementById('hdr-date').textContent  = `V11.0 · ${C.date} · ${C.hippo} · ${C.disc}`;
@@ -343,6 +349,8 @@ const rl = document.getElementById('results-list');
 if('serviceWorker' in navigator && !location.hostname.includes('claudeusercontent') && location.hostname!=='localhost') {
   navigator.serviceWorker.register('/sw.js').catch(()=>{});
 }
+
+})(); // fin async IIFE
 </script>
 </body>
 </html>
