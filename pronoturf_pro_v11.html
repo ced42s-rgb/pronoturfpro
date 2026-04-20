@@ -522,12 +522,12 @@ tr:hover td{background:#1a1a2e55;}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
       <div class="form-group"><label>CDJ course</label><input type="text" id="cfg-cdj-c" placeholder="R4"></div>
       <div class="form-group"><label>CDJ n°</label><input type="number" id="cfg-cdj-n"></div>
-      <div class="form-group"><label>CDJ mise €</label><input type="number" id="cfg-cdj-m" placeholder="20"></div>
+      <div class="form-group"><label>CDJ mise € <span style="color:#e94560;font-size:10px;">⚠️ min 1€</span></label><input type="number" id="cfg-cdj-m" placeholder="20" min="1" max="100"></div>
       <div class="form-group"><label>DM n° (vide=—)</label><input type="number" id="cfg-dm-n"></div>
-      <div class="form-group"><label>Quarté A (2-4-1-14)</label><input type="text" id="cfg-qa"></div>
-      <div class="form-group"><label>Quarté B (2-4-12-10)</label><input type="text" id="cfg-qb"></div>
-      <div class="form-group"><label>Quinté A (5 ch.)</label><input type="text" id="cfg-q5a"></div>
-      <div class="form-group"><label>Quinté B (5 ch.)</label><input type="text" id="cfg-q5b"></div>
+      <div class="form-group"><label>Quarté A — <span style="color:#b39ddb;font-size:10px;">4 chevaux</span></label><input type="text" id="cfg-qa" placeholder="7-3-13-12" oninput="checkTicketLen('cfg-qa',4)"></div>
+      <div class="form-group"><label>Quarté B — <span style="color:#b39ddb;font-size:10px;">4 chevaux</span></label><input type="text" id="cfg-qb" placeholder="7-3-15-14" oninput="checkTicketLen('cfg-qb',4)"></div>
+      <div class="form-group"><label>Quinté A — <span style="color:#7c3aed;font-size:10px;">5 chevaux</span></label><input type="text" id="cfg-q5a" placeholder="7-3-9-1-13" oninput="checkTicketLen('cfg-q5a',5)"></div>
+      <div class="form-group"><label>Quinté B — <span style="color:#7c3aed;font-size:10px;">5 chevaux</span></label><input type="text" id="cfg-q5b" placeholder="13-14-9-7-3" oninput="checkTicketLen('cfg-q5b',5)"></div>
     </div>
     <button class="btn gn" onclick="saveCONFIG()">💾 Sauvegarder CONFIG</button>
     <button class="btn bl" style="margin-top:6px;" onclick="exportTout()">📤 Exporter config.json + data.json → GitHub</button>
@@ -1206,6 +1206,13 @@ function saveCONFIG() {
   };
   State.saveConfig(); autoSave(); renderAll(); toast('✅ CONFIG sauvegardée !');
 }
+function checkTicketLen(id, expected) {
+  const e = el(id); if(!e) return;
+  const nums = parseNums(e.value);
+  if(e.value.trim() === '') { e.style.borderColor='#2a2a3e'; return; }
+  e.style.borderColor = nums.length === expected ? '#00c896' : '#e94560';
+}
+
 function resetCONFIG() {
   if(!confirm('Restaurer CONFIG par défaut ?')) return;
   State.config={...CONFIG_DEFAULT}; State.saveConfig(); loadConfigForm(); renderAll(); toast('↩️ Restaurée');
@@ -1215,20 +1222,49 @@ function resetCONFIG() {
    SAISIE COURSES
 ══════════════════════════════════════════════════════════ */
 function addCourse() {
-  const r={
-    date:el('f-date').value, hippo:el('f-hippo').value.trim(), disc:el('f-disc').value,
-    cdj:el('f-cdj').value.trim(), mise:parseFloat(el('f-mise').value)||20,
-    arr:el('f-arr').value.trim(), top5:el('f-top5').value.trim(),
-    cdj_res:el('f-cdj-res').value, cdj_pos:el('f-cdjpos').value.trim(),
-    tck:el('f-tck').value.trim(), bilan:el('f-tck').value.trim()||el('f-cdj-res').value,
-    retour:parseFloat(el('f-retour').value)||0,
+  const r = {
+    date:    el('f-date').value,
+    hippo:   el('f-hippo').value.trim()
+      .replace(/compeigne/i,'Compiègne').replace(/compiegne/i,'Compiègne')
+      .replace(/lonchamp/i,'Longchamp').replace(/vincene/i,'Vincennes'),
+    disc:    el('f-disc').value,
+    cdj:     el('f-cdj').value.trim(),
+    mise:    parseFloat(el('f-mise').value) || 20,
+    arr:     el('f-arr').value.trim(),
+    top5:    el('f-top5').value.trim(),
+    cdj_res: el('f-cdj-res').value,
+    cdj_pos: el('f-cdjpos').value.trim(),
+    tck:     el('f-tck').value.trim(),
+    bilan:   el('f-tck').value.trim() || el('f-cdj-res').value,
+    retour:  parseFloat(el('f-retour').value) || 0,
   };
-  if(!r.date){toast('❌ Date requise');return;}
-  const idx=State.data.findIndex(x=>x.date===r.date);
-  if(idx>=0) State.data[idx]={...State.data[idx],...r}; else State.data.push(r);
+
+  // ── Validations
+  if(!r.date) { toast('❌ Date requise'); return; }
+
+  const warns = [];
+  if(!r.hippo)                    warns.push('⚠️ Hippodrome vide');
+  if(!r.arr && r.cdj_res!=='⏳')  warns.push('⚠️ Arrivée vide');
+  if(!r.top5 && r.cdj_res!=='⏳') warns.push('⚠️ Top5 vide');
+  if(r.retour > 500)              warns.push(`⚠️ Retour ${r.retour}€ inhabituel — vérifier`);
+  if(r.mise < 1 || r.mise > 200) warns.push(`⚠️ Mise ${r.mise}€ inhabituelle — vérifier`);
+
+  // Vérifier doublon date
+  const existing = State.data.find(x => x.date === r.date);
+  if(existing && existing.cdj_res !== '⏳') {
+    warns.push(`⚠️ Course du ${r.date} déjà enregistrée — sera écrasée`);
+  }
+
+  if(warns.length) {
+    if(!confirm(`${warns.join('\n')}\n\nEnregistrer quand même ?`)) return;
+  }
+
+  const idx = State.data.findIndex(x => x.date === r.date);
+  if(idx >= 0) State.data[idx] = {...State.data[idx], ...r};
+  else State.data.push(r);
+
   State.saveData(); autoSave(); renderAll();
   toast('✅ Course enregistrée ! Clique 📤 pour mettre à jour GitHub');
-  // Reset form
   ['f-date','f-hippo','f-cdj','f-arr','f-top5','f-tck','f-cdjpos'].forEach(id=>{const e=el(id);if(e)e.value='';});
   el('f-retour').value='0';
 }

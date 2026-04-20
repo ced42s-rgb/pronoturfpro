@@ -241,9 +241,12 @@ const DATA_FALLBACK = [
 ];
 
 /* ══ Lecture config.json (priorité) puis localStorage puis fallback ══ */
+/* ══ URLs GitHub raw — données toujours fraîches ══ */
+const GITHUB_RAW = 'https://raw.githubusercontent.com/ced42s-rgb/pronoturfpro/main/';
+
 async function loadConfig() {
   try {
-    const r = await fetch('/config.json?t='+Date.now(), {cache:'no-store'});
+    const r = await fetch(GITHUB_RAW+'config.json?t='+Date.now(), {cache:'no-store'});
     if(r.ok) { const d=await r.json(); if(d&&d.date&&d.sel) return d; }
   } catch(e){}
   try { const v=localStorage.getItem('pnturf_v11_config'); if(v){const p=JSON.parse(v);if(p&&p.date&&p.sel)return p;} } catch(e){}
@@ -252,7 +255,7 @@ async function loadConfig() {
 
 async function loadData() {
   try {
-    const r = await fetch('/data.json?t='+Date.now(), {cache:'no-store'});
+    const r = await fetch(GITHUB_RAW+'data.json?t='+Date.now(), {cache:'no-store'});
     if(r.ok) { const d=await r.json(); if(d&&d.length) return d; }
   } catch(e){}
   try { const v=localStorage.getItem('pnturf_v11_bets'); if(v){const p=JSON.parse(v);if(p&&p.length)return p;} } catch(e){}
