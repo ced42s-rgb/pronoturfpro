@@ -421,7 +421,7 @@
   },
   {
     "date": "2026-04-18",
-    "hippo": "ENGHEIN",
+    "hippo": "Enghien",
     "disc": "Plat",
     "cdj": "510",
     "dm": "",
@@ -430,22 +430,37 @@
     "top5": "4/5",
     "cdj_res": "WIN",
     "cdj_pos": "LOSS",
-    "tck": "",
-    "bilan": "WIN",
+    "tck": "4/5",
+    "bilan": "CDJ ✅ · 4/5",
     "retour": 7.4
   },
   {
     "date": "2026-04-19",
-    "hippo": "TOULOUSE",
+    "hippo": "Toulouse",
     "disc": "Plat",
     "cdj": "408",
+    "dm": "",
     "mise": 12,
     "arr": "2-4-1-14-12-10-3-8",
     "top5": "4/5",
     "cdj_res": "WIN",
-    "cdj_pos": "7",
+    "cdj_pos": "7e",
     "tck": "4/5",
-    "bilan": "4/5",
+    "bilan": "CDJ ✅ · 4/5",
     "retour": 13.4
+  },
+  {
+    "date": "2026-04-20",
+    "hippo": "Fontainebleau",
+    "disc": "Plat",
+    "cdj": "515",
+    "mise": 12,
+    "arr": "5-10-11-14-10",
+    "top5": "4/5",
+    "cdj_res": "WIN",
+    "cdj_pos": "3",
+    "tck": "CDJ",
+    "bilan": "CDJ",
+    "retour": 5
   }
 ]
