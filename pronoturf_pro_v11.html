@@ -623,6 +623,13 @@ tr:hover td{background:#1a1a2e55;}
       </div>
       <div class="form-group"><label>Sélection (8 ch. séparés par -)</label><input type="text" id="cd-sel" placeholder="13-10-6-3-9-4-11-5"></div>
       <div class="form-group"><label>Non-Partants (- ou vide)</label><input type="text" id="cd-np" placeholder="1 ou 1-7"></div>
+      <div class="form-group"><label>Corde</label>
+        <select id="cd-corde" style="width:100%;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#f0f0f0;padding:10px 12px;font-size:14px;outline:none;">
+          <option value="">— Non renseigné</option>
+          <option value="gauche">⬅️ Corde Gauche</option>
+          <option value="droite">➡️ Corde Droite</option>
+        </select>
+      </div>
       <div class="form-group"><label>Arrivée Top5</label><input type="text" id="cd-arr" placeholder="3-1-6-10-4"></div>
       <button class="btn" onclick="addCordeCourse()">✅ Enregistrer</button>
     </div>
@@ -633,7 +640,7 @@ tr:hover td{background:#1a1a2e55;}
     </div>
     <div class="table-wrap">
       <table style="min-width:480px;">
-        <thead><tr><th>Date</th><th>Hippo</th><th>Disc.</th><th>Sélection</th><th>NP</th><th>Arrivée</th><th>Top5</th><th>Score</th><th></th></tr></thead>
+        <thead><tr><th>Date</th><th>Hippo</th><th>Disc.</th><th>Corde</th><th>Sélection</th><th>NP</th><th>Arrivée</th><th>Top5</th><th>Score</th><th></th></tr></thead>
         <tbody id="corde-hist-body"></tbody>
       </table>
     </div>
@@ -1384,10 +1391,12 @@ function addCordeCourse(){
   const selS=el('cd-sel').value.trim(),npS=el('cd-np').value.trim(),arrS=el('cd-arr').value.trim();
   if(!date||!hippo||!selS||!arrS){toast('⚠️ Date, Hippodrome, Sélection, Arrivée requis');return;}
   const selN=parseNums(selS),npN=parseNums(npS.replace(/\s+/g,'-')),arrN=parseNums(arrS);
+  const corde=el('cd-corde').value;
   const top5=arrN.slice(0,5),active=selN.filter(n=>!npN.includes(n)),hits=active.filter(n=>top5.includes(n));
-  CORDE_DATA.unshift({id:Date.now(),date,hippo,disc,sel:selN,np:npN,arr:arrN,top5,active,hits,score:hits.length});
+  CORDE_DATA.unshift({id:Date.now(),date,hippo,disc,corde,sel:selN,np:npN,arr:arrN,top5,active,hits,score:hits.length});
   saveCorde(); renderCordeHist();
   ['cd-sel','cd-np','cd-arr','cd-hippo'].forEach(id=>{const e=el(id);if(e)e.value='';});
+  el('cd-corde').value='';;
 }
 function deleteCordeCourse(id){CORDE_DATA=CORDE_DATA.filter(r=>r.id!==id);saveCorde();renderCordeHist();}
 function renderCordeHist(){
@@ -1402,7 +1411,12 @@ function renderCordeHist(){
     const cls=r.score===5?'s5':r.score===4?'s4':r.score===3?'s3':'s2';
     const chips=r.sel.map(n=>{if(r.np.includes(n))return`<span class="chip-h np">N°${n} NP</span>`;if(r.hits.includes(n))return`<span class="chip-h ok">N°${n} ✅</span>`;return`<span class="chip-h ko">N°${n}</span>`;}).join('');
     const d=r.date?r.date.split('-').reverse().slice(0,2).join('/'):'—';
-    return `<tr><td><b>${d}</b></td><td>${r.hippo}</td><td>${r.disc}</td><td style="font-size:10px;">${r.sel.join('-')}</td><td style="color:#fde68a;font-size:10px;">${r.np.length?r.np.join('-'):'-'}</td><td style="font-size:10px;color:#93c5fd;">${r.top5.join('-')}</td><td><div style="display:flex;flex-wrap:wrap;gap:2px;">${chips}</div></td><td><span class="badge-score ${cls}">${r.score}/5</span></td><td><button class="del-btn" onclick="deleteCordeCourse(${r.id})">🗑</button></td></tr>`;
+    const cordeLabel = r.corde==='gauche'
+      ? `<span style="color:#4fc3f7;font-weight:700;">⬅️ G</span>`
+      : r.corde==='droite'
+      ? `<span style="color:#f5a623;font-weight:700;">➡️ D</span>`
+      : `<span style="color:#555;">—</span>`;
+    return `<tr><td><b>${d}</b></td><td>${r.hippo}</td><td>${r.disc}</td><td style="text-align:center;">${cordeLabel}</td><td style="font-size:10px;">${r.sel.join('-')}</td><td style="color:#fde68a;font-size:10px;">${r.np.length?r.np.join('-'):'-'}</td><td style="font-size:10px;color:#93c5fd;">${r.top5.join('-')}</td><td><div style="display:flex;flex-wrap:wrap;gap:2px;">${chips}</div></td><td><span class="badge-score ${cls}">${r.score}/5</span></td><td><button class="del-btn" onclick="deleteCordeCourse(${r.id})">🗑</button></td></tr>`;
   }).join('');
 }
 
