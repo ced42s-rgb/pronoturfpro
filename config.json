@@ -1,0 +1,42 @@
+{
+  "date": "21/04/2026",
+  "hippo": "Compeigne",
+  "disc": "Haies",
+  "course": "R1C1",
+  "sel": "7-3-13-12-15-14-9-1",
+  "outsiders": "N°4 · N°6",
+  "c1": 7,
+  "c2": 3,
+  "depart": "13:55",
+  "cdj": {
+    "course": "R4",
+    "num": 210,
+    "mise": 2
+  },
+  "dm": {
+    "course": "",
+    "num": "",
+    "mise": 0
+  },
+  "quarteA": [
+    7,
+    3,
+    13,
+    12
+  ],
+  "quarteB": [],
+  "quinteA": [
+    7,
+    3,
+    9,
+    1,
+    13
+  ],
+  "quinteB": [
+    13,
+    14,
+    9,
+    7,
+    3
+  ]
+}
