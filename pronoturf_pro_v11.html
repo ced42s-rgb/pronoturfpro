@@ -488,12 +488,22 @@ tr:hover td{background:#1a1a2e55;}
   <div id="admin-content" style="display:none;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
       <div class="stitle" style="margin:0;">⚙️ Administration</div>
-      <button onclick="logoutAdmin()" style="background:none;border:1px solid #ff6b35;color:#ff6b35;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:11px;">Déco.</button>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span id="autosave-indicator" style="font-size:10px;color:#555;">—</span>
+        <button onclick="logoutAdmin()" style="background:none;border:1px solid #ff6b35;color:#ff6b35;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:11px;">Déco.</button>
+      </div>
+    </div>
+
+    <!-- EXPORT GROUPÉ -->
+    <div style="background:linear-gradient(135deg,#00c89611,#1a1a2e);border:1px solid #00c896;border-radius:12px;padding:14px;margin-bottom:20px;text-align:center;">
+      <div style="font-size:13px;font-weight:700;color:#00c896;margin-bottom:6px;">📤 Mettre à jour tous les appareils</div>
+      <div style="font-size:11px;color:#888;margin-bottom:10px;">Télécharge config.json + data.json → uploade sur GitHub</div>
+      <button class="btn gn" style="max-width:280px;margin:0 auto;font-size:14px;" onclick="exportTout()">📤 Exporter config.json + data.json</button>
     </div>
 
     <!-- CONFIG -->
     <div class="stitle" style="font-size:13px;">🏇 CONFIG Course Active</div>
-    <div class="ibox" style="font-size:12px;color:#aaa;margin-bottom:12px;">💡 Modifie puis <b>Sauvegarder</b> — toute l'app se met à jour.</div>
+    <div class="ibox" style="font-size:12px;color:#aaa;margin-bottom:12px;">💡 Modifie puis <b>Sauvegarder</b> — toute l'app se met à jour localement. Ensuite clique 📤 pour GitHub.</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
       <div class="form-group"><label>Date (JJ/MM/AAAA)</label><input type="text" id="cfg-date" placeholder="19/04/2026"></div>
       <div class="form-group"><label>Hippodrome</label><input type="text" id="cfg-hippo" placeholder="Toulouse"></div>
@@ -520,7 +530,7 @@ tr:hover td{background:#1a1a2e55;}
       <div class="form-group"><label>Quinté B (5 ch.)</label><input type="text" id="cfg-q5b"></div>
     </div>
     <button class="btn gn" onclick="saveCONFIG()">💾 Sauvegarder CONFIG</button>
-    <button class="btn bl" style="margin-top:6px;" onclick="exportConfigJSON()">📤 Exporter config.json → GitHub</button>
+    <button class="btn bl" style="margin-top:6px;" onclick="exportTout()">📤 Exporter config.json + data.json → GitHub</button>
     <button class="btn gr" style="margin-top:6px;" onclick="resetCONFIG()">↩️ Restaurer défaut</button>
 
     <div style="height:20px;"></div>
@@ -749,9 +759,26 @@ const State = {
       this.config = Store.get('config', CONFIG_DEFAULT);
     }
 
-    // 2. Données historiques
-    const stored = Store.get('bets');
-    this.data = (stored && stored.length) ? stored : INIT_DATA;
+    // 2. Lire data.json depuis GitHub (résultats toujours à jour)
+    try {
+      const rd = await fetch('/data.json?t='+Date.now(), {cache:'no-store'});
+      if(rd.ok) {
+        const remote = await rd.json();
+        if(remote && remote.length) {
+          this.data = remote;
+          Store.set('bets', remote);
+        } else {
+          const stored = Store.get('bets');
+          this.data = (stored && stored.length) ? stored : INIT_DATA;
+        }
+      } else {
+        const stored = Store.get('bets');
+        this.data = (stored && stored.length) ? stored : INIT_DATA;
+      }
+    } catch(e) {
+      const stored = Store.get('bets');
+      this.data = (stored && stored.length) ? stored : INIT_DATA;
+    }
 
     // 3. Restaurer session
     const lvl = sessionStorage.getItem('pnturf_level');
@@ -955,10 +982,10 @@ function buildTkGrid(C) {
     {label:'C1 ⭐',desc:'Simple Placé',ch:`N°${C.c1}`,mise:`${m}€`,col:'#4fc3f7',span:false},
     {label:'C2',desc:'Simple Placé',ch:`N°${C.c2}`,mise:`${Math.round(m/2)}€`,col:'#4fc3f7',span:false},
     {label:'D1 Couplé',desc:'Placé désordre',ch:`N°${C.c1}+N°${C.c2}`,mise:`${Math.round(m/2)}€`,col:'#ff6b35',span:true},
-    {label:'Quarté A',desc:'Désordre',ch:C.quarteA.map(n=>`N°${n}`).join('·'),mise:'15€',col:'#b39ddb',span:true},
-    {label:'Quarté B ⭐',desc:'Désordre',ch:C.quarteB.map(n=>`N°${n}`).join('·'),mise:'15€',col:'#b39ddb',span:true},
-    {label:'Quinté A',desc:'Désordre',ch:C.quinteA.map(n=>`N°${n}`).join('·'),mise:'Inclus A',col:'#7c3aed',span:true},
-    {label:'Quinté B',desc:'Désordre',ch:C.quinteB.map(n=>`N°${n}`).join('·'),mise:'Inclus B',col:'#7c3aed',span:true},
+    {label:'Quarté A',desc:'Désordre',ch:C.quarteA.map(n=>`N°${n}`).join('·'),mise:'1.50€',col:'#b39ddb',span:true},
+    {label:'Quarté B ⭐',desc:'Désordre',ch:C.quarteB.map(n=>`N°${n}`).join('·'),mise:'1.50€',col:'#b39ddb',span:true},
+    {label:'Quinté A',desc:'Désordre',ch:C.quinteA.map(n=>`N°${n}`).join('·'),mise:'2€',col:'#7c3aed',span:true},
+    {label:'Quinté B',desc:'Désordre',ch:C.quinteB.map(n=>`N°${n}`).join('·'),mise:'2€',col:'#7c3aed',span:true},
     {label:'🎯 CDJ',desc:'Simple Gagnant',ch:C.cdj.num?`${C.cdj.course}·N°${C.cdj.num}`:'—',mise:`${m}€`,col:'#f5a623',span:true},
   ];
   if(C.dm.num) tks.push({label:'⚡ DM',desc:'Simple Placé',ch:`N°${C.dm.num}`,mise:'10€',col:'#00c896',span:true});
@@ -1177,7 +1204,7 @@ function saveCONFIG() {
     quarteA:parseNums(el('cfg-qa').value), quarteB:parseNums(el('cfg-qb').value),
     quinteA:parseNums(el('cfg-q5a').value), quinteB:parseNums(el('cfg-q5b').value),
   };
-  State.saveConfig(); renderAll(); toast('✅ CONFIG sauvegardée !');
+  State.saveConfig(); autoSave(); renderAll(); toast('✅ CONFIG sauvegardée !');
 }
 function resetCONFIG() {
   if(!confirm('Restaurer CONFIG par défaut ?')) return;
@@ -1199,18 +1226,52 @@ function addCourse() {
   if(!r.date){toast('❌ Date requise');return;}
   const idx=State.data.findIndex(x=>x.date===r.date);
   if(idx>=0) State.data[idx]={...State.data[idx],...r}; else State.data.push(r);
-  State.saveData(); renderAll(); toast('✅ Course enregistrée !');
+  State.saveData(); autoSave(); renderAll();
+  toast('✅ Course enregistrée ! Clique 📤 pour mettre à jour GitHub');
+  // Reset form
   ['f-date','f-hippo','f-cdj','f-arr','f-top5','f-tck','f-cdjpos'].forEach(id=>{const e=el(id);if(e)e.value='';});
   el('f-retour').value='0';
 }
-function exportConfigJSON() {
-  const blob = new Blob([JSON.stringify(State.config, null, 2)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'config.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
-  toast('📤 config.json téléchargé — uploade sur GitHub !');
+/* ══════════════════════════════════════════════════════════
+   AUTO-SAVE & EXPORT GROUPÉ
+══════════════════════════════════════════════════════════ */
+let _autoSaveTimer = null;
+
+function autoSave() {
+  // Sauvegarde localStorage immédiate
+  State.saveData();
+  Store.set('config', State.config);
+
+  // Indicateur visuel
+  const ind = document.getElementById('autosave-indicator');
+  if(ind) {
+    ind.textContent = '✅ Sauvegardé ' + new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    ind.style.color = '#00c896';
+    clearTimeout(_autoSaveTimer);
+    _autoSaveTimer = setTimeout(() => { ind.style.color = '#555'; }, 3000);
+  }
+}
+
+function exportTout() {
+  // Export config.json
+  const c = new Blob([JSON.stringify(State.config, null, 2)], {type:'application/json'});
+  const a1 = document.createElement('a'); a1.href=URL.createObjectURL(c); a1.download='config.json'; a1.click();
+  URL.revokeObjectURL(a1.href);
+
+  // Export data.json avec délai pour éviter blocage navigateur
+  setTimeout(() => {
+    const d = new Blob([JSON.stringify(State.data, null, 2)], {type:'application/json'});
+    const a2 = document.createElement('a'); a2.href=URL.createObjectURL(d); a2.download='data.json'; a2.click();
+    URL.revokeObjectURL(a2.href);
+    toast('📤 config.json + data.json téléchargés → uploader sur GitHub !', 4000);
+  }, 600);
+}
+
+function exportConfigJSON()  { exportTout(); }
+function exportDataJSON()    { exportTout(); }
+function exportJSON() {
+  const blob=new Blob([JSON.stringify(State.data,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='prono_v90.json'; a.click();
 }
 
 function exportJSON() {
@@ -1382,7 +1443,9 @@ function checkCordePin(){
 function lockCorde(){sessionStorage.removeItem('pnturf_corde');show('corde-locked');hide('corde-content');toast('🔒 Corde verrouillé');}
 function initCordeState(){
   if(sessionStorage.getItem('pnturf_corde')==='1'||State.level===LEVELS.ADMIN){
-    hide('corde-locked'); show('corde-content'); renderCordeHist();
+    hide('corde-locked'); show('corde-content');
+    renderCordeHist();
+    renderCordeAnalyse();
   } else { show('corde-locked'); hide('corde-content'); }
 }
 
@@ -1394,11 +1457,116 @@ function addCordeCourse(){
   const corde=el('cd-corde').value;
   const top5=arrN.slice(0,5),active=selN.filter(n=>!npN.includes(n)),hits=active.filter(n=>top5.includes(n));
   CORDE_DATA.unshift({id:Date.now(),date,hippo,disc,corde,sel:selN,np:npN,arr:arrN,top5,active,hits,score:hits.length});
-  saveCorde(); renderCordeHist();
+  saveCorde(); renderCordeHist(); renderCordeAnalyse();
   ['cd-sel','cd-np','cd-arr','cd-hippo'].forEach(id=>{const e=el(id);if(e)e.value='';});
   el('cd-corde').value='';;
 }
 function deleteCordeCourse(id){CORDE_DATA=CORDE_DATA.filter(r=>r.id!==id);saveCorde();renderCordeHist();}
+/* ══════════════════════════════════════════════════════════
+   ANALYSE CORDE — Positions & Fréquences
+══════════════════════════════════════════════════════════ */
+let _cordeFilter = 'all';
+
+function setCordeFilter(disc, btn) {
+  _cordeFilter = disc;
+  document.querySelectorAll('#tab-corde .ctab').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderCordeAnalyse();
+}
+
+function renderCordeAnalyse() {
+  const raw = _cordeFilter === 'all'
+    ? CORDE_DATA
+    : CORDE_DATA.filter(r => r.disc === _cordeFilter);
+
+  const total = raw.length;
+
+  // ── Stats globales
+  const statsEl = document.getElementById('corde-analyse-stats');
+  if(statsEl) {
+    const avg  = total ? (raw.reduce((s,r)=>s+r.score,0)/total).toFixed(2) : '—';
+    const pct4 = total ? Math.round(raw.filter(r=>r.score>=4).length/total*100) : 0;
+    const pct5 = total ? Math.round(raw.filter(r=>r.score===5).length/total*100) : 0;
+    statsEl.innerHTML = `
+      <div class="kpi-card green"><div class="val" style="font-size:20px;">${total}</div><div class="lbl">Courses</div></div>
+      <div class="kpi-card orange"><div class="val" style="font-size:20px;">${avg}</div><div class="lbl">Moy/5</div></div>
+      <div class="kpi-card blue"><div class="val" style="font-size:20px;">${pct4}%</div><div class="lbl">≥4/5</div></div>`;
+  }
+
+  // ── Analyse P1→P5 : combien de fois la sélection couvre chaque position
+  const posEl = document.getElementById('corde-pos-bars');
+  if(posEl) {
+    if(!total) { posEl.innerHTML='<div style="color:#555;text-align:center;padding:12px;">Aucune donnée</div>'; }
+    else {
+      const posCounts = [0,0,0,0,0]; // P1 P2 P3 P4 P5
+      raw.forEach(r => {
+        r.top5.forEach((cheval, i) => {
+          if(r.active.includes(cheval)) posCounts[i]++;
+        });
+      });
+      posEl.innerHTML = posCounts.map((cnt, i) => {
+        const pct = Math.round(cnt/total*100);
+        const col = pct>=80?'#00c896':pct>=60?'#4fc3f7':pct>=40?'#f5a623':'#e94560';
+        return `
+          <div style="margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
+              <span style="color:#888;font-weight:700;">P${i+1}</span>
+              <span style="color:${col};font-weight:700;">${cnt}/${total} — ${pct}%</span>
+            </div>
+            <div style="background:#2a2a3e;border-radius:4px;height:10px;overflow:hidden;">
+              <div style="width:${pct}%;height:100%;background:${col};border-radius:4px;transition:width .4s;"></div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+  }
+
+  // ── Analyse par numéro de cheval : fréquence dans le Top5
+  const horseEl = document.getElementById('corde-horse-bars');
+  if(horseEl) {
+    if(!total) { horseEl.innerHTML='<div style="color:#555;text-align:center;padding:12px;">Aucune donnée</div>'; return; }
+
+    // Compter par numéro de cheval sélectionné
+    const freq = {}; // { num: { sel:n, top5:n, p1:n } }
+    raw.forEach(r => {
+      r.sel.forEach(n => {
+        if(!freq[n]) freq[n] = {sel:0, top5:0, p1:0};
+        freq[n].sel++;
+      });
+      r.top5.forEach((n, i) => {
+        if(!freq[n]) freq[n] = {sel:0, top5:0, p1:0};
+        if(r.active.includes(n) || r.sel.includes(n)) {
+          freq[n].top5++;
+          if(i===0) freq[n].p1++;
+        }
+      });
+    });
+
+    // Trier par fréquence top5 décroissante
+    const sorted = Object.entries(freq)
+      .filter(([,v]) => v.sel > 0)
+      .sort((a,b) => (b[1].top5/b[1].sel) - (a[1].top5/a[1].sel));
+
+    horseEl.innerHTML = sorted.map(([num, v]) => {
+      const pctTop5 = Math.round(v.top5/v.sel*100);
+      const pctP1   = Math.round(v.p1/v.sel*100);
+      const col = pctTop5>=80?'#00c896':pctTop5>=60?'#4fc3f7':pctTop5>=40?'#f5a623':'#e94560';
+      return `
+        <div style="margin-bottom:10px;background:#0d0d0d;border-radius:8px;padding:8px 10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <span style="color:#f0f0f0;font-weight:700;">N°${num}</span>
+            <span style="font-size:11px;color:#555;">${v.sel} sél.</span>
+            <span style="color:#f5a623;font-size:11px;">🏆 P1: ${v.p1}x (${pctP1}%)</span>
+            <span style="color:${col};font-weight:700;">Top5: ${v.top5}x — ${pctTop5}%</span>
+          </div>
+          <div style="background:#2a2a3e;border-radius:4px;height:8px;overflow:hidden;">
+            <div style="width:${pctTop5}%;height:100%;background:${col};border-radius:4px;transition:width .4s;"></div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+}
+
 function renderCordeHist(){
   const tbody=el('corde-hist-body');if(!tbody)return;
   const total=CORDE_DATA.length;

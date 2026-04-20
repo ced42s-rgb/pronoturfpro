@@ -251,6 +251,10 @@ async function loadConfig() {
 }
 
 async function loadData() {
+  try {
+    const r = await fetch('/data.json?t='+Date.now(), {cache:'no-store'});
+    if(r.ok) { const d=await r.json(); if(d&&d.length) return d; }
+  } catch(e){}
   try { const v=localStorage.getItem('pnturf_v11_bets'); if(v){const p=JSON.parse(v);if(p&&p.length)return p;} } catch(e){}
   return DATA_FALLBACK;
 }
