@@ -1,25 +1,35 @@
 {
-  "date": "21/04/2026",
+  "date": "22/04/2026",
   "hippo": "Compiègne",
-  "disc": "Haies",
+  "disc": "Attelé",
   "course": "R1C1",
-  "sel": "7-3-13-12-15-14-9-1",
-  "outsiders": "N°4 · N°6",
-  "c1": 7,
-  "c2": 3,
+  "sel": "1-12-9-11-7-14-2-5",
+  "outsiders": "N°10 · N°4",
+  "c1": 10,
+  "c2": 4,
   "depart": "13:55",
   "cdj": {
-    "course": "R4",
-    "num": 210,
-    "mise": 20
+    "course": "R1",
+    "num": 214,
+    "mise": 2
   },
   "dm": {
     "course": "",
     "num": "",
     "mise": 0
   },
-  "quarteA": [7, 3, 13, 12],
-  "quarteB": [],
-  "quinteA": [7, 3, 9, 1, 13],
-  "quinteB": [13, 14, 9, 7, 3]
+  "quarteA": [
+    1,
+    12,
+    9,
+    11
+  ],
+  "quarteB": [
+    1,
+    9,
+    2,
+    5
+  ],
+  "quinteA": [],
+  "quinteB": []
 }

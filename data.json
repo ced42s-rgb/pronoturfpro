@@ -462,5 +462,19 @@
     "tck": "CDJ",
     "bilan": "CDJ",
     "retour": 5
+  },
+  {
+    "date": "2026-04-21",
+    "hippo": "Compiègne",
+    "disc": "Plat",
+    "cdj": "210",
+    "mise": 2,
+    "arr": "3-15-13-7-12",
+    "top5": "5/5",
+    "cdj_res": "LOSS",
+    "cdj_pos": "8",
+    "tck": "C1",
+    "bilan": "C1",
+    "retour": 10.1
   }
 ]
