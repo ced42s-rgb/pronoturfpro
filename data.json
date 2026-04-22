@@ -476,5 +476,19 @@
     "tck": "C1",
     "bilan": "C1",
     "retour": 10.1
+  },
+  {
+    "date": "2026-04-22",
+    "hippo": "Chateaubriant",
+    "disc": "Attelé",
+    "cdj": "214",
+    "mise": 2,
+    "arr": "5-9-2-12-11",
+    "top5": "5/5",
+    "cdj_res": "WIN",
+    "cdj_pos": "3 eme",
+    "tck": "CDJ QUARTE B 3/4 QUINTE B 4/5",
+    "bilan": "CDJ QUARTE B 3/4 QUINTE B 4/5",
+    "retour": 9.5
   }
 ]
