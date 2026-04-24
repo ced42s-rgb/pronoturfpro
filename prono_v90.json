@@ -490,5 +490,19 @@
     "tck": "CDJ QUARTE B 3/4 QUINTE B 4/5",
     "bilan": "CDJ QUARTE B 3/4 QUINTE B 4/5",
     "retour": 9.5
+  },
+  {
+    "date": "2026-04-23",
+    "hippo": "Longchamp",
+    "disc": "Plat",
+    "cdj": "503",
+    "mise": 2,
+    "arr": "7-3-12-5-1",
+    "top5": "5/5",
+    "cdj_res": "LOSS",
+    "cdj_pos": "DAI",
+    "tck": "C2 2€ Quinté B 3€",
+    "bilan": "C2 2€ Quinté B 3€",
+    "retour": 5
   }
 ]
