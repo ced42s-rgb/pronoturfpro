@@ -1,16 +1,16 @@
 {
-  "date": "24/04/2026",
-  "hippo": "Vincennes",
-  "disc": "Attelé",
-  "course": "R1C8",
-  "sel": "5-7-11-4-12-9-6-10",
-  "outsiders": "N°13 · N°15",
+  "date": "25/04/2026",
+  "hippo": "Auteuil",
+  "disc": "Haies",
+  "course": "R1C3",
+  "sel": "1-2-8-5-9-13-4-14",
+  "outsiders": "N°6 · N°15",
   "c1": 1,
-  "c2": 3,
-  "depart": "20:15",
+  "c2": 2,
+  "depart": "15:15",
   "cdj": {
-    "course": "R1",
-    "num": 309,
+    "course": "R3",
+    "num": 506,
     "mise": 2
   },
   "dm": {
@@ -19,29 +19,12 @@
     "mise": 0
   },
   "quarteA": [
-    5,
-    7,
-    11,
-    4
+    1,
+    2,
+    8,
+    5
   ],
-  "quarteB": [
-    5,
-    7,
-    6,
-    10
-  ],
-  "quinteA": [
-    5,
-    7,
-    10,
-    9,
-    6
-  ],
-  "quinteB": [
-    7,
-    11,
-    4,
-    9,
-    10
-  ]
+  "quarteB": [],
+  "quinteA": [],
+  "quinteB": []
 }

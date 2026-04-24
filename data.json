@@ -504,5 +504,19 @@
     "tck": "C2 2€ Quinté B 3€",
     "bilan": "C2 2€ Quinté B 3€",
     "retour": 5
+  },
+  {
+    "date": "2026-04-24",
+    "hippo": "Vincennes",
+    "disc": "Attelé",
+    "cdj": "309",
+    "mise": 2,
+    "arr": "10-12-5-7-6",
+    "top5": "5/5",
+    "cdj_res": "LOSS",
+    "cdj_pos": "4",
+    "tck": "C1 3€ Quinté A 2€20",
+    "bilan": "C1 3€ Quinté A 2€20",
+    "retour": 5.2
   }
 ]
