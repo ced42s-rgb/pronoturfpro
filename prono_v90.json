@@ -518,5 +518,19 @@
     "tck": "C1 3€ Quinté A 2€20",
     "bilan": "C1 3€ Quinté A 2€20",
     "retour": 5.2
+  },
+  {
+    "date": "2026-04-25",
+    "hippo": "Auteuil",
+    "disc": "Haies",
+    "cdj": "506",
+    "mise": 2,
+    "arr": "9-1-13-12-2",
+    "top5": "4/5",
+    "cdj_res": "LOSS",
+    "cdj_pos": "5",
+    "tck": "C1 C2",
+    "bilan": "C1 C2",
+    "retour": 5
   }
 ]
