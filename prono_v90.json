@@ -532,5 +532,19 @@
     "tck": "C1 C2",
     "bilan": "C1 C2",
     "retour": 5
+  },
+  {
+    "date": "2026-04-26",
+    "hippo": "Longch",
+    "disc": "Plat",
+    "cdj": "203",
+    "mise": 2,
+    "arr": "6-14-3-5-11",
+    "top5": "5/5",
+    "cdj_res": "WIN",
+    "cdj_pos": "",
+    "tck": "CDJ 6€40 C2 2€",
+    "bilan": "CDJ 6€40 C2 2€",
+    "retour": 8.4
   }
 ]
