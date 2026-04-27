@@ -1,16 +1,16 @@
 {
-  "date": "27/04/2026",
-  "hippo": "Le Bouscat",
+  "date": "28/04/2026",
+  "hippo": "Chantilly",
   "disc": "Plat",
-  "course": "R1C5",
-  "sel": "5-11-8-1-6-4-3-12",
-  "outsiders": "N°10 · N°2",
-  "c1": 6,
-  "c2": 4,
+  "course": "R1C1",
+  "sel": "2-7-14-13-3-10-4-1",
+  "outsiders": "N°6 · N°11",
+  "c1": 2,
+  "c2": 7,
   "depart": "13:55",
   "cdj": {
     "course": "R4",
-    "num": 198,
+    "num": 408,
     "mise": 2
   },
   "dm": {
@@ -18,30 +18,8 @@
     "num": "",
     "mise": 0
   },
-  "quarteA": [
-    5,
-    11,
-    8,
-    1
-  ],
-  "quarteB": [
-    6,
-    4,
-    10,
-    2
-  ],
-  "quinteA": [
-    5,
-    11,
-    8,
-    4,
-    12
-  ],
-  "quinteB": [
-    6,
-    4,
-    5,
-    12,
-    11
-  ]
+  "quarteA": [2, 7, 14, 13],
+  "quarteB": [2, 7, 4, 14],
+  "quinteA": [2, 7, 14, 13, 3],
+  "quinteB": [2, 7, 4, 14, 13]
 }

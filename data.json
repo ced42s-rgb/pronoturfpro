@@ -576,5 +576,20 @@
     "tck": "C2 2€",
     "bilan": "C2 2€",
     "retour": 2
+  },
+  {
+    "date": "2026-04-27",
+    "hippo": "Le Bouscat",
+    "disc": "Plat",
+    "cdj": "198",
+    "dm": "",
+    "mise": 2,
+    "arr": "3-5-11-1-9",
+    "top5": "4/5",
+    "cdj_res": "WIN",
+    "cdj_pos": "4e ✅",
+    "tck": "Tickets ❌",
+    "bilan": "CDJ ✅ · Tickets ❌",
+    "retour": 4
   }
 ]
