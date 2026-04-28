@@ -1,16 +1,16 @@
 {
-  "date": "28/04/2026",
-  "hippo": "Chantilly",
-  "disc": "Plat",
+  "date": "29/04/2026",
+  "hippo": "Laval",
+  "disc": "Attelé",
   "course": "R1C1",
-  "sel": "2-7-14-13-3-10-4-1",
-  "outsiders": "N°6 · N°11",
-  "c1": 2,
-  "c2": 7,
+  "sel": "14-3-10-6-4-13-16-9",
+  "outsiders": "N°15 · N°7",
+  "c1": 14,
+  "c2": 3,
   "depart": "13:55",
   "cdj": {
-    "course": "R4",
-    "num": 408,
+    "course": "R1",
+    "num": 605,
     "mise": 2
   },
   "dm": {
@@ -18,8 +18,8 @@
     "num": "",
     "mise": 0
   },
-  "quarteA": [2, 7, 14, 13],
-  "quarteB": [2, 7, 4, 14],
-  "quinteA": [2, 7, 14, 13, 3],
-  "quinteB": [2, 7, 4, 14, 13]
+  "quarteA": [14, 3, 10, 6],
+  "quarteB": [14, 16, 3, 10],
+  "quinteA": [14, 3, 10, 6, 4],
+  "quinteB": [14, 16, 3, 10, 6]
 }

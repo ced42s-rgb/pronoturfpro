@@ -591,5 +591,20 @@
     "tck": "Tickets ❌",
     "bilan": "CDJ ✅ · Tickets ❌",
     "retour": 4
+  },
+  {
+    "date": "2026-04-28",
+    "hippo": "Chantilly",
+    "disc": "Plat",
+    "cdj": "408",
+    "dm": "",
+    "mise": 2,
+    "arr": "1-16-13-6-3",
+    "top5": "3/5",
+    "cdj_res": "LOSS",
+    "cdj_pos": "DAI",
+    "tck": "Tickets ❌",
+    "bilan": "CDJ ❌ DAI · Tickets ❌",
+    "retour": 0
   }
 ]
