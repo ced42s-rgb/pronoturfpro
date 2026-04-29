@@ -1,16 +1,16 @@
 {
-  "date": "29/04/2026",
-  "hippo": "Laval",
-  "disc": "Attelé",
-  "course": "R1C1",
-  "sel": "14-3-10-6-4-13-16-9",
-  "outsiders": "N°15 · N°7",
-  "c1": 14,
-  "c2": 3,
-  "depart": "13:55",
+  "date": "30/04/2026",
+  "hippo": "Longchamp",
+  "disc": "Plat",
+  "course": "R1C8",
+  "sel": "3-9-14-4-5-2-8-1",
+  "outsiders": "N°6 · N°7",
+  "c1": 3,
+  "c2": 9,
+  "depart": "20:15",
   "cdj": {
-    "course": "R1",
-    "num": 605,
+    "course": "R3",
+    "num": 208,
     "mise": 2
   },
   "dm": {
@@ -18,8 +18,8 @@
     "num": "",
     "mise": 0
   },
-  "quarteA": [14, 3, 10, 6],
-  "quarteB": [14, 16, 3, 10],
-  "quinteA": [14, 3, 10, 6, 4],
-  "quinteB": [14, 16, 3, 10, 6]
+  "quarteA": [3, 9, 14, 4],
+  "quarteB": [3, 9, 8, 4],
+  "quinteA": [3, 9, 14, 4, 5],
+  "quinteB": [3, 9, 8, 4, 1]
 }
