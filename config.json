@@ -1,16 +1,16 @@
 {
-  "date": "30/04/2026",
-  "hippo": "Longchamp",
+  "date": "01/05/2026",
+  "hippo": "Saint-Cloud",
   "disc": "Plat",
-  "course": "R1C8",
-  "sel": "3-9-14-4-5-2-8-1",
-  "outsiders": "N°6 · N°7",
-  "c1": 3,
-  "c2": 9,
-  "depart": "20:15",
+  "course": "R1C4",
+  "sel": "1-5-14-2-6-12-4-8",
+  "outsiders": "N°10 · N°9",
+  "c1": 1,
+  "c2": 5,
+  "depart": "15:15",
   "cdj": {
     "course": "R3",
-    "num": 208,
+    "num": 107,
     "mise": 2
   },
   "dm": {
@@ -18,8 +18,8 @@
     "num": "",
     "mise": 0
   },
-  "quarteA": [3, 9, 14, 4],
-  "quarteB": [3, 9, 8, 4],
-  "quinteA": [3, 9, 14, 4, 5],
-  "quinteB": [3, 9, 8, 4, 1]
+  "quarteA": [1, 5, 14, 2],
+  "quarteB": [1, 5, 4, 14],
+  "quinteA": [1, 5, 14, 2, 6],
+  "quinteB": [1, 5, 4, 14, 2]
 }

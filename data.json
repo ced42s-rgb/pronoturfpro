@@ -621,5 +621,20 @@
     "tck": "Tickets ❌",
     "bilan": "CDJ ✅ 1er · Tickets ❌",
     "retour": 11
+  },
+  {
+    "date": "2026-04-30",
+    "hippo": "Longchamp",
+    "disc": "Plat",
+    "cdj": "208",
+    "dm": "",
+    "mise": 2,
+    "arr": "14-4-9-11-1",
+    "top5": "4/5",
+    "cdj_res": "WIN",
+    "cdj_pos": "✅",
+    "tck": "C2 ✅ · Quarté A ✅ · Quinté A ✅",
+    "bilan": "CDJ ✅ · C2 ✅ · Quarté A ✅ · Quinté A ✅ · 4/5",
+    "retour": 27.75
   }
 ]
