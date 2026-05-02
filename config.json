@@ -1,16 +1,16 @@
 {
-  "date": "01/05/2026",
-  "hippo": "Saint-Cloud",
-  "disc": "Plat",
+  "date": "02/05/2026",
+  "hippo": "Vincennes",
+  "disc": "Attelé",
   "course": "R1C4",
-  "sel": "1-5-14-2-6-12-4-8",
-  "outsiders": "N°10 · N°9",
-  "c1": 1,
-  "c2": 5,
+  "sel": "5-7-2-6-14-16-9-3",
+  "outsiders": "N°12 · N°8",
+  "c1": 5,
+  "c2": 7,
   "depart": "15:15",
   "cdj": {
-    "course": "R3",
-    "num": 107,
+    "course": "R1",
+    "num": 509,
     "mise": 2
   },
   "dm": {
@@ -18,8 +18,8 @@
     "num": "",
     "mise": 0
   },
-  "quarteA": [1, 5, 14, 2],
-  "quarteB": [1, 5, 4, 14],
-  "quinteA": [1, 5, 14, 2, 6],
-  "quinteB": [1, 5, 4, 14, 2]
+  "quarteA": [5, 7, 2, 6],
+  "quarteB": [5, 7, 9, 2],
+  "quinteA": [5, 7, 2, 6, 14],
+  "quinteB": [5, 7, 9, 2, 6]
 }

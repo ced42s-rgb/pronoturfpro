@@ -636,5 +636,20 @@
     "tck": "C2 ✅ · Quarté A ✅ · Quinté A ✅",
     "bilan": "CDJ ✅ · C2 ✅ · Quarté A ✅ · Quinté A ✅ · 4/5",
     "retour": 27.75
+  },
+  {
+    "date": "2026-05-01",
+    "hippo": "Saint-Cloud",
+    "disc": "Plat",
+    "cdj": "107",
+    "dm": "",
+    "mise": 2,
+    "arr": "4-1-7-14-9",
+    "top5": "3/5",
+    "cdj_res": "LOSS",
+    "cdj_pos": "—",
+    "tck": "C1 ✅",
+    "bilan": "CDJ ❌ · C1 ✅ 5.40€ · 3/5",
+    "retour": 5.4
   }
 ]
