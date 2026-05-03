@@ -651,5 +651,20 @@
     "tck": "C1 ✅",
     "bilan": "CDJ ❌ · C1 ✅ 5.40€ · 3/5",
     "retour": 5.4
+  },
+  {
+    "date": "2026-05-02",
+    "hippo": "Vincennes",
+    "disc": "Attelé",
+    "cdj": "509",
+    "dm": "",
+    "mise": 2,
+    "arr": "5-3-6-8-14",
+    "top5": "4/5",
+    "cdj_res": "LOSS",
+    "cdj_pos": "—",
+    "tck": "C1 ✅",
+    "bilan": "CDJ ❌ · C1 ✅ 3.60€ · 4/5",
+    "retour": 3.6
   }
 ]

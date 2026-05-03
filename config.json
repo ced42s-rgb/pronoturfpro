@@ -1,16 +1,16 @@
 {
-  "date": "02/05/2026",
-  "hippo": "Vincennes",
-  "disc": "Attelé",
+  "date": "03/05/2026",
+  "hippo": "Longchamp",
+  "disc": "Plat",
   "course": "R1C4",
-  "sel": "5-7-2-6-14-16-9-3",
-  "outsiders": "N°12 · N°8",
-  "c1": 5,
-  "c2": 7,
+  "sel": "9-2-11-10-16-13-3-5",
+  "outsiders": "N°15 · N°7",
+  "c1": 9,
+  "c2": 2,
   "depart": "15:15",
   "cdj": {
-    "course": "R1",
-    "num": 509,
+    "course": "R4",
+    "num": 403,
     "mise": 2
   },
   "dm": {
@@ -18,8 +18,8 @@
     "num": "",
     "mise": 0
   },
-  "quarteA": [5, 7, 2, 6],
-  "quarteB": [5, 7, 9, 2],
-  "quinteA": [5, 7, 2, 6, 14],
-  "quinteB": [5, 7, 9, 2, 6]
+  "quarteA": [9, 2, 11, 10],
+  "quarteB": [9, 2, 3, 11],
+  "quinteA": [9, 2, 11, 10, 16],
+  "quinteB": [9, 2, 3, 11, 10]
 }
