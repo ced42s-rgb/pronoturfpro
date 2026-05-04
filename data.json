@@ -666,5 +666,35 @@
     "tck": "C1 ✅",
     "bilan": "CDJ ❌ · C1 ✅ 3.60€ · 4/5",
     "retour": 3.6
+  },
+  {
+    "date": "2026-05-03",
+    "hippo": "Longchamp",
+    "disc": "Plat",
+    "cdj": "403",
+    "dm": "",
+    "mise": 2,
+    "arr": "11-8-7-9-5",
+    "top5": "3/5",
+    "cdj_res": "LOSS",
+    "cdj_pos": "—",
+    "tck": "—",
+    "bilan": "CDJ ❌ · 3/5",
+    "retour": 0
+  },
+  {
+    "date": "2026-05-04",
+    "hippo": "Vichy",
+    "disc": "Plat",
+    "cdj": "108",
+    "dm": "",
+    "mise": 2,
+    "arr": "13-16-1-11-9",
+    "top5": "3/5",
+    "cdj_res": "WIN",
+    "cdj_pos": "✅",
+    "tck": "Tickets ❌",
+    "bilan": "CDJ ✅ 3.80€ · Tickets ❌",
+    "retour": 3.8
   }
 ]

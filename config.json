@@ -1,16 +1,16 @@
 {
-  "date": "03/05/2026",
-  "hippo": "Longchamp",
+  "date": "04/05/2026",
+  "hippo": "Vichy",
   "disc": "Plat",
   "course": "R1C4",
-  "sel": "9-2-11-10-16-13-3-5",
-  "outsiders": "N°15 · N°7",
-  "c1": 9,
-  "c2": 2,
-  "depart": "15:15",
+  "sel": "13-3-11-4-15-8-16-6",
+  "outsiders": "N°10 · N°14",
+  "c1": 13,
+  "c2": 3,
+  "depart": "13:55",
   "cdj": {
-    "course": "R4",
-    "num": 403,
+    "course": "R1",
+    "num": 108,
     "mise": 2
   },
   "dm": {
@@ -18,8 +18,8 @@
     "num": "",
     "mise": 0
   },
-  "quarteA": [9, 2, 11, 10],
-  "quarteB": [9, 2, 3, 11],
-  "quinteA": [9, 2, 11, 10, 16],
-  "quinteB": [9, 2, 3, 11, 10]
+  "quarteA": [13, 3, 11, 4],
+  "quarteB": [13, 11, 16, 15],
+  "quinteA": [13, 3, 11, 4, 15],
+  "quinteB": [13, 11, 16, 15, 6]
 }
